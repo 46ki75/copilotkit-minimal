@@ -1,7 +1,16 @@
+import { useFrontendTool } from "@copilotkit/react-core/v2";
 import "./App.css";
 import { CopilotChat } from "@copilotkit/react-ui";
 
 function App() {
+  useFrontendTool({
+    name: "getDate",
+    description: "Get the current date and time",
+    handler: async () => {
+      return new Date().toString();
+    },
+  });
+
   return (
     <div className="app-container">
       <main>
