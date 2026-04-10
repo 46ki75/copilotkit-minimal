@@ -6,7 +6,7 @@ import {
   copilotRuntimeNodeHttpEndpoint,
 } from "@copilotkit/runtime";
 import { BuiltInAgent } from "@copilotkit/runtime/v2";
-import { createOpenAI } from "@ai-sdk/openai";
+import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 
 dotenv.config();
 
@@ -19,21 +19,21 @@ fastify.register(cors, {
 
 // We let fastify parse the JSON body normally (remove custom parser)
 fastify.all("/copilotkit", async (request, reply) => {
-  // Create an OpenAI client configured for OpenRouter via Vercel AI SDK
-  const openrouter = createOpenAI({
-    baseURL: "https://openrouter.ai/api/v1",
+  // Create an OpenRouter client using the official provider
+  const openrouter = createOpenRouter({
     apiKey: process.env.OPENROUTER_API_KEY,
   });
 
-  // 1. Define the agent using the custom model adapter and connect MCP servers natively
   const agent = new BuiltInAgent({
-    model: openrouter("minimax/minimax-m2.5"),
+    model: openrouter("openai/gpt-5.4-nano"),
     mcpServers: [
       {
-        url: "https://mcp.copilotkit.ai/mcp", // Replace with your MCP server URL
-        type: "http", // or "http" or "stdio" (stdio runs local executables, useful for development)
+        url: "https://knowledge-mcp.global.api.aws",
+        type: "http",
+        options: {},
       },
     ],
+    tools: [],
   });
 
   // 2. Attach the generated agent directly to the runtime
