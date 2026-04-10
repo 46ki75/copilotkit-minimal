@@ -1,5 +1,5 @@
-import express, { Request, Response, NextFunction } from "express";
-import cors from "cors";
+import Fastify from "fastify";
+import cors from "@fastify/cors";
 import dotenv from "dotenv";
 import {
   CopilotRuntime,
@@ -10,44 +10,56 @@ import OpenAI from "openai";
 
 dotenv.config();
 
-const app = express();
-const port = process.env.PORT || 3000;
+const fastify = Fastify({ logger: true });
+const port = parseInt(process.env.PORT || "3000", 10);
 
-app.use(cors());
-app.use(express.json());
+fastify.register(cors, {
+  origin: true,
+});
 
-app.all(
-  "/copilotkit",
-  async (req: Request, res: Response, next: NextFunction) => {
-    const runtime = new CopilotRuntime();
+// We let fastify parse the JSON body normally (remove custom parser)
+fastify.all("/copilotkit", async (request, reply) => {
+  const runtime = new CopilotRuntime();
 
-    // Create an OpenAI client configured for OpenRouter
-    const openai = new OpenAI({
-      baseURL: "https://openrouter.ai/api/v1",
-      apiKey: process.env.OPENROUTER_API_KEY,
+  // Create an OpenAI client configured for OpenRouter
+  const openai = new OpenAI({
+    baseURL: "https://openrouter.ai/api/v1",
+    apiKey: process.env.OPENROUTER_API_KEY,
+  });
+
+  // Pass the custom OpenAI client to the OpenAIAdapter
+  // Optional: model parameter specifies the default OpenRouter model to use.
+  const serviceAdapter = new OpenAIAdapter({
+    openai,
+    model: "minimax/minimax-m2.5",
+  });
+
+  try {
+    const handler = copilotRuntimeNodeHttpEndpoint({
+      endpoint: "/copilotkit",
+      runtime,
+      serviceAdapter,
     });
 
-    // Pass the custom OpenAI client to the OpenAIAdapter
-    // Optional: model parameter specifies the default OpenRouter model to use.
-    const serviceAdapter = new OpenAIAdapter({
-      openai,
-      model: "minimax/minimax-m2.5",
-    });
+    // CopilotKit node HTTP endpoint expects the body to be accessible on the request for Express compatibility
+    // Make sure we attach Fastify's parsed body to the raw request before passing it
+    Object.assign(request.raw, { body: request.body });
 
-    try {
-      const handler = copilotRuntimeNodeHttpEndpoint({
-        endpoint: "/copilotkit",
-        runtime,
-        serviceAdapter,
-      });
-      return handler(req, res);
-    } catch (error) {
-      console.error("Error running CopilotKit endpoint:", error);
-      res.status(500).send("Endpoint error");
+    reply.hijack(); // Hand over to raw node HTTP handler
+    return handler(request.raw, reply.raw);
+  } catch (error) {
+    request.log.error(error, "Error running CopilotKit endpoint");
+    reply.status(500).send("Endpoint error");
+  }
+});
+
+fastify.listen(
+  { port, host: "0.0.0.0" },
+  (err: Error | null, address: string) => {
+    if (err) {
+      fastify.log.error(err);
+      process.exit(1);
     }
+    console.log(`CopilotKit backend running on ${address}`);
   },
 );
-
-app.listen(port, () => {
-  console.log(`CopilotKit backend running on http://localhost:${port}`);
-});
