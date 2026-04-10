@@ -68,6 +68,11 @@ function App() {
         <p>This is a minimal implementation of CopilotKit.</p>
         <p>Interact with the chat below. MCP tools will render inline!</p>
 
+        <pre>
+          <span>SAMPLE:&nbsp;</span>
+          <code>What is a new service called Amazon S3 Files?</code>
+        </pre>
+
         <div style={{ height: "500px", marginTop: "2rem" }}>
           <CopilotChat
             instructions="You are a helpful assistant. Use tools if needed."
