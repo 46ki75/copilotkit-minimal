@@ -31,8 +31,8 @@ app.all(
     // Optional: model parameter specifies the default OpenRouter model to use.
     const serviceAdapter = new OpenAIAdapter({
       openai,
-      model: "minimax/minimax-m2.5", // Replace with your preferred OpenRouter model
-    } as any);
+      model: "minimax/minimax-m2.5",
+    });
 
     try {
       const handler = copilotRuntimeNodeHttpEndpoint({
