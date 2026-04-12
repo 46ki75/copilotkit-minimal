@@ -9,7 +9,7 @@ import { z } from "zod";
 import { v4, v7 } from "uuid";
 
 // Components
-import { ElmHeading, ElmInlineText } from "@elmethis/react";
+import { ElmHeading, ElmInlineText, ElmMarkdown } from "@elmethis/react";
 
 // Styles
 import styles from "./ChatContainer.module.css";
@@ -52,6 +52,11 @@ export const ChatContainer = (props: ChatContainerProps) => {
         message: " What is a new service called Amazon S3 Files?",
       },
       {
+        title: "Ask about AWS Lambda Function URLs",
+        message:
+          "How do I restrict requests to AWS Lambda Function URLs except Amazon CloudFront origins?",
+      },
+      {
         title: "Ask for current date",
         message: " What is the current date and time?",
       },
@@ -73,7 +78,15 @@ export const ChatContainer = (props: ChatContainerProps) => {
           <ElmInlineText>CopilotKit Minimal Setup</ElmInlineText>
         </ElmHeading>
 
-        <CopilotChat />
+        <CopilotChat
+          messageView={{
+            assistantMessage: {
+              markdownRenderer: ({ content }) => (
+                <ElmMarkdown markdown={content} />
+              ),
+            },
+          }}
+        />
       </main>
     </div>
   );
