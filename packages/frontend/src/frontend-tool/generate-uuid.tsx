@@ -2,6 +2,8 @@ import { useFrontendTool } from "@copilotkit/react-core/v2";
 import { v4, v7 } from "uuid";
 import z from "zod";
 
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const useGenerateUuidFrontendTool = () => {
   useFrontendTool({
     name: "generate_uuid",
@@ -16,6 +18,8 @@ export const useGenerateUuidFrontendTool = () => {
       };
 
       const uuid = genFnMap[version]();
+
+      await sleep(3000);
 
       return { version, uuid };
     },

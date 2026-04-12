@@ -1,4 +1,7 @@
-import { defineToolCallRenderer } from "@copilotkit/react-core/v2";
+import {
+  defineToolCallRenderer,
+  ToolCallStatus,
+} from "@copilotkit/react-core/v2";
 import {
   ElmCodeBlock,
   ElmDotLoadingIcon,
@@ -10,6 +13,12 @@ import {
 // Styles
 import styles from "./ToolCallRenderer.module.css";
 import { mdiCheckCircle, mdiTools } from "@mdi/js";
+
+const STATUS_MESSAGE_MAP: Record<string, string> = {
+  [ToolCallStatus.InProgress]: "In Progress",
+  [ToolCallStatus.Executing]: "Executing",
+  [ToolCallStatus.Complete]: "Complete",
+} as const;
 
 export const DefaultToolCallRenderer = defineToolCallRenderer({
   name: "*", // Wildcard matches all tools (like MCP tools)
@@ -23,6 +32,8 @@ export const DefaultToolCallRenderer = defineToolCallRenderer({
             <ElmInlineText code color="#6987b8">
               {name}
             </ElmInlineText>
+
+            <span>{STATUS_MESSAGE_MAP[status]}</span>
           </>
         );
       }
@@ -35,6 +46,8 @@ export const DefaultToolCallRenderer = defineToolCallRenderer({
             <ElmInlineText code color="#4ba96f">
               {name}
             </ElmInlineText>
+
+            <span>{STATUS_MESSAGE_MAP[status]}</span>
           </>
         );
       }
