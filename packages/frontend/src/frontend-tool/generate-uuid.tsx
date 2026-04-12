@@ -4,7 +4,8 @@ import z from "zod";
 import { useHumanInTheLoop } from "@copilotkit/react-core/v2";
 
 // Components
-import { ElmButton, ElmInlineText, ElmParagraph } from "@elmethis/react";
+import { ElmInlineText, ElmParagraph } from "@elmethis/react";
+import { HumanInTheLoop } from "../components/HumanInTheLoop";
 
 const approvalSchema = z.object({
   version: z.enum(["v4", "v7"]).describe("Version of UUID to generate"),
@@ -61,15 +62,18 @@ export const useGenerateUuidFrontendTool = () => {
                 Are you sure you want to generate a new UUID of version
                 {args.version}?
               </ElmParagraph>
-              <ElmButton onClick={approveHandler}>Approve</ElmButton>
-              <ElmButton onClick={rejectHandler}>Reject</ElmButton>
+
+              <HumanInTheLoop
+                onApprove={approveHandler}
+                onReject={rejectHandler}
+              />
             </div>
           );
         }
 
         case "complete": {
           const resultData = approvalOrRejectionSchema.parse(
-            typeof result === "string" ? JSON.parse(result) : result
+            typeof result === "string" ? JSON.parse(result) : result,
           );
 
           if ("errors" in resultData) {
