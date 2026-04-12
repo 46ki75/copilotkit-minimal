@@ -7,7 +7,7 @@ import {
 } from "@elmethis/react";
 import styles from "./ToolCallRenderer.module.css";
 import { mdiTools } from "@mdi/js";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const TOOL_STATUS_CONFIG = {
   [ToolCallStatus.InProgress]: {
@@ -49,21 +49,36 @@ export const ToolCallRenderer = ({
   result,
   args,
 }: ToolCallRendererProps) => {
-  const [duration, setDuration] = useState<number>(0);
+  const [startTime] = useState(() => performance.now());
+  const [currentTime, setCurrentTime] = useState(() => performance.now());
+  const [executingAt, setExecutingAt] = useState(0);
+  const [completeAt, setCompleteAt] = useState(0);
+  const statusRef = useRef(status);
 
   useEffect(() => {
-    if (status === ToolCallStatus.Complete) {
-      return;
-    }
-
-    const id = window.setInterval(() => {
-      setDuration((prev) => prev + 0.1);
-    }, 100);
-
-    return () => {
-      window.clearInterval(id);
-    };
+    statusRef.current = status;
   }, [status]);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      const s = statusRef.current;
+      if (s === ToolCallStatus.Complete) {
+        setCompleteAt((t) => t || performance.now());
+        window.clearInterval(id);
+        return;
+      }
+      if (s === ToolCallStatus.Executing) {
+        setExecutingAt((t) => t || performance.now());
+      }
+      setCurrentTime(performance.now());
+    }, 100);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const duration = ((completeAt || currentTime) - startTime) / 1000;
+  const prepareDuration = executingAt ? (executingAt - startTime) / 1000 : 0;
+  const executionDuration =
+    executingAt && completeAt ? (completeAt - executingAt) / 1000 : 0;
 
   const config = TOOL_STATUS_CONFIG[status];
 
@@ -103,13 +118,19 @@ export const ToolCallRenderer = ({
 
       return (
         <div>
-          <ElmCodeBlock caption="Arguments" code={parsedArgs} language="json" />
           <ElmCodeBlock
-            caption="Result"
+            caption={`Arguments in ${prepareDuration.toFixed(1)}s`}
+            code={parsedArgs}
+            language="json"
+          />
+          <ElmCodeBlock
+            caption={`Result in ${executionDuration.toFixed(1)}s`}
             code={parsedResult}
             language="json"
             style={MARGIN_STYLE}
           />
+
+          <ElmInlineText>Total {duration.toFixed(1)}s</ElmInlineText>
         </div>
       );
     }
