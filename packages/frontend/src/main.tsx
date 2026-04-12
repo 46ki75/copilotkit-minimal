@@ -5,7 +5,6 @@ import "@elmethis/react/style.css";
 
 import App from "./App.tsx";
 import { CopilotKit } from "@copilotkit/react-core";
-import "@copilotkit/react-ui/styles.css";
 
 import { ToolCallRenderer } from "./components/ToolCallRenderer.tsx";
 

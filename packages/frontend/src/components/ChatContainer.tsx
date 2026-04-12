@@ -1,6 +1,10 @@
 import React from "react";
-import { useFrontendTool } from "@copilotkit/react-core/v2";
-import { CopilotChat } from "@copilotkit/react-ui";
+import {
+  CopilotChat,
+  useConfigureSuggestions,
+  useFrontendTool,
+} from "@copilotkit/react-core/v2";
+
 import { z } from "zod";
 import { v4, v7 } from "uuid";
 
@@ -41,6 +45,27 @@ export const ChatContainer = (props: ChatContainerProps) => {
     },
   });
 
+  useConfigureSuggestions({
+    suggestions: [
+      {
+        title: "Ask about Amazon S3 Files",
+        message: " What is a new service called Amazon S3 Files?",
+      },
+      {
+        title: "Ask for current date",
+        message: " What is the current date and time?",
+      },
+      {
+        title: "Ask for UUID v4",
+        message: " Generate a new UUID of version 4.",
+      },
+      {
+        title: "Ask for UUID v7",
+        message: " Generate a new UUID of version 7.",
+      },
+    ],
+  });
+
   return (
     <div className={styles["chat-container"]} style={props.style}>
       <main>
@@ -48,29 +73,8 @@ export const ChatContainer = (props: ChatContainerProps) => {
           <ElmInlineText>CopilotKit Minimal Setup</ElmInlineText>
         </ElmHeading>
 
-        <div style={{ height: "500px", marginTop: "2rem" }}>
-          <CopilotChat
-            instructions="You are a helpful assistant. Use tools if needed."
-            labels={{ title: "My Assistant", initial: "How can I help?" }}
-            suggestions={[
-              {
-                title: "Ask about Amazon S3 Files",
-                message: " What is a new service called Amazon S3 Files?",
-              },
-              {
-                title: "Ask for current date",
-                message: " What is the current date and time?",
-              },
-              {
-                title: "Ask for UUID v4",
-                message: " Generate a new UUID of version 4.",
-              },
-              {
-                title: "Ask for UUID v7",
-                message: " Generate a new UUID of version 7.",
-              },
-            ]}
-          />
+        <div>
+          <CopilotChat />
         </div>
       </main>
     </div>
