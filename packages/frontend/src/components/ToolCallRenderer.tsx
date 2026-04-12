@@ -6,6 +6,9 @@ import {
   ElmToggle,
 } from "@elmethis/react";
 
+// Styles
+import styles from "./ToolCallRenderer.module.css";
+
 export const ToolCallRenderer = defineToolCallRenderer({
   name: "*", // Wildcard matches all tools (like MCP tools)
   render: ({ name, status, result }) => {

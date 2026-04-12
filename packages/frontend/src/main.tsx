@@ -7,7 +7,7 @@ import App from "./App.tsx";
 import { CopilotKit } from "@copilotkit/react-core";
 import "@copilotkit/react-ui/styles.css";
 
-import { ToolCallRenderer } from "./components/tool-call-renderer.tsx";
+import { ToolCallRenderer } from "./components/ToolCallRenderer.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
