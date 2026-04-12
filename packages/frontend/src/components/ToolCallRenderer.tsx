@@ -12,9 +12,21 @@ import styles from "./ToolCallRenderer.module.css";
 import { mdiTools } from "@mdi/js";
 
 const TOOL_STATUS_CONFIG = {
-  [ToolCallStatus.InProgress]: { icon: mdiTools, color: "#cdb57b", message: "Preparing" },
-  [ToolCallStatus.Executing]: { icon: mdiTools, color: "#6987b8", message: "Executing" },
-  [ToolCallStatus.Complete]: { icon: mdiTools, color: "#4ba96f", message: "Complete" },
+  [ToolCallStatus.InProgress]: {
+    icon: mdiTools,
+    color: "#cdb57b",
+    message: "Preparing",
+  },
+  [ToolCallStatus.Executing]: {
+    icon: mdiTools,
+    color: "#6987b8",
+    message: "Executing",
+  },
+  [ToolCallStatus.Complete]: {
+    icon: mdiTools,
+    color: "#4ba96f",
+    message: "Complete",
+  },
 } as const;
 
 const MARGIN_STYLE = { "--elmethis-margin-block-start": "1rem" } as const;
@@ -43,16 +55,28 @@ export const DefaultToolCallRenderer = defineToolCallRenderer({
     );
 
     const detailContent = () => {
-      if (status === ToolCallStatus.InProgress) {
-        return <div>Executing...</div>;
-      }
-
       const parsedArgs = safeStringify(args);
+
+      if (status === ToolCallStatus.InProgress) {
+        return (
+          <div>
+            <ElmCodeBlock
+              caption="Arguments"
+              code={parsedArgs}
+              language="json"
+            />
+          </div>
+        );
+      }
 
       if (status === ToolCallStatus.Executing) {
         return (
           <div>
-            <ElmCodeBlock caption="Arguments" code={parsedArgs} language="json" />
+            <ElmCodeBlock
+              caption="Arguments"
+              code={parsedArgs}
+              language="json"
+            />
           </div>
         );
       }
@@ -67,7 +91,11 @@ export const DefaultToolCallRenderer = defineToolCallRenderer({
 
         return (
           <div>
-            <ElmCodeBlock caption="Arguments" code={parsedArgs} language="json" />
+            <ElmCodeBlock
+              caption="Arguments"
+              code={parsedArgs}
+              language="json"
+            />
             <ElmCodeBlock
               caption="Result"
               code={parsedResult}
