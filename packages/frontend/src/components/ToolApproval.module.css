@@ -1,26 +1,39 @@
 .human-in-the-loop {
   display: grid;
+  transition: grid-template-rows 200ms;
+  overflow: hidden;
+  gap: 1rem;
 
-  grid-template-rows: auto auto;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas:
-    "message message"
-    "button-reject button-approve";
+  grid-template-columns: auto;
 
-  gap: 1rem 0.5rem;
+  &.in-progress {
+    grid-template-rows: auto 0fr 0fr;
+  }
+
+  &.executing {
+    grid-template-rows: auto 1fr 0fr;
+  }
+
+  &.complete {
+    grid-template-rows: 0fr 0fr 1fr;
+  }
 }
 
 .message {
-  grid-area: message;
+  overflow: hidden;
 }
 
-.button-reject {
-  grid-area: button-reject;
-  text-transform: uppercase;
+.button-container {
+  box-sizing: border-box;
+  padding: 0 0.25rem;
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
 }
 
-.button-approve {
-  filter: invert(1);
-  grid-area: button-approve;
-  text-transform: uppercase;
+.result-container {
+  overflow: hidden;
 }

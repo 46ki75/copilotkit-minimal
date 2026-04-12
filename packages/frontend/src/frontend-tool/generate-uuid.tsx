@@ -1,10 +1,15 @@
 import { v4, v7 } from "uuid";
 import z from "zod";
 
-import { useHumanInTheLoop } from "@copilotkit/react-core/v2";
+import { ToolCallStatus, useHumanInTheLoop } from "@copilotkit/react-core/v2";
 
 // Components
-import { ElmInlineText, ElmParagraph } from "@elmethis/react";
+import {
+  ElmCodeBlock,
+  ElmInlineText,
+  ElmParagraph,
+  ElmToggle,
+} from "@elmethis/react";
 import { ToolApproval } from "../components/ToolApproval";
 
 const approvalSchema = z.object({
@@ -27,79 +32,91 @@ export const useGenerateUuidFrontendTool = () => {
     }),
 
     render: ({ args, respond, status, result }) => {
-      switch (status) {
-        case "inProgress": {
-          return <ElmParagraph>Generating UUID...</ElmParagraph>;
+      const approveHandler = () => {
+        if (status === ToolCallStatus.Executing) {
+          const genFnMap: Record<typeof args.version, () => string> = {
+            v4: v4,
+            v7: v7,
+          };
+
+          const uuid = genFnMap[args.version]();
+
+          const response: z.infer<typeof approvalSchema> = {
+            version: args.version,
+            uuid,
+          };
+
+          respond(response);
         }
+      };
 
-        case "executing": {
-          const approveHandler = () => {
-            const genFnMap: Record<typeof args.version, () => string> = {
-              v4: v4,
-              v7: v7,
-            };
-
-            const uuid = genFnMap[args.version]();
-
-            const response: z.infer<typeof approvalSchema> = {
-              version: args.version,
-              uuid,
-            };
-
-            respond(response);
+      const rejectHandler = () => {
+        if (status === ToolCallStatus.Executing) {
+          const response: z.infer<typeof rejectionSchema> = {
+            errors: ["User rejected the operation"],
           };
 
-          const rejectHandler = () => {
-            const response: z.infer<typeof rejectionSchema> = {
-              errors: ["User rejected the operation"],
-            };
-            respond(response);
-          };
+          respond(response);
+        }
+      };
+
+      const renderResult = (result?: string) => {
+        if (status === ToolCallStatus.Complete) {
+          let parsed: unknown;
+          try {
+            parsed = result !== undefined ? JSON.parse(result) : undefined;
+          } catch {
+            parsed = result;
+          }
+          const response = approvalOrRejectionSchema.safeParse(parsed);
+
+          if (response.success) {
+            const data = response.data;
+
+            if ("errors" in data) {
+              return <div>ERROR</div>;
+            } else {
+              return (
+                <div>
+                  <ElmCodeBlock
+                    language="json"
+                    code={JSON.stringify(data, null, 2)}
+                  ></ElmCodeBlock>
+                </div>
+              );
+            }
+          }
 
           return (
             <div>
-              <ToolApproval
-                status={status}
-                onApprove={approveHandler}
-                onReject={rejectHandler}
-              >
-                <ElmParagraph>
-                  Are you sure you want to generate a new UUID of version
-                  {args.version}?
-                </ElmParagraph>
-              </ToolApproval>
+              <div>Invalid response format</div>
+              <div>{JSON.stringify(result)}</div>
             </div>
           );
         }
+      };
 
-        case "complete": {
-          const resultData = approvalOrRejectionSchema.parse(
-            typeof result === "string" ? JSON.parse(result) : result,
-          );
-
-          if ("errors" in resultData) {
-            return (
-              <div>
-                <ElmParagraph>Failed to generate UUID:</ElmParagraph>
-                {resultData.errors.map((error, index) => (
-                  <ElmParagraph key={index}>
-                    <ElmInlineText code>{error}</ElmInlineText>
-                  </ElmParagraph>
-                ))}
-              </div>
-            );
-          }
-
-          const { version, uuid } = resultData;
-
-          return (
+      return (
+        <div>
+          <ToolApproval
+            status={status}
+            onApprove={approveHandler}
+            onReject={rejectHandler}
+            resultContent={
+              <ElmToggle summaryContent={"View Result"}>
+                {renderResult(result)}
+              </ElmToggle>
+            }
+          >
             <ElmParagraph>
-              Generated UUID ({version}):{" "}
-              <ElmInlineText code>{uuid}</ElmInlineText>
+              <ElmInlineText>
+                Are you sure you want to generate a new UUID of version
+                {args.version}?
+              </ElmInlineText>
             </ElmParagraph>
-          );
-        }
-      }
+          </ToolApproval>
+        </div>
+      );
     },
   });
 };
