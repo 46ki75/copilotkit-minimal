@@ -1,13 +1,15 @@
 import { defineToolCallRenderer } from "@copilotkit/react-core/v2";
 import {
   ElmCodeBlock,
+  ElmDotLoadingIcon,
   ElmInlineText,
-  ElmSpinner,
+  ElmMdiIcon,
   ElmToggle,
 } from "@elmethis/react";
 
 // Styles
 import styles from "./ToolCallRenderer.module.css";
+import { mdiCheckCircle, mdiTools } from "@mdi/js";
 
 export const ToolCallRenderer = defineToolCallRenderer({
   name: "*", // Wildcard matches all tools (like MCP tools)
@@ -16,8 +18,8 @@ export const ToolCallRenderer = defineToolCallRenderer({
       if (status === "inProgress" || status === "executing") {
         return (
           <>
-            <ElmSpinner radius={8} />
-            <ElmInlineText>Executing:</ElmInlineText>
+            <ElmMdiIcon d={mdiTools} size="1.25rem" />
+            <ElmDotLoadingIcon size="1.25rem" color="#6987b8" />
             <ElmInlineText code color="#6987b8">
               {name}
             </ElmInlineText>
@@ -28,7 +30,8 @@ export const ToolCallRenderer = defineToolCallRenderer({
       if (status === "complete") {
         return (
           <>
-            <ElmInlineText>Finished:</ElmInlineText>
+            <ElmMdiIcon d={mdiTools} size="1.25rem" />
+            <ElmMdiIcon d={mdiCheckCircle} size="1.25rem" color="#4ba96f" />
             <ElmInlineText code color="#4ba96f">
               {name}
             </ElmInlineText>
