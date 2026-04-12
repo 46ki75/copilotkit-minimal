@@ -48,12 +48,16 @@ export const ToolCallRenderer = defineToolCallRenderer({
       }
 
       if (status === "complete") {
+        let code: string;
+        try {
+          code = JSON.stringify(JSON.parse(result ?? "null"), null, 2);
+        } catch {
+          code = result ?? "";
+        }
+
         return (
           <div>
-            <ElmCodeBlock
-              code={JSON.stringify(JSON.parse(result ?? "null"), null, 2)}
-              language="json"
-            ></ElmCodeBlock>
+            <ElmCodeBlock code={code} language="json"></ElmCodeBlock>
           </div>
         );
       }
