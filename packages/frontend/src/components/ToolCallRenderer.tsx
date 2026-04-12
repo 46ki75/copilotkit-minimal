@@ -15,24 +15,24 @@ export const ToolCallRenderer = defineToolCallRenderer({
     const summaryContent = () => {
       if (status === "inProgress" || status === "executing") {
         return (
-          <span>
-            <ElmSpinner radius={12} />
+          <>
+            <ElmSpinner radius={8} />
             <ElmInlineText>&nbsp;Executing:&nbsp;</ElmInlineText>
             <ElmInlineText code color="#6987b8">
               {name}
             </ElmInlineText>
-          </span>
+          </>
         );
       }
 
       if (status === "complete") {
         return (
-          <span>
+          <>
             <ElmInlineText>Finished:&nbsp;</ElmInlineText>
             <ElmInlineText code color="#4ba96f">
               {name}
             </ElmInlineText>
-          </span>
+          </>
         );
       }
 
@@ -59,7 +59,13 @@ export const ToolCallRenderer = defineToolCallRenderer({
     };
 
     return (
-      <ElmToggle summaryContent={summaryContent()}>{detailContent()}</ElmToggle>
+      <ElmToggle
+        summaryContent={
+          <span className={styles["inline-summary"]}>{summaryContent()}</span>
+        }
+      >
+        {detailContent()}
+      </ElmToggle>
     );
   },
 });
