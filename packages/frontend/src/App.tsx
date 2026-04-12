@@ -48,6 +48,12 @@ function App() {
           <CopilotChat
             instructions="You are a helpful assistant. Use tools if needed."
             labels={{ title: "My Assistant", initial: "How can I help?" }}
+            suggestions={[
+              {
+                title: "Ask about Amazon S3 Files",
+                message: " What is a new service called Amazon S3 Files?",
+              },
+            ]}
           />
         </div>
       </main>
