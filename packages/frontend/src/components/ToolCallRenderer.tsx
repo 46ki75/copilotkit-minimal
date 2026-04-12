@@ -17,7 +17,7 @@ export const ToolCallRenderer = defineToolCallRenderer({
         return (
           <>
             <ElmSpinner radius={8} />
-            <ElmInlineText>&nbsp;Executing:&nbsp;</ElmInlineText>
+            <ElmInlineText>Executing:</ElmInlineText>
             <ElmInlineText code color="#6987b8">
               {name}
             </ElmInlineText>
@@ -28,7 +28,7 @@ export const ToolCallRenderer = defineToolCallRenderer({
       if (status === "complete") {
         return (
           <>
-            <ElmInlineText>Finished:&nbsp;</ElmInlineText>
+            <ElmInlineText>Finished:</ElmInlineText>
             <ElmInlineText code color="#4ba96f">
               {name}
             </ElmInlineText>
