@@ -2,7 +2,6 @@ import React from "react";
 import {
   CopilotChat,
   useConfigureSuggestions,
-  useFrontendTool,
 } from "@copilotkit/react-core/v2";
 
 // Components
@@ -11,24 +10,22 @@ import { ElmHeading, ElmInlineText, ElmMarkdown } from "@elmethis/react";
 // Styles
 import styles from "./ChatContainer.module.css";
 import { useGenerateUuidFrontendTool } from "../frontend-tool/generate-uuid";
+import { useGetDateFrontendTool } from "../frontend-tool/get-date";
 
 export interface ChatContainerProps {
   style?: React.CSSProperties;
 }
 
 export const ChatContainer = (props: ChatContainerProps) => {
-  useFrontendTool({
-    name: "get_date",
-    description: "Get the current date and time",
-    handler: async () => {
-      return new Date().toString();
-    },
-  });
-
+  useGetDateFrontendTool();
   useGenerateUuidFrontendTool();
 
   useConfigureSuggestions({
     suggestions: [
+      {
+        title: "What time is it in Tokyo?",
+        message: "What time is it in Tokyo right now?",
+      },
       {
         title: "Ask about Amazon S3 Files",
         message: " What is a new service called Amazon S3 Files?",
