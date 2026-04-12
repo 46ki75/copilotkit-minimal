@@ -4,7 +4,7 @@ import {
 } from "@copilotkit/react-core/v2";
 import {
   ElmCodeBlock,
-  ElmDotLoadingIcon,
+  ElmHeading,
   ElmInlineText,
   ElmMdiIcon,
   ElmToggle,
@@ -15,44 +15,47 @@ import styles from "./ToolCallRenderer.module.css";
 import { mdiCheckCircle, mdiTools } from "@mdi/js";
 
 const STATUS_MESSAGE_MAP: Record<string, string> = {
-  [ToolCallStatus.InProgress]: "In Progress",
+  [ToolCallStatus.InProgress]: "Preparering",
   [ToolCallStatus.Executing]: "Executing",
   [ToolCallStatus.Complete]: "Complete",
 } as const;
 
 export const DefaultToolCallRenderer = defineToolCallRenderer({
   name: "*", // Wildcard matches all tools (like MCP tools)
-  render: ({ name, status, result }) => {
+  render: ({ name, status, result, args }) => {
     const summaryContent = () => {
-      if (status === "inProgress" || status === "executing") {
-        return (
-          <>
-            <ElmMdiIcon d={mdiTools} size="1.25rem" />
-            <ElmDotLoadingIcon size="1.25rem" color="#6987b8" />
-            <ElmInlineText code color="#6987b8">
-              {name}
-            </ElmInlineText>
+      const toolStatusMap = {
+        [ToolCallStatus.InProgress]: {
+          mdiIcon: mdiTools,
+          color: "#cdb57b",
+          message: "Preparering",
+        },
+        [ToolCallStatus.Executing]: {
+          mdiIcon: mdiTools,
+          color: "#6987b8",
+          message: "Executing",
+        },
+        [ToolCallStatus.Complete]: {
+          mdiIcon: mdiCheckCircle,
+          color: "#4ba96f",
+          message: "Complete",
+        },
+      };
 
-            <span>{STATUS_MESSAGE_MAP[status]}</span>
-          </>
-        );
-      }
+      return (
+        <>
+          <ElmMdiIcon
+            d={toolStatusMap[status].mdiIcon}
+            size="1.25rem"
+            color={toolStatusMap[status].color}
+          />
+          <ElmInlineText code color={toolStatusMap[status].color}>
+            {name}
+          </ElmInlineText>
 
-      if (status === "complete") {
-        return (
-          <>
-            <ElmMdiIcon d={mdiTools} size="1.25rem" />
-            <ElmMdiIcon d={mdiCheckCircle} size="1.25rem" color="#4ba96f" />
-            <ElmInlineText code color="#4ba96f">
-              {name}
-            </ElmInlineText>
-
-            <span>{STATUS_MESSAGE_MAP[status]}</span>
-          </>
-        );
-      }
-
-      return <strong>{name}</strong>;
+          <ElmInlineText>{STATUS_MESSAGE_MAP[status]}</ElmInlineText>
+        </>
+      );
     };
 
     const detailContent = () => {
@@ -61,16 +64,40 @@ export const DefaultToolCallRenderer = defineToolCallRenderer({
       }
 
       if (status === "complete") {
-        let code: string;
+        let parsedResult: string;
         try {
-          code = JSON.stringify(JSON.parse(result ?? "null"), null, 2);
+          parsedResult = JSON.stringify(JSON.parse(result ?? "null"), null, 2);
         } catch {
-          code = result ?? "";
+          parsedResult = result ?? "";
+        }
+
+        let parsedArgs: string;
+        try {
+          parsedArgs = JSON.stringify(JSON.parse(args ?? "null"), null, 2);
+        } catch {
+          parsedArgs = args ?? "";
         }
 
         return (
-          <div>
-            <ElmCodeBlock code={code} language="json"></ElmCodeBlock>
+          <div
+            style={
+              { "--elmethis-margin-block-start": "2rem" } as React.CSSProperties
+            }
+          >
+            <ElmHeading
+              level={2}
+              style={{ "--elmethis-margin-block-start": "0rem" }}
+            >
+              <ElmInlineText>args</ElmInlineText>
+            </ElmHeading>
+
+            <ElmCodeBlock code={parsedArgs} language="json" />
+
+            <ElmHeading level={2}>
+              <ElmInlineText>Result</ElmInlineText>
+            </ElmHeading>
+
+            <ElmCodeBlock code={parsedResult} language="json" />
           </div>
         );
       }
