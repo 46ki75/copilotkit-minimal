@@ -29,7 +29,7 @@ const TOOL_STATUS_CONFIG = {
   },
 } as const;
 
-const MARGIN_STYLE = { "--elmethis-margin-block-start": "1rem" } as const;
+const MARGIN_STYLE = { "--elmethis-margin-block-start": "0.5rem" } as const;
 
 const safeStringify = (value: unknown, fallback = ""): string => {
   try {
