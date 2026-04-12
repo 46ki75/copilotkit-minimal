@@ -68,6 +68,11 @@ export const ChatContainer = (props: ChatContainerProps) => {
         title: "Ask for UUID v7",
         message: " Generate a new UUID of version 7.",
       },
+      {
+        title: "Ask for AWS Lambda Durable Functions example code",
+        message:
+          "Show me an example code of AWS Lambda Durable Functions in Python Durable SDK.",
+      },
     ],
   });
 
