@@ -50,8 +50,8 @@ export const ToolCallRenderer = defineToolCallRenderer({
       if (status === "inProgress" || status === "executing") {
         return (
           <span>
-            <ElmSpinner />
-            <ElmInlineText>Executing:&nbsp;</ElmInlineText>
+            <ElmSpinner radius={12} />
+            <ElmInlineText>&nbsp;Executing:&nbsp;</ElmInlineText>
             <ElmInlineText code color="#6987b8">
               {name}
             </ElmInlineText>
