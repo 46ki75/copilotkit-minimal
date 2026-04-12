@@ -5,7 +5,7 @@ import {
 } from "@copilotkit/react-core/v2";
 
 // Components
-import { ElmHeading, ElmInlineText, ElmMarkdown } from "@elmethis/react";
+import { ElmMarkdown } from "@elmethis/react";
 
 // Styles
 import styles from "./ChatContainer.module.css";
@@ -57,11 +57,7 @@ export const ChatContainer = (props: ChatContainerProps) => {
 
   return (
     <div className={styles["chat-container"]} style={props.style}>
-      <main>
-        <ElmHeading level={1}>
-          <ElmInlineText>CopilotKit Minimal Setup</ElmInlineText>
-        </ElmHeading>
-
+      <main data-copilotkit>
         <CopilotChat
           messageView={{
             assistantMessage: {
