@@ -1,5 +1,4 @@
 import { useFrontendTool } from "@copilotkit/react-core/v2";
-import { ElmInlineText, ElmParagraph } from "@elmethis/react";
 import { v4, v7 } from "uuid";
 import z from "zod";
 
@@ -19,19 +18,6 @@ export const useGenerateUuidFrontendTool = () => {
       const uuid = genFnMap[version]();
 
       return { version, uuid };
-    },
-    render: ({ status, result }) => {
-      return (
-        <div>
-          <ElmParagraph>
-            You can define your custom render logic here ^.^
-          </ElmParagraph>
-          <ElmParagraph>{status}</ElmParagraph>
-          <ElmParagraph>
-            <ElmInlineText code>{JSON.stringify(result)}</ElmInlineText>
-          </ElmParagraph>
-        </div>
-      );
     },
   });
 };
