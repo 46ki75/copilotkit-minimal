@@ -43,6 +43,14 @@ export const ChatContainer = (props: ChatContainerProps) => {
 
       return { version, uuid };
     },
+    render: ({ status, result }) => {
+      return (
+        <div>
+          <div>{status}</div>
+          <div>{JSON.stringify(result)}</div>
+        </div>
+      );
+    },
   });
 
   useConfigureSuggestions({
