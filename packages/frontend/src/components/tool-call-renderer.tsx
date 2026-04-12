@@ -1,4 +1,5 @@
 import { defineToolCallRenderer } from "@copilotkit/react-core/v2";
+import { ElmCodeBlock, ElmToggle } from "@elmethis/react";
 
 export const ToolCallRenderer = defineToolCallRenderer({
   name: "*", // Wildcard matches all tools (like MCP tools)
@@ -30,19 +31,12 @@ export const ToolCallRenderer = defineToolCallRenderer({
             fontSize: "0.875rem",
           }}
         >
-          ✅ Finished: <strong>{name}</strong>
-          <details
-            style={{
-              marginTop: "0.5rem",
-              fontSize: "0.75rem",
-              whiteSpace: "pre-wrap",
-            }}
-          >
-            <summary>View Output</summary>
-            {typeof result === "string"
-              ? result
-              : JSON.stringify(result, null, 2)}
-          </details>
+          <ElmToggle summary={`✅ Finished: ${name}`}>
+            <ElmCodeBlock
+              code={JSON.stringify(JSON.parse(result), null, 2)}
+              language="json"
+            ></ElmCodeBlock>
+          </ElmToggle>
         </div>
       );
     }
