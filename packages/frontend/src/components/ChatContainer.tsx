@@ -73,9 +73,7 @@ export const ChatContainer = (props: ChatContainerProps) => {
           <ElmInlineText>CopilotKit Minimal Setup</ElmInlineText>
         </ElmHeading>
 
-        <div>
-          <CopilotChat />
-        </div>
+        <CopilotChat />
       </main>
     </div>
   );
