@@ -57,19 +57,10 @@ export const DefaultToolCallRenderer = defineToolCallRenderer({
     const detailContent = () => {
       const parsedArgs = safeStringify(args);
 
-      if (status === ToolCallStatus.InProgress) {
-        return (
-          <div>
-            <ElmCodeBlock
-              caption="Arguments"
-              code={parsedArgs}
-              language="json"
-            />
-          </div>
-        );
-      }
-
-      if (status === ToolCallStatus.Executing) {
+      if (
+        status === ToolCallStatus.InProgress ||
+        status === ToolCallStatus.Executing
+      ) {
         return (
           <div>
             <ElmCodeBlock
