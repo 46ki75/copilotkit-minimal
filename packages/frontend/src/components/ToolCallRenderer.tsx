@@ -11,7 +11,7 @@ import {
 import styles from "./ToolCallRenderer.module.css";
 import { mdiCheckCircle, mdiTools } from "@mdi/js";
 
-export const ToolCallRenderer = defineToolCallRenderer({
+export const DefaultToolCallRenderer = defineToolCallRenderer({
   name: "*", // Wildcard matches all tools (like MCP tools)
   render: ({ name, status, result }) => {
     const summaryContent = () => {

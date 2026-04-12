@@ -8,13 +8,13 @@ import "@copilotkit/react-core/v2/styles.css";
 import App from "./App.tsx";
 import { CopilotKit } from "@copilotkit/react-core";
 
-import { ToolCallRenderer } from "./components/ToolCallRenderer.tsx";
+import { DefaultToolCallRenderer } from "./components/ToolCallRenderer.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <CopilotKit
       runtimeUrl="http://localhost:3000/copilotkit"
-      renderToolCalls={[ToolCallRenderer]}
+      renderToolCalls={[DefaultToolCallRenderer]}
     >
       <App />
     </CopilotKit>
