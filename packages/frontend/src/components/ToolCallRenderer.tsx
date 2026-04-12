@@ -1,7 +1,4 @@
-import {
-  defineToolCallRenderer,
-  ToolCallStatus,
-} from "@copilotkit/react-core/v2";
+import { ToolCallStatus } from "@copilotkit/react-core/v2";
 import {
   ElmCodeBlock,
   ElmInlineText,
@@ -10,6 +7,7 @@ import {
 } from "@elmethis/react";
 import styles from "./ToolCallRenderer.module.css";
 import { mdiTools } from "@mdi/js";
+import { useEffect, useState } from "react";
 
 const TOOL_STATUS_CONFIG = {
   [ToolCallStatus.InProgress]: {
@@ -28,6 +26,12 @@ const TOOL_STATUS_CONFIG = {
     message: "Complete",
   },
 } as const;
+interface ToolCallRendererProps {
+  name: string;
+  status: ToolCallStatus;
+  result?: string;
+  args: unknown;
+}
 
 const MARGIN_STYLE = { "--elmethis-margin-block-start": "0.5rem" } as const;
 
@@ -39,76 +43,88 @@ const safeStringify = (value: unknown, fallback = ""): string => {
   }
 };
 
-export const DefaultToolCallRenderer = defineToolCallRenderer({
-  name: "*",
-  render: ({ name, status, result, args }) => {
-    const config = TOOL_STATUS_CONFIG[status];
+export const ToolCallRenderer = ({
+  name,
+  status,
+  result,
+  args,
+}: ToolCallRendererProps) => {
+  const [duration, setDuration] = useState<number>(0);
 
-    const summaryContent = (
-      <>
-        <ElmMdiIcon d={config.icon} size="1.25rem" color={config.color} />
-        <ElmInlineText code color={config.color}>
-          {name}
-        </ElmInlineText>
-        <ElmInlineText>{config.message}</ElmInlineText>
-      </>
-    );
+  useEffect(() => {
+    if (status === ToolCallStatus.Complete) {
+      return;
+    }
 
-    const detailContent = () => {
-      const parsedArgs = safeStringify(args);
+    const id = window.setInterval(() => {
+      setDuration((prev) => prev + 0.1);
+    }, 100);
 
-      if (
-        status === ToolCallStatus.InProgress ||
-        status === ToolCallStatus.Executing
-      ) {
-        return (
-          <div>
-            <ElmCodeBlock
-              caption="Arguments"
-              code={parsedArgs}
-              language="json"
-            />
-          </div>
-        );
-      }
-
-      if (status === ToolCallStatus.Complete) {
-        let parsedResult: string;
-        try {
-          parsedResult = JSON.stringify(JSON.parse(result ?? "null"), null, 2);
-        } catch {
-          parsedResult = result ?? "";
-        }
-
-        return (
-          <div>
-            <ElmCodeBlock
-              caption="Arguments"
-              code={parsedArgs}
-              language="json"
-            />
-            <ElmCodeBlock
-              caption="Result"
-              code={parsedResult}
-              language="json"
-              style={MARGIN_STYLE}
-            />
-          </div>
-        );
-      }
-
-      return null;
+    return () => {
+      window.clearInterval(id);
     };
+  }, [status]);
 
-    return (
-      <ElmToggle
-        style={MARGIN_STYLE}
-        summaryContent={
-          <span className={styles["inline-summary"]}>{summaryContent}</span>
-        }
-      >
-        {detailContent()}
-      </ElmToggle>
-    );
-  },
-});
+  const config = TOOL_STATUS_CONFIG[status];
+
+  const summaryContent = (
+    <>
+      <ElmMdiIcon d={config.icon} size="1.25rem" color={config.color} />
+      <ElmInlineText code color={config.color}>
+        {name}
+      </ElmInlineText>
+      <ElmInlineText>{config.message}</ElmInlineText>
+
+      <ElmInlineText>{duration.toFixed(1)}s</ElmInlineText>
+    </>
+  );
+
+  const detailContent = () => {
+    const parsedArgs = safeStringify(args);
+
+    if (
+      status === ToolCallStatus.InProgress ||
+      status === ToolCallStatus.Executing
+    ) {
+      return (
+        <div>
+          <ElmCodeBlock caption="Arguments" code={parsedArgs} language="json" />
+        </div>
+      );
+    }
+
+    if (status === ToolCallStatus.Complete) {
+      let parsedResult: string;
+      try {
+        parsedResult = JSON.stringify(JSON.parse(result ?? "null"), null, 2);
+      } catch {
+        parsedResult = result ?? "";
+      }
+
+      return (
+        <div>
+          <ElmCodeBlock caption="Arguments" code={parsedArgs} language="json" />
+          <ElmCodeBlock
+            caption="Result"
+            code={parsedResult}
+            language="json"
+            style={MARGIN_STYLE}
+          />
+        </div>
+      );
+    }
+
+    return null;
+  };
+
+  return (
+    <ElmToggle
+      style={MARGIN_STYLE}
+      summaryContent={
+        <span className={styles["inline-summary"]}>{summaryContent}</span>
+      }
+    >
+      {detailContent()}
+    </ElmToggle>
+  );
+};

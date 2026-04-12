@@ -8,13 +8,28 @@ import "@copilotkit/react-core/v2/styles.css";
 import App from "./App.tsx";
 import { CopilotKit } from "@copilotkit/react-core";
 
-import { DefaultToolCallRenderer } from "./components/ToolCallRenderer.tsx";
+import { ToolCallRenderer } from "./components/ToolCallRenderer.tsx";
+import { defineToolCallRenderer } from "@copilotkit/react-core/v2";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <CopilotKit
       runtimeUrl="http://localhost:3000/copilotkit"
-      renderToolCalls={[DefaultToolCallRenderer]}
+      renderToolCalls={[
+        defineToolCallRenderer({
+          name: "*",
+          render: ({ name, status, result, args }) => {
+            return (
+              <ToolCallRenderer
+                name={name}
+                status={status}
+                result={result}
+                args={args}
+              />
+            );
+          },
+        }),
+      ]}
     >
       <App />
     </CopilotKit>
