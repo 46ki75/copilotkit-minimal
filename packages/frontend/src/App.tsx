@@ -4,6 +4,7 @@ import { CopilotChat } from "@copilotkit/react-ui";
 import { z } from "zod";
 
 import { v4, v7 } from "uuid";
+import { ElmHeading } from "@elmethis/react";
 
 function App() {
   useFrontendTool({
@@ -35,14 +36,7 @@ function App() {
   return (
     <div className="app-container">
       <main>
-        <h1>CopilotKit Minimal Setup</h1>
-        <p>This is a minimal implementation of CopilotKit.</p>
-        <p>Interact with the chat below. MCP tools will render inline!</p>
-
-        <pre>
-          <span>SAMPLE:&nbsp;</span>
-          <code>What is a new service called Amazon S3 Files?</code>
-        </pre>
+        <ElmHeading level={1}>CopilotKit Minimal Setup</ElmHeading>
 
         <div style={{ height: "500px", marginTop: "2rem" }}>
           <CopilotChat
@@ -52,6 +46,18 @@ function App() {
               {
                 title: "Ask about Amazon S3 Files",
                 message: " What is a new service called Amazon S3 Files?",
+              },
+              {
+                title: "Ask for current date",
+                message: " What is the current date and time?",
+              },
+              {
+                title: "Ask for UUID v4",
+                message: " Generate a new UUID of version 4.",
+              },
+              {
+                title: "Ask for UUID v7",
+                message: " Generate a new UUID of version 7.",
               },
             ]}
           />
