@@ -1,0 +1,23 @@
+.human-in-the-loop {
+  display: grid;
+
+  grid-template-rows: auto auto;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "message message"
+    "button-reject button-approve";
+
+  gap: 1rem 0.5rem;
+}
+
+.message {
+  grid-area: message;
+}
+
+.button-reject {
+  grid-area: button-reject;
+}
+
+.button-approve {
+  grid-area: button-approve;
+}
