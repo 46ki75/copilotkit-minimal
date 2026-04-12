@@ -1,10 +1,19 @@
 import React from "react";
 
+// Styles
 import styles from "./ToolApproval.module.css";
-import { ElmButton } from "@elmethis/react";
+
+// Components
+import { ElmButton, ElmInlineText, ElmMdiIcon } from "@elmethis/react";
+import { mdiMinusCircle, mdiTools } from "@mdi/js";
+
+// Types
+import type { ToolCallStatus } from "@copilotkit/react-core/v2";
 
 export interface ToolApprovalProps extends React.PropsWithChildren {
   style?: React.CSSProperties;
+
+  status: ToolCallStatus;
 
   approveLabel?: string;
   rejectLabel?: string;
@@ -20,13 +29,15 @@ export const ToolApproval = (props: ToolApprovalProps) => {
 
       <div className={styles["button-reject"]}>
         <ElmButton onClick={props.onReject} block>
-          <span>{props.rejectLabel || "Reject"}</span>
+          <ElmMdiIcon d={mdiMinusCircle} />
+          <ElmInlineText code>{props.rejectLabel || "Reject"}</ElmInlineText>
         </ElmButton>
       </div>
 
       <div className={styles["button-approve"]}>
-        <ElmButton onClick={props.onApprove} block primary>
-          <span>{props.approveLabel || "Approve"}</span>
+        <ElmButton onClick={props.onApprove} block>
+          <ElmMdiIcon d={mdiTools} />
+          <ElmInlineText code>{props.approveLabel || "Approve"}</ElmInlineText>
         </ElmButton>
       </div>
     </div>

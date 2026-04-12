@@ -16,8 +16,11 @@
 
 .button-reject {
   grid-area: button-reject;
+  text-transform: uppercase;
 }
 
 .button-approve {
+  filter: invert(1);
   grid-area: button-approve;
+  text-transform: uppercase;
 }

@@ -58,7 +58,11 @@ export const useGenerateUuidFrontendTool = () => {
 
           return (
             <div>
-              <ToolApproval onApprove={approveHandler} onReject={rejectHandler}>
+              <ToolApproval
+                status={status}
+                onApprove={approveHandler}
+                onReject={rejectHandler}
+              >
                 <ElmParagraph>
                   Are you sure you want to generate a new UUID of version
                   {args.version}?
