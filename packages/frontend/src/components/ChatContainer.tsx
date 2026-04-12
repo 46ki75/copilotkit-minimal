@@ -5,14 +5,12 @@ import {
   useFrontendTool,
 } from "@copilotkit/react-core/v2";
 
-import { z } from "zod";
-import { v4, v7 } from "uuid";
-
 // Components
 import { ElmHeading, ElmInlineText, ElmMarkdown } from "@elmethis/react";
 
 // Styles
 import styles from "./ChatContainer.module.css";
+import { useGenerateUuidFrontendTool } from "../frontend-tool/generate-uuid";
 
 export interface ChatContainerProps {
   style?: React.CSSProperties;
@@ -27,31 +25,7 @@ export const ChatContainer = (props: ChatContainerProps) => {
     },
   });
 
-  useFrontendTool({
-    name: "generate_uuid",
-    description: "Generate a new UUID of a specified version (v4 or v7)",
-    parameters: z.object({
-      version: z.enum(["v4", "v7"]).default("v4"),
-    }),
-    handler: async ({ version }) => {
-      const genFnMap: Record<typeof version, () => string> = {
-        v4: v4,
-        v7: v7,
-      };
-
-      const uuid = genFnMap[version]();
-
-      return { version, uuid };
-    },
-    render: ({ status, result }) => {
-      return (
-        <div>
-          <div>{status}</div>
-          <div>{JSON.stringify(result)}</div>
-        </div>
-      );
-    },
-  });
+  useGenerateUuidFrontendTool();
 
   useConfigureSuggestions({
     suggestions: [
