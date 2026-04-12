@@ -4,7 +4,6 @@ import {
 } from "@copilotkit/react-core/v2";
 import {
   ElmCodeBlock,
-  ElmHeading,
   ElmInlineText,
   ElmMdiIcon,
   ElmToggle,
@@ -12,7 +11,7 @@ import {
 
 // Styles
 import styles from "./ToolCallRenderer.module.css";
-import { mdiCheckCircle, mdiTools } from "@mdi/js";
+import { mdiTools } from "@mdi/js";
 
 const STATUS_MESSAGE_MAP: Record<string, string> = {
   [ToolCallStatus.InProgress]: "Preparering",
@@ -36,7 +35,7 @@ export const DefaultToolCallRenderer = defineToolCallRenderer({
           message: "Executing",
         },
         [ToolCallStatus.Complete]: {
-          mdiIcon: mdiCheckCircle,
+          mdiIcon: mdiTools,
           color: "#4ba96f",
           message: "Complete",
         },
@@ -73,31 +72,26 @@ export const DefaultToolCallRenderer = defineToolCallRenderer({
 
         let parsedArgs: string;
         try {
-          parsedArgs = JSON.stringify(JSON.parse(args ?? "null"), null, 2);
+          parsedArgs = JSON.stringify(args, null, 2);
         } catch {
           parsedArgs = args ?? "";
         }
 
         return (
-          <div
-            style={
-              { "--elmethis-margin-block-start": "2rem" } as React.CSSProperties
-            }
-          >
-            <ElmHeading
-              level={2}
+          <div>
+            <ElmCodeBlock
+              caption="Arguments"
+              code={parsedArgs}
+              language="json"
               style={{ "--elmethis-margin-block-start": "0rem" }}
-            >
-              <ElmInlineText>args</ElmInlineText>
-            </ElmHeading>
+            />
 
-            <ElmCodeBlock code={parsedArgs} language="json" />
-
-            <ElmHeading level={2}>
-              <ElmInlineText>Result</ElmInlineText>
-            </ElmHeading>
-
-            <ElmCodeBlock code={parsedResult} language="json" />
+            <ElmCodeBlock
+              caption="Result"
+              code={parsedResult}
+              language="json"
+              style={{ "--elmethis-margin-block-start": "1rem" }}
+            />
           </div>
         );
       }
