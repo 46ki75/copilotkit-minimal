@@ -58,18 +58,11 @@ export const DefaultToolCallRenderer = defineToolCallRenderer({
     };
 
     const detailContent = () => {
-      if (status === "inProgress" || status === "executing") {
+      if (status === "inProgress") {
         return <div>Executing...</div>;
       }
 
-      if (status === "complete") {
-        let parsedResult: string;
-        try {
-          parsedResult = JSON.stringify(JSON.parse(result ?? "null"), null, 2);
-        } catch {
-          parsedResult = result ?? "";
-        }
-
+      if (status === "executing") {
         let parsedArgs: string;
         try {
           parsedArgs = JSON.stringify(args, null, 2);
@@ -83,7 +76,32 @@ export const DefaultToolCallRenderer = defineToolCallRenderer({
               caption="Arguments"
               code={parsedArgs}
               language="json"
-              style={{ "--elmethis-margin-block-start": "0rem" }}
+            />
+          </div>
+        );
+      }
+
+      if (status === "complete") {
+        let parsedArgs: string;
+        try {
+          parsedArgs = JSON.stringify(args, null, 2);
+        } catch {
+          parsedArgs = args ?? "";
+        }
+
+        let parsedResult: string;
+        try {
+          parsedResult = JSON.stringify(JSON.parse(result ?? "null"), null, 2);
+        } catch {
+          parsedResult = result ?? "";
+        }
+
+        return (
+          <div>
+            <ElmCodeBlock
+              caption="Arguments"
+              code={parsedArgs}
+              language="json"
             />
 
             <ElmCodeBlock
@@ -101,6 +119,7 @@ export const DefaultToolCallRenderer = defineToolCallRenderer({
 
     return (
       <ElmToggle
+        style={{ "--elmethis-margin-block-start": "1rem" }}
         summaryContent={
           <span className={styles["inline-summary"]}>{summaryContent()}</span>
         }
