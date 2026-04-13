@@ -12,16 +12,25 @@ export const useGenerateUuidFrontendTool = () => {
       version: z.enum(["v4", "v7"]).default("v4"),
     }),
     handler: async ({ version }) => {
-      const genFnMap: Record<typeof version, () => string> = {
-        v4: v4,
-        v7: v7,
-      };
+      try {
+        const genFnMap: Record<typeof version, () => string> = {
+          v4: v4,
+          v7: v7,
+        };
 
-      const uuid = genFnMap[version]();
+        const uuid = genFnMap[version]();
 
-      await sleep(3000);
+        await sleep(3000);
 
-      return { version, uuid };
+        return { version, uuid, isError: false };
+      } catch (error: unknown) {
+        return {
+          version,
+          uuid: null,
+          isError: true,
+          error: (error as Error)?.message,
+        };
+      }
     },
   });
 };

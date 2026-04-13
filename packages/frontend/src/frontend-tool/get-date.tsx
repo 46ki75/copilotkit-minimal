@@ -6,7 +6,10 @@ export const useGetDateFrontendTool = () => {
     name: "get_date",
     description: "Get the current date and time",
     handler: async () => {
-      return new Date().toString();
+      return {
+        date: new Date().toString(),
+        isError: false,
+      };
     },
     render: ({ status, result }) => {
       return (
