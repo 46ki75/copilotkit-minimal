@@ -12,19 +12,16 @@ import { clsx } from "clsx";
 
 const TOOL_STATUS_CONFIG = {
   [ToolCallStatus.InProgress]: {
-    icon: mdiTools,
-    color: "#cdb57b",
+    color: "#6987b8",
     message: "Preparing",
   },
   [ToolCallStatus.Executing]: {
-    icon: mdiTools,
     color: "#6987b8",
     message: "Executing",
   },
   [ToolCallStatus.Complete]: {
-    icon: mdiTools,
     color: "#4ba96f",
-    message: "Complete",
+    message: "Success",
   },
 } as const;
 interface ToolCallRendererProps {
@@ -87,16 +84,27 @@ export const ToolCallRenderer = ({
   const duration = ((completeAt || currentTime) - startTime) / 1000;
   const config = TOOL_STATUS_CONFIG[status];
 
+  const parsedIsError = JSON.parse(result ?? "null")?.isError;
+  const isError = typeof parsedIsError === "boolean" ? parsedIsError : false;
+
   const summaryContent = (
     <div
       className={styles["summary-content"]}
       onClick={() => setIsOpen((v) => !v)}
     >
-      <ElmMdiIcon d={config.icon} size="1.25rem" color={config.color} />
-      <ElmInlineText code color={config.color}>
+      <ElmMdiIcon
+        d={mdiTools}
+        size="1.25rem"
+        color={isError ? "#c56565" : config.color}
+      />
+      <ElmInlineText code color={isError ? "#c56565" : config.color}>
         {name}
       </ElmInlineText>
-      <ElmInlineText>{config.message}</ElmInlineText>
+      <ElmInlineText code>
+        <span style={{ fontSize: "0.75rem" }}>
+          {isError ? "Error" : config.message}
+        </span>
+      </ElmInlineText>
 
       <ElmInlineText color="oklch(from gray l c h / 0.5)">
         {duration.toFixed(1)}s
