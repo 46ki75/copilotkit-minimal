@@ -1,12 +1,16 @@
 .tool-call-renderer {
   overflow: hidden;
   display: grid;
-  grid-template-rows: 2rem 0fr;
+  grid-template-rows: 2rem 0fr 0fr;
   gap: 0.5rem;
   transition: grid 200ms ease-in-out 100ms;
 
   &.open {
-    grid-template-rows: 2rem 1fr;
+    grid-template-rows: 2rem 1fr 0fr;
+  }
+
+  &.requires-approval {
+    grid-template-rows: 2rem 1fr 4rem;
   }
 }
 
@@ -64,4 +68,15 @@
     width: 100%;
     box-sizing: border-box;
   }
+}
+
+.approval-button-container {
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0 0.125rem;
+  margin-block-start: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
 }

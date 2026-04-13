@@ -1,7 +1,15 @@
 import { ToolCallStatus } from "@copilotkit/react-core/v2";
-import { ElmCodeBlock, ElmInlineText, ElmMdiIcon } from "@elmethis/react";
+import {
+  ElmButton,
+  ElmCodeBlock,
+  ElmInlineText,
+  ElmMdiIcon,
+} from "@elmethis/react";
 import styles from "./ToolCallRenderer.module.css";
 import {
+  mdiAccountCheck,
+  mdiAccountClock,
+  mdiAccountRemove,
   mdiProgressWrench,
   mdiTimelineClock,
   mdiTools,
@@ -9,6 +17,11 @@ import {
 } from "@mdi/js";
 import { useEffect, useRef, useState } from "react";
 import { clsx } from "clsx";
+
+const COLOR = {
+  crimson: "#c56565",
+  emerald: "#59b57c",
+} as const;
 
 const TOOL_STATUS_CONFIG = {
   [ToolCallStatus.InProgress]: {
@@ -24,11 +37,15 @@ const TOOL_STATUS_CONFIG = {
     message: "Success",
   },
 } as const;
+
 interface ToolCallRendererProps {
   name: string;
   status: ToolCallStatus;
   result?: string;
   args: unknown;
+
+  onApprove?: () => void;
+  onReject?: () => void;
 }
 
 const safeStringifyArgs = (value: unknown, fallback = ""): string => {
@@ -55,12 +72,18 @@ export const ToolCallRenderer = ({
   status,
   result,
   args,
+  onApprove,
+  onReject,
 }: ToolCallRendererProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [startTime] = useState(() => performance.now());
   const [currentTime, setCurrentTime] = useState(() => performance.now());
   const [completeAt, setCompleteAt] = useState(0);
   const statusRef = useRef(status);
+
+  const [approvalState, setApprovalState] = useState<
+    "pending" | "approved" | "rejected" | "not-required"
+  >(onApprove && onReject ? "pending" : "not-required");
 
   useEffect(() => {
     statusRef.current = status;
@@ -87,91 +110,142 @@ export const ToolCallRenderer = ({
   const parsedIsError = JSON.parse(result ?? "null")?.isError;
   const isError = typeof parsedIsError === "boolean" ? parsedIsError : false;
 
-  const summaryContent = (
-    <div
-      className={styles["summary-content"]}
-      onClick={() => setIsOpen((v) => !v)}
-    >
-      <ElmMdiIcon
-        d={mdiTools}
-        size="1.25rem"
-        color={isError ? "#c56565" : config.color}
-      />
-      <ElmInlineText code color={isError ? "#c56565" : config.color}>
-        {name}
-      </ElmInlineText>
-      <ElmInlineText code>
-        <span style={{ fontSize: "0.75rem" }}>
-          {isError ? "Error" : config.message}
-        </span>
-      </ElmInlineText>
-
-      <ElmInlineText color="oklch(from gray l c h / 0.5)">
-        {duration.toFixed(1)}s
-      </ElmInlineText>
-    </div>
-  );
-
-  const argsContent = (
+  return (
     <>
-      <div className={styles["status-message"]}>
-        <ElmMdiIcon d={mdiProgressWrench} size="1.25rem" />
-        <ElmInlineText code>Preparing arguments...</ElmInlineText>
-      </div>
-      <div className={styles["args-content"]}>
-        <ElmCodeBlock
-          caption="Arguments"
-          code={safeStringifyArgs(args)}
-          language="json"
-        />
-      </div>
-    </>
-  );
-
-  const resultContent = (
-    <>
-      <div className={styles["status-message"]}>
-        <ElmMdiIcon d={mdiWrenchClock} size="1.25rem" />
-        <ElmInlineText code>Executing...</ElmInlineText>
-      </div>
-
-      <div className={styles["result-content"]}>
-        {status === ToolCallStatus.Complete && (
-          <ElmCodeBlock
-            caption="Result"
-            code={safeStringifyResult(result)}
-            language="json"
+      <div
+        className={clsx(styles["tool-call-renderer"], {
+          [styles["open"]]: isOpen,
+          [styles["requires-approval"]]: approvalState === "pending",
+        })}
+      >
+        {/* Summary content */}
+        <div
+          className={styles["summary-content"]}
+          onClick={() => setIsOpen((v) => !v)}
+        >
+          <ElmMdiIcon
+            d={mdiTools}
+            size="1.25rem"
+            color={isError ? COLOR.crimson : config.color}
           />
+          <ElmInlineText code color={isError ? COLOR.crimson : config.color}>
+            {name}
+          </ElmInlineText>
+          <ElmInlineText code>
+            <span style={{ fontSize: "0.75rem" }}>
+              {isError
+                ? "Error"
+                : approvalState === "rejected"
+                  ? "Rejected"
+                  : config.message}
+            </span>
+          </ElmInlineText>
+
+          <ElmInlineText color="oklch(from gray l c h / 0.5)">
+            {duration.toFixed(1)}s
+          </ElmInlineText>
+        </div>
+
+        <div className={styles["detail-content"]}>
+          {/* Arguments content */}
+          <div className={styles["status-message"]}>
+            <ElmMdiIcon d={mdiProgressWrench} size="1.25rem" />
+            <ElmInlineText code>Preparing arguments...</ElmInlineText>
+          </div>
+          <div className={styles["args-content"]}>
+            <ElmCodeBlock
+              caption="Arguments"
+              code={safeStringifyArgs(args)}
+              language="json"
+            />
+          </div>
+
+          {onApprove && onReject && (
+            <div className={styles["status-message"]}>
+              <ElmMdiIcon d={mdiAccountClock} size="1.25rem" />
+              <ElmInlineText code>Waiting for approval...</ElmInlineText>
+            </div>
+          )}
+
+          {approvalState === "approved" && (
+            <div className={styles["status-message"]}>
+              <ElmMdiIcon
+                d={mdiAccountCheck}
+                size="1.25rem"
+                color={COLOR.emerald}
+              />
+              <ElmInlineText code color={COLOR.emerald}>
+                Approved
+              </ElmInlineText>
+            </div>
+          )}
+
+          {approvalState === "rejected" && (
+            <div className={styles["status-message"]}>
+              <ElmMdiIcon
+                d={mdiAccountRemove}
+                size="1.25rem"
+                color={COLOR.crimson}
+              />
+              <ElmInlineText code color={COLOR.crimson}>
+                Rejected
+              </ElmInlineText>
+            </div>
+          )}
+
+          {approvalState !== "pending" && approvalState !== "rejected" && (
+            <div className={styles["status-message"]}>
+              <ElmMdiIcon d={mdiWrenchClock} size="1.25rem" />
+              <ElmInlineText code>Executing...</ElmInlineText>
+            </div>
+          )}
+
+          <div className={styles["result-content"]}>
+            {status === ToolCallStatus.Complete && (
+              <ElmCodeBlock
+                caption="Result"
+                code={safeStringifyResult(result)}
+                language="json"
+              />
+            )}
+          </div>
+
+          {/* Spent time */}
+          {status === ToolCallStatus.Complete && (
+            <div className={styles["status-message"]}>
+              <ElmMdiIcon d={mdiTimelineClock} size="1.25rem" />
+              <ElmInlineText>Total time spent</ElmInlineText>
+              <ElmInlineText color="oklch(from gray l c h / 0.5)">
+                {duration.toFixed(1)}s
+              </ElmInlineText>
+            </div>
+          )}
+        </div>
+
+        {/* Approval buttons */}
+        {approvalState === "pending" && (
+          <div className={styles["approval-button-container"]}>
+            <ElmButton
+              block
+              onClick={() => {
+                setApprovalState("rejected");
+                onReject?.();
+              }}
+            >
+              <ElmInlineText>Reject</ElmInlineText>
+            </ElmButton>
+            <ElmButton
+              block
+              onClick={() => {
+                setApprovalState("approved");
+                onApprove?.();
+              }}
+            >
+              <ElmInlineText>Approve</ElmInlineText>
+            </ElmButton>
+          </div>
         )}
       </div>
     </>
-  );
-
-  const totalSpentTimeContent = (
-    <>
-      <div className={styles["status-message"]}>
-        <ElmMdiIcon d={mdiTimelineClock} size="1.25rem" />
-        <ElmInlineText>Total time spent</ElmInlineText>
-        <ElmInlineText color="oklch(from gray l c h / 0.5)">
-          {duration.toFixed(1)}s
-        </ElmInlineText>
-      </div>
-    </>
-  );
-
-  return (
-    <div
-      className={clsx(styles["tool-call-renderer"], {
-        [styles["open"]]: isOpen,
-      })}
-    >
-      {summaryContent}
-
-      <div className={styles["detail-content"]}>
-        {argsContent}
-        {resultContent}
-        {status === ToolCallStatus.Complete && totalSpentTimeContent}
-      </div>
-    </div>
   );
 };
