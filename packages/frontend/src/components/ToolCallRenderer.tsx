@@ -133,10 +133,10 @@ export const ToolCallRenderer = ({
           </ElmInlineText>
           <ElmInlineText code>
             <span style={{ fontSize: "0.75rem" }}>
-              {isError
-                ? "Error"
-                : approvalState === "rejected"
-                  ? "Rejected"
+              {approvalState === "rejected"
+                ? "Rejected"
+                : isError
+                  ? "Error"
                   : config.message}
             </span>
           </ElmInlineText>
