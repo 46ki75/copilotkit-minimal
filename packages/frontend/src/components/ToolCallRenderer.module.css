@@ -14,6 +14,15 @@
   }
 }
 
+.chevron {
+  transform-origin: center;
+  transition: transform 200ms;
+
+  &.open {
+    transform: rotate(90deg);
+  }
+}
+
 .summary-content {
   overflow: hidden;
   box-sizing: border-box;
@@ -62,15 +71,6 @@
       &:hover {
         background-color: oklch(from gray l c h / 0.1);
       }
-    }
-  }
-
-  .chevron {
-    transform-origin: center;
-    transition: transform 200ms;
-
-    &.open {
-      transform: rotate(90deg);
     }
   }
 

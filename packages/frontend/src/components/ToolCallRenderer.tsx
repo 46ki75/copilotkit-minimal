@@ -154,6 +154,13 @@ export const ToolCallRenderer = ({
           className={styles["summary-content"]}
           onClick={() => setIsOpen((v) => !v)}
         >
+          <span
+            className={clsx(styles["chevron"], {
+              [styles["open"]]: isOpen,
+            })}
+          >
+            <ElmMdiIcon d={mdiChevronRight} size="1.25rem" />
+          </span>
           <ElmMdiIcon
             d={mdiTools}
             size="1.25rem"
