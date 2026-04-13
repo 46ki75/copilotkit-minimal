@@ -29,3 +29,8 @@ body {
     background-color: #25282e;
   }
 }
+
+* {
+  background-color: unset;
+  background: unset;
+}
