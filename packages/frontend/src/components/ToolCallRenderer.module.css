@@ -46,11 +46,32 @@
 
   .status-message {
     box-sizing: border-box;
-    padding-left: 1rem;
+    margin-left: 0.75rem;
+    padding: 0.25rem;
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     user-select: none;
+
+    &.foldable {
+      cursor: pointer;
+      transition: background-color 100ms;
+      border-radius: 0.25rem;
+
+      &:hover {
+        background-color: oklch(from gray l c h / 0.1);
+      }
+    }
+  }
+
+  .chevron {
+    transform-origin: center;
+    transition: transform 200ms;
+
+    &.open {
+      transform: rotate(90deg);
+    }
   }
 
   .args-content {
@@ -59,6 +80,14 @@
     padding-left: 1rem;
     width: 100%;
     box-sizing: border-box;
+
+    display: grid;
+    transition: grid 200ms ease-in-out 100ms;
+    grid-template-rows: 0fr;
+
+    &.open {
+      grid-template-rows: 1fr;
+    }
   }
 
   .result-content {
@@ -67,6 +96,14 @@
     padding-left: 1rem;
     width: 100%;
     box-sizing: border-box;
+
+    display: grid;
+    transition: grid 200ms ease-in-out 100ms;
+    grid-template-rows: 0fr;
+
+    &.open {
+      grid-template-rows: 1fr;
+    }
   }
 }
 

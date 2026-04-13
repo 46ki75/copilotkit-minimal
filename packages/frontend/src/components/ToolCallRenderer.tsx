@@ -4,18 +4,20 @@ import {
   ElmCodeBlock,
   ElmInlineText,
   ElmMdiIcon,
+  type ElmCodeBlockProps,
 } from "@elmethis/react";
 import styles from "./ToolCallRenderer.module.css";
 import {
   mdiAccountCheck,
   mdiAccountClock,
   mdiAccountRemove,
+  mdiChevronRight,
   mdiProgressWrench,
   mdiTimelineClock,
   mdiTools,
   mdiWrenchClock,
 } from "@mdi/js";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { clsx } from "clsx";
 
@@ -77,6 +79,8 @@ export const ToolCallRenderer = ({
   onReject,
 }: ToolCallRendererProps) => {
   const [isOpen, setIsOpen] = useState(true);
+  const [isArgumentsOpen, setIsArgumentsOpen] = useState(true);
+  const [isResultOpen, setIsResultOpen] = useState(true);
   const [duration, setDuration] = useState<number | null>(null);
 
   const requiresApproval = !!(onApprove && onReject);
@@ -159,12 +163,28 @@ export const ToolCallRenderer = ({
 
         <div className={styles["detail-content"]}>
           {/* Arguments content */}
-          <div className={styles["status-message"]}>
+          <div
+            className={clsx(styles["status-message"], styles["foldable"])}
+            onClick={() => setIsArgumentsOpen((v) => !v)}
+          >
+            <span
+              className={clsx(styles["chevron"], {
+                [styles["open"]]: isArgumentsOpen,
+              })}
+            >
+              <ElmMdiIcon d={mdiChevronRight} size="1.25rem" />
+            </span>
             <ElmMdiIcon d={mdiProgressWrench} size="1.25rem" />
             <ElmInlineText code>Preparing arguments...</ElmInlineText>
           </div>
-          <div className={styles["args-content"]}>
+
+          <div
+            className={clsx(styles["args-content"], {
+              [styles["open"]]: isArgumentsOpen,
+            })}
+          >
             <ElmCodeBlock
+              style={{ overflow: "hidden" } as ElmCodeBlockProps["style"]}
               caption="Arguments"
               code={safeStringifyArgs(args)}
               language="json"
@@ -205,15 +225,30 @@ export const ToolCallRenderer = ({
           )}
 
           {approvalState !== "pending" && approvalState !== "rejected" && (
-            <div className={styles["status-message"]}>
+            <div
+              className={clsx(styles["status-message"], styles["foldable"])}
+              onClick={() => setIsResultOpen((v) => !v)}
+            >
+              <span
+                className={clsx(styles["chevron"], {
+                  [styles["open"]]: isResultOpen,
+                })}
+              >
+                <ElmMdiIcon d={mdiChevronRight} size="1.25rem" />
+              </span>
               <ElmMdiIcon d={mdiWrenchClock} size="1.25rem" />
               <ElmInlineText code>Executing...</ElmInlineText>
             </div>
           )}
 
-          <div className={styles["result-content"]}>
+          <div
+            className={clsx(styles["result-content"], {
+              [styles["open"]]: isResultOpen,
+            })}
+          >
             {status === ToolCallStatus.Complete && (
               <ElmCodeBlock
+                style={{ overflow: "hidden" } as ElmCodeBlockProps["style"]}
                 caption="Result"
                 code={safeStringifyResult(result)}
                 language="json"
