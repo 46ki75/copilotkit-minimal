@@ -87,6 +87,14 @@ export const ToolCallRenderer = ({
 
   useEffect(() => {
     statusRef.current = status;
+
+    if (status === ToolCallStatus.Complete) {
+      const setIsOpenTimeout = setTimeout(() => {
+        setIsOpen(false);
+      }, 1000);
+
+      return () => clearTimeout(setIsOpenTimeout);
+    }
   }, [status]);
 
   useEffect(() => {
@@ -95,12 +103,6 @@ export const ToolCallRenderer = ({
       if (s === ToolCallStatus.Complete) {
         setCompleteAt((t) => t || performance.now());
         window.clearInterval(id);
-
-        const setIsOpenTimeout = setTimeout(() => {
-          setIsOpen(false);
-          clearTimeout(setIsOpenTimeout);
-        }, 1000);
-
         return;
       }
 
