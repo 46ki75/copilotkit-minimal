@@ -16,7 +16,7 @@ export const UserMessage = (props: UserMessageProps) => {
     <div className={styles["user-message"]} style={props.style}>
       <div className={styles["inner-container"]}>
         <div className={styles["user-info"]}>
-          <ElmMdiIcon d={mdiAccount} />
+          <ElmMdiIcon size="1rem" d={mdiAccount} />
           <ElmInlineText>User</ElmInlineText>
         </div>
 
