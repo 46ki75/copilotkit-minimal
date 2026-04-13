@@ -64,7 +64,7 @@ export const ChatContainer = (props: ChatContainerProps) => {
 
   return (
     <div style={props.style}>
-      <main data-copilotkit>
+      <main data-copilotkit className={styles["transparent-background"]}>
         <CopilotChat
           className={clsx([
             styles["chat-container"],
