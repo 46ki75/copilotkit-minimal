@@ -3,7 +3,7 @@
   display: grid;
   grid-template-rows: 2rem 0fr;
   gap: 0.5rem;
-  transition: grid 500ms;
+  transition: grid 200ms ease-in-out 100ms;
 
   &.open {
     grid-template-rows: 2rem 1fr;
@@ -25,7 +25,7 @@
   border-radius: 0.25rem;
 
   &:hover {
-    background-color: oklch(from gray l c h / 0.075);
+    background-color: oklch(from gray l c h / 0.1);
   }
 }
 
