@@ -83,7 +83,7 @@ export const ToolCallRenderer = ({
   onReject,
 }: ToolCallRendererProps) => {
   const [isOpen, setIsOpen] = useState(true);
-  const [isArgumentsOpen, setIsArgumentsOpen] = useState(true);
+  const [isArgumentsOpen, setIsArgumentsOpen] = useState(false);
   const [isResultOpen, setIsResultOpen] = useState(false);
   const [duration, setDuration] = useState<number | null>(null);
 
@@ -97,6 +97,16 @@ export const ToolCallRenderer = ({
     requiresApproval ? performance.now() : 0,
   );
   const approvalEndTimeRef = useRef(0);
+
+  useEffect(() => {
+    const argumentsOpenTimeout = setTimeout(() => {
+      setIsArgumentsOpen(true);
+    }, 0);
+
+    return () => {
+      clearTimeout(argumentsOpenTimeout);
+    };
+  }, []);
 
   useEffect(() => {
     if (status === ToolCallStatus.InProgress) {
