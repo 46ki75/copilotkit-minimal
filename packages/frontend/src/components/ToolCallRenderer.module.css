@@ -5,18 +5,6 @@
   gap: 0.5rem;
   transition: grid 500ms;
 
-  &.in-progress {
-    grid-template-rows: 2rem 0fr;
-  }
-
-  &.executing {
-    grid-template-rows: 2rem 1fr;
-  }
-
-  &.complete {
-    grid-template-rows: 2rem 0fr;
-  }
-
   &.open {
     grid-template-rows: 2rem 1fr;
   }

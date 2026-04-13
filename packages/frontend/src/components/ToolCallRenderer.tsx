@@ -59,10 +59,9 @@ export const ToolCallRenderer = ({
   result,
   args,
 }: ToolCallRendererProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [startTime] = useState(() => performance.now());
   const [currentTime, setCurrentTime] = useState(() => performance.now());
-  const [executingAt, setExecutingAt] = useState(0);
   const [completeAt, setCompleteAt] = useState(0);
   const statusRef = useRef(status);
 
@@ -76,21 +75,16 @@ export const ToolCallRenderer = ({
       if (s === ToolCallStatus.Complete) {
         setCompleteAt((t) => t || performance.now());
         window.clearInterval(id);
+        setIsOpen(false);
         return;
       }
-      if (s === ToolCallStatus.Executing) {
-        setExecutingAt((t) => t || performance.now());
-      }
+
       setCurrentTime(performance.now());
     }, 100);
     return () => window.clearInterval(id);
   }, []);
 
   const duration = ((completeAt || currentTime) - startTime) / 1000;
-  const prepareDuration = executingAt ? (executingAt - startTime) / 1000 : 0;
-  const executionDuration =
-    executingAt && completeAt ? (completeAt - executingAt) / 1000 : 0;
-
   const config = TOOL_STATUS_CONFIG[status];
 
   const summaryContent = (
@@ -115,9 +109,6 @@ export const ToolCallRenderer = ({
       <div className={styles["status-message"]}>
         <ElmMdiIcon d={mdiProgressWrench} size="1.25rem" />
         <ElmInlineText code>Preparing arguments...</ElmInlineText>
-        <ElmInlineText color="oklch(from gray l c h / 0.5)">
-          {prepareDuration.toFixed(1)}s
-        </ElmInlineText>
       </div>
       <div className={styles["args-content"]}>
         <ElmCodeBlock
@@ -134,9 +125,6 @@ export const ToolCallRenderer = ({
       <div className={styles["status-message"]}>
         <ElmMdiIcon d={mdiWrenchClock} size="1.25rem" />
         <ElmInlineText code>Executing...</ElmInlineText>
-        <ElmInlineText color="oklch(from gray l c h / 0.5)">
-          {executionDuration.toFixed(1)}s
-        </ElmInlineText>
       </div>
 
       <div className={styles["result-content"]}>
@@ -166,9 +154,6 @@ export const ToolCallRenderer = ({
   return (
     <div
       className={clsx(styles["tool-call-renderer"], {
-        [styles["in-progress"]]: status === ToolCallStatus.InProgress,
-        [styles["executing"]]: status === ToolCallStatus.Executing,
-        [styles["complete"]]: status === ToolCallStatus.Complete,
         [styles["open"]]: isOpen,
       })}
     >
