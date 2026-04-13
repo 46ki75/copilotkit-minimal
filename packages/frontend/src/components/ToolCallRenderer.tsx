@@ -22,6 +22,9 @@ import { useEffect, useRef, useState } from "react";
 
 import { clsx } from "clsx";
 
+// Approval -> ["inProgress","executing","inProgress","complete"]
+// No approval -> ["inProgress","complete"]
+
 const COLOR = {
   crimson: "#c56565",
   emerald: "#59b57c",
