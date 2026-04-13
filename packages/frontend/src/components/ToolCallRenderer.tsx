@@ -232,6 +232,8 @@ export const ToolCallRenderer = ({
               [styles["open"]]: isArgumentsOpen,
             })}
           >
+            <div aria-hidden="true" className={styles["left-border"]}></div>
+
             <ElmCodeBlock
               style={{ overflow: "hidden" } as ElmCodeBlockProps["style"]}
               caption="Arguments"
@@ -312,12 +314,15 @@ export const ToolCallRenderer = ({
             })}
           >
             {status === ToolCallStatus.Complete && (
-              <ElmCodeBlock
-                style={{ overflow: "hidden" } as ElmCodeBlockProps["style"]}
-                caption="Result"
-                code={safeStringifyResult(result)}
-                language="json"
-              />
+              <>
+                <div aria-hidden="true" className={styles["left-border"]}></div>{" "}
+                <ElmCodeBlock
+                  style={{ overflow: "hidden" } as ElmCodeBlockProps["style"]}
+                  caption="Result"
+                  code={safeStringifyResult(result)}
+                  language="json"
+                />
+              </>
             )}
           </div>
 

@@ -76,17 +76,26 @@
 
   .args-content {
     box-sizing: border-box;
-    padding: 0.125rem;
     padding-left: 1rem;
     width: 100%;
     box-sizing: border-box;
 
     display: grid;
     transition: grid 200ms ease-in-out 100ms;
+    gap: 0 1rem;
+    grid-template-columns: 1rem auto;
     grid-template-rows: 0fr;
 
     &.open {
       grid-template-rows: 1fr;
+    }
+
+    .left-border {
+      box-sizing: border-box;
+      margin-left: 0.5rem;
+      width: 1px;
+      height: 100%;
+      background-color: oklch(from gray l c h / 0.25);
     }
   }
 
@@ -99,10 +108,20 @@
 
     display: grid;
     transition: grid 200ms ease-in-out 100ms;
+    gap: 0 1rem;
+    grid-template-columns: 1rem auto;
     grid-template-rows: 0fr;
 
     &.open {
       grid-template-rows: 1fr;
+    }
+
+    .left-border {
+      box-sizing: border-box;
+      margin-left: 0.5rem;
+      width: 1px;
+      height: 100%;
+      background-color: oklch(from gray l c h / 0.25);
     }
   }
 }
