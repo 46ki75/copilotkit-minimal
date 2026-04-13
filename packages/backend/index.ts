@@ -34,6 +34,11 @@ fastify.all("/copilotkit", async (request, reply) => {
         options: {},
       },
     ],
+    providerOptions: {
+      openrouter: {
+        reasoning: { effort: "high" },
+      },
+    },
     tools: [],
   });
 
