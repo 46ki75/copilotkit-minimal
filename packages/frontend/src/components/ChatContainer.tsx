@@ -18,6 +18,7 @@ import { useGenerateUuidFrontendTool } from "../frontend-tool/generate-uuid";
 import { useGetDateFrontendTool } from "../frontend-tool/get-date";
 import { UserMessage } from "./UserMessage";
 import { ScrollToBottomButton } from "./ScrollToBottomButton";
+import { SuggestionPill } from "./SuggestionPill";
 
 export interface ChatContainerProps {
   style?: React.CSSProperties;
@@ -103,7 +104,9 @@ export const ChatContainer = (props: ChatContainerProps) => {
             },
           }}
           input={{}}
-          suggestionView={{}}
+          suggestionView={{
+            suggestion: SuggestionPill,
+          }}
           scrollView={{
             // The gradient overlay at the bottom of the scroll area.
             feather: () => null,

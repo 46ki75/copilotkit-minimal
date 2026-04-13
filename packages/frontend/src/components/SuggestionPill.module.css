@@ -1,0 +1,18 @@
+.suggestion-pill {
+  pointer-events: all;
+  user-select: none;
+  cursor: pointer;
+
+  box-sizing: border-box;
+  padding: 0.25rem 0.75rem;
+
+  border-radius: 1rem;
+  border: solid 1px #c6ab69;
+  background-color: oklch(from white l c h / 0.4);
+
+  transition: opacity 200ms;
+
+  &:hover {
+    opacity: 0.5;
+  }
+}
