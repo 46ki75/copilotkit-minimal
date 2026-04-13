@@ -95,7 +95,12 @@ export const ToolCallRenderer = ({
       if (s === ToolCallStatus.Complete) {
         setCompleteAt((t) => t || performance.now());
         window.clearInterval(id);
-        setIsOpen(false);
+
+        const setIsOpenTimeout = setTimeout(() => {
+          setIsOpen(false);
+          clearTimeout(setIsOpenTimeout);
+        }, 1000);
+
         return;
       }
 
