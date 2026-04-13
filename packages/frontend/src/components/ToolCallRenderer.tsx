@@ -35,11 +35,22 @@ interface ToolCallRendererProps {
 
 const MARGIN_STYLE = { "--elmethis-margin-block-start": "0.5rem" } as const;
 
-const safeStringify = (value: unknown, fallback = ""): string => {
+const safeStringifyArgs = (value: unknown, fallback = ""): string => {
   try {
     return JSON.stringify(value, null, 2);
   } catch {
     return fallback;
+  }
+};
+
+const safeStringifyResult = (
+  result: string | undefined,
+  fallback = "",
+): string => {
+  try {
+    return JSON.stringify(JSON.parse(result ?? "null"), null, 2);
+  } catch {
+    return result ?? fallback;
   }
 };
 
@@ -95,47 +106,25 @@ export const ToolCallRenderer = ({
   );
 
   const detailContent = () => {
-    const parsedArgs = safeStringify(args);
+    return (
+      <div>
+        <ElmCodeBlock
+          caption={`Arguments in ${prepareDuration.toFixed(1)}s`}
+          code={safeStringifyArgs(args)}
+          language="json"
+        />
 
-    if (
-      status === ToolCallStatus.InProgress ||
-      status === ToolCallStatus.Executing
-    ) {
-      return (
-        <div>
-          <ElmCodeBlock caption="Arguments" code={parsedArgs} language="json" />
-        </div>
-      );
-    }
-
-    if (status === ToolCallStatus.Complete) {
-      let parsedResult: string;
-      try {
-        parsedResult = JSON.stringify(JSON.parse(result ?? "null"), null, 2);
-      } catch {
-        parsedResult = result ?? "";
-      }
-
-      return (
-        <div>
-          <ElmCodeBlock
-            caption={`Arguments in ${prepareDuration.toFixed(1)}s`}
-            code={parsedArgs}
-            language="json"
-          />
+        {status === ToolCallStatus.Complete && (
           <ElmCodeBlock
             caption={`Result in ${executionDuration.toFixed(1)}s`}
-            code={parsedResult}
+            code={safeStringifyResult(result)}
             language="json"
             style={MARGIN_STYLE}
           />
-
-          <ElmInlineText>Total {duration.toFixed(1)}s</ElmInlineText>
-        </div>
-      );
-    }
-
-    return null;
+        )}
+        <ElmInlineText>Total {duration.toFixed(1)}s</ElmInlineText>
+      </div>
+    );
   };
 
   return (
