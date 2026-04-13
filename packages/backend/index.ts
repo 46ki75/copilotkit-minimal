@@ -27,7 +27,7 @@ fastify.all("/copilotkit", async (request, reply) => {
   const agent = new BuiltInAgent({
     // model: openrouter("openai/gpt-5.4-nano"),
     model: openrouter("minimax/minimax-m2.5"),
-    maxSteps: 5, // Important: Allows the AI to read the tool output and write a final response
+    maxSteps: 20, // Important: Allows the AI to read the tool output and write a final response
     mcpServers: [
       {
         url: "https://knowledge-mcp.global.api.aws",
