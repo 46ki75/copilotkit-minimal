@@ -105,27 +105,25 @@ export const ToolCallRenderer = ({
     </>
   );
 
-  const detailContent = () => {
-    return (
-      <div>
-        <ElmCodeBlock
-          caption={`Arguments in ${prepareDuration.toFixed(1)}s`}
-          code={safeStringifyArgs(args)}
-          language="json"
-        />
+  const detailContent = (
+    <div>
+      <ElmCodeBlock
+        caption={`Arguments in ${prepareDuration.toFixed(1)}s`}
+        code={safeStringifyArgs(args)}
+        language="json"
+      />
 
-        {status === ToolCallStatus.Complete && (
-          <ElmCodeBlock
-            caption={`Result in ${executionDuration.toFixed(1)}s`}
-            code={safeStringifyResult(result)}
-            language="json"
-            style={MARGIN_STYLE}
-          />
-        )}
-        <ElmInlineText>Total {duration.toFixed(1)}s</ElmInlineText>
-      </div>
-    );
-  };
+      {status === ToolCallStatus.Complete && (
+        <ElmCodeBlock
+          caption={`Result in ${executionDuration.toFixed(1)}s`}
+          code={safeStringifyResult(result)}
+          language="json"
+          style={MARGIN_STYLE}
+        />
+      )}
+      <ElmInlineText>Total {duration.toFixed(1)}s</ElmInlineText>
+    </div>
+  );
 
   return (
     <ElmToggle
@@ -134,7 +132,7 @@ export const ToolCallRenderer = ({
         <span className={styles["inline-summary"]}>{summaryContent}</span>
       }
     >
-      {detailContent()}
+      {detailContent}
     </ElmToggle>
   );
 };
