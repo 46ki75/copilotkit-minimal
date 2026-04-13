@@ -17,6 +17,7 @@ import styles from "./ChatContainer.module.css";
 import { useGenerateUuidFrontendTool } from "../frontend-tool/generate-uuid";
 import { useGetDateFrontendTool } from "../frontend-tool/get-date";
 import { UserMessage } from "./UserMessage";
+import { ScrollToBottomButton } from "./ScrollToBottomButton";
 
 export interface ChatContainerProps {
   style?: React.CSSProperties;
@@ -116,6 +117,9 @@ export const ChatContainer = (props: ChatContainerProps) => {
           scrollView={{
             // The gradient overlay at the bottom of the scroll area.
             feather: () => null,
+            scrollToBottomButton: ({ onClick }) => {
+              return <ScrollToBottomButton onClick={onClick} />;
+            },
           }}
         />
       </main>
