@@ -116,11 +116,8 @@ export const ToolCallRenderer = ({
         0,
       );
 
-      const resultOpenTimeout = setTimeout(() => setIsResultOpen(true), 0);
-
       return () => {
         clearTimeout(argumentsCloseTimeout);
-        clearTimeout(resultOpenTimeout);
       };
     } else if (status === ToolCallStatus.Complete) {
       const completeAt = performance.now();
@@ -132,11 +129,13 @@ export const ToolCallRenderer = ({
 
       const durationTimeout = setTimeout(() => setDuration(computed), 0);
       const closeTimeout = setTimeout(() => setIsOpen(false), 1000);
+      const resultOpenTimeout = setTimeout(() => setIsResultOpen(true), 0);
       const resultCloseTimeout = setTimeout(() => setIsResultOpen(false), 500);
 
       return () => {
         clearTimeout(durationTimeout);
         clearTimeout(closeTimeout);
+        clearTimeout(resultOpenTimeout);
         clearTimeout(resultCloseTimeout);
       };
     }
