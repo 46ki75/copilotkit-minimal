@@ -4,11 +4,17 @@
   cursor: pointer;
 
   box-sizing: border-box;
-  padding: 0.25rem 0.75rem;
+  padding: 0.25rem 0.75rem 0.25rem 0.25rem;
 
   border-radius: 1rem;
   border: solid 1px #c6ab69;
   background-color: oklch(from white l c h / 0.4);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
 
   transition: opacity 200ms;
 

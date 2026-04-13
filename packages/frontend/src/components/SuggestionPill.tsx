@@ -2,7 +2,8 @@ import React from "react";
 
 import styles from "./SuggestionPill.module.css";
 import type { CopilotChatSuggestionPillProps } from "@copilotkit/react-core/v2";
-import { ElmInlineText } from "@elmethis/react";
+import { ElmInlineText, ElmMdiIcon } from "@elmethis/react";
+import { mdiMessageReplyTextOutline } from "@mdi/js";
 
 export const SuggestionPill = React.forwardRef<
   HTMLButtonElement,
@@ -11,6 +12,7 @@ export const SuggestionPill = React.forwardRef<
   return (
     <div className={styles["suggestion-pill"]}>
       <div>{icon}</div>
+      <ElmMdiIcon d={mdiMessageReplyTextOutline} size="1rem" />
       <div
         ref={ref as React.Ref<HTMLDivElement>}
         onClick={onClick as React.MouseEventHandler}
