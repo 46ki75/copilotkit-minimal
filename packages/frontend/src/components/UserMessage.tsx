@@ -2,7 +2,8 @@ import React from "react";
 
 import styles from "./UserMessage.module.css";
 
-import { ElmInlineText, ElmMarkdown } from "@elmethis/react";
+import { ElmInlineText, ElmMarkdown, ElmMdiIcon } from "@elmethis/react";
+import { mdiAccount } from "@mdi/js";
 
 export interface UserMessageProps {
   style?: React.CSSProperties;
@@ -14,7 +15,8 @@ export const UserMessage = (props: UserMessageProps) => {
   return (
     <div className={styles["user-message"]} style={props.style}>
       <div className={styles["inner-container"]}>
-        <div>
+        <div className={styles["user-info"]}>
+          <ElmMdiIcon d={mdiAccount} />
           <ElmInlineText>User</ElmInlineText>
         </div>
 

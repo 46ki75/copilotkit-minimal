@@ -7,10 +7,19 @@
   .inner-container {
     max-width: 75%;
 
+    .user-info {
+      box-sizing: border-box;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.5rem;
+      user-select: none;
+    }
+
     .content {
       box-sizing: border-box;
       padding: 1rem;
-      margin: 0.5rem;
       border-radius: 0.25rem;
       background-color: oklch(from #59a7b5 l c h / 0.05);
     }
