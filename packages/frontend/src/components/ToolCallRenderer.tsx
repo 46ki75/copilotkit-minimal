@@ -16,6 +16,7 @@ import {
   mdiWrenchClock,
 } from "@mdi/js";
 import { useEffect, useRef, useState } from "react";
+
 import { clsx } from "clsx";
 
 const COLOR = {
@@ -76,42 +77,37 @@ export const ToolCallRenderer = ({
   onReject,
 }: ToolCallRendererProps) => {
   const [isOpen, setIsOpen] = useState(true);
-  const [startTime] = useState(() => performance.now());
-  const [currentTime, setCurrentTime] = useState(() => performance.now());
-  const [completeAt, setCompleteAt] = useState(0);
-  const statusRef = useRef(status);
+  const [duration, setDuration] = useState<number | null>(null);
 
+  const requiresApproval = !!(onApprove && onReject);
   const [approvalState, setApprovalState] = useState<
     "pending" | "approved" | "rejected" | "not-required"
-  >(onApprove && onReject ? "pending" : "not-required");
+  >(requiresApproval ? "pending" : "not-required");
+
+  const [startTime] = useState(() => performance.now());
+  const [approvalStartTime] = useState(() =>
+    requiresApproval ? performance.now() : 0,
+  );
+  const approvalEndTimeRef = useRef(0);
 
   useEffect(() => {
-    statusRef.current = status;
-
     if (status === ToolCallStatus.Complete) {
-      const setIsOpenTimeout = setTimeout(() => {
-        setIsOpen(false);
-      }, 1000);
+      const completeAt = performance.now();
+      const approvalWait =
+        approvalStartTime > 0
+          ? (approvalEndTimeRef.current || completeAt) - approvalStartTime
+          : 0;
+      const computed = (completeAt - startTime - approvalWait) / 1000;
 
-      return () => clearTimeout(setIsOpenTimeout);
+      const durationTimeout = setTimeout(() => setDuration(computed), 0);
+      const closeTimeout = setTimeout(() => setIsOpen(false), 1000);
+
+      return () => {
+        clearTimeout(durationTimeout);
+        clearTimeout(closeTimeout);
+      };
     }
-  }, [status]);
-
-  useEffect(() => {
-    const id = window.setInterval(() => {
-      const s = statusRef.current;
-      if (s === ToolCallStatus.Complete) {
-        setCompleteAt((t) => t || performance.now());
-        window.clearInterval(id);
-        return;
-      }
-
-      setCurrentTime(performance.now());
-    }, 100);
-    return () => window.clearInterval(id);
-  }, []);
-
-  const duration = ((completeAt || currentTime) - startTime) / 1000;
+  }, [status, startTime, approvalStartTime]);
   const config = TOOL_STATUS_CONFIG[status];
 
   const parsedIsError = JSON.parse(result ?? "null")?.isError;
@@ -148,9 +144,11 @@ export const ToolCallRenderer = ({
             </span>
           </ElmInlineText>
 
-          <ElmInlineText color="oklch(from gray l c h / 0.5)">
-            {duration.toFixed(1)}s
-          </ElmInlineText>
+          {duration !== null && (
+            <ElmInlineText color="oklch(from gray l c h / 0.5)">
+              {duration.toFixed(1)}s
+            </ElmInlineText>
+          )}
         </div>
 
         <div className={styles["detail-content"]}>
@@ -218,7 +216,7 @@ export const ToolCallRenderer = ({
           </div>
 
           {/* Spent time */}
-          {status === ToolCallStatus.Complete && (
+          {duration !== null && (
             <div className={styles["status-message"]}>
               <ElmMdiIcon d={mdiTimelineClock} size="1.25rem" />
               <ElmInlineText>Total time spent</ElmInlineText>
@@ -235,6 +233,7 @@ export const ToolCallRenderer = ({
             <ElmButton
               block
               onClick={() => {
+                approvalEndTimeRef.current = performance.now();
                 setApprovalState("rejected");
                 onReject?.();
               }}
@@ -244,6 +243,7 @@ export const ToolCallRenderer = ({
             <ElmButton
               block
               onClick={() => {
+                approvalEndTimeRef.current = performance.now();
                 setApprovalState("approved");
                 onApprove?.();
               }}
