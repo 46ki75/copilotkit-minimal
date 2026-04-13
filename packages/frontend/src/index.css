@@ -20,14 +20,19 @@ html {
 }
 
 html [data-copilotkit] {
-  /* --primary: #111111;
-  --primary-foreground: #ffffff;
-  --card: #ffffff;
-  --border: #e0e0e0;
-  --radius: 12px;
-  --foreground: #111111;
-  --input: #d4d4d4; */
+  /* --primary: #111111; */
+  /* --primary-foreground: red; */
+  /* --card: #ffffff; */
+  /* --border: #e0e0e0; */
+  /* --radius: 12px; */
+  /* --foreground: #111111; */
+  /* --input: #d4d4d4; */
   --background: transparent;
+
+  /* Remove the bottom fade-out gradient overlay in the messages list */
+  .cpk\:pointer-events-none.cpk\:bg-gradient-to-t {
+    display: none;
+  }
 }
 
 body {
