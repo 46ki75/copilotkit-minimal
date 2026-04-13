@@ -99,10 +99,7 @@ export const ToolCallRenderer = ({
   const approvalEndTimeRef = useRef(0);
 
   useEffect(() => {
-    if (
-      status === ToolCallStatus.InProgress ||
-      status === ToolCallStatus.Executing
-    ) {
+    if (status === ToolCallStatus.InProgress) {
       const argumentsCloseTimeout = setTimeout(
         () => setIsArgumentsOpen(false),
         0,
