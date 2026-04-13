@@ -1,7 +1,12 @@
 import { ToolCallStatus } from "@copilotkit/react-core/v2";
 import { ElmCodeBlock, ElmInlineText, ElmMdiIcon } from "@elmethis/react";
 import styles from "./ToolCallRenderer.module.css";
-import { mdiTools } from "@mdi/js";
+import {
+  mdiProgressWrench,
+  mdiTimelineClock,
+  mdiTools,
+  mdiWrenchClock,
+} from "@mdi/js";
 import { useEffect, useRef, useState } from "react";
 import { clsx } from "clsx";
 
@@ -28,8 +33,6 @@ interface ToolCallRendererProps {
   result?: string;
   args: unknown;
 }
-
-const MARGIN_STYLE = { "--elmethis-margin-block-start": "0.5rem" } as const;
 
 const safeStringifyArgs = (value: unknown, fallback = ""): string => {
   try {
@@ -101,32 +104,59 @@ export const ToolCallRenderer = ({
       </ElmInlineText>
       <ElmInlineText>{config.message}</ElmInlineText>
 
-      <ElmInlineText>{duration.toFixed(1)}s</ElmInlineText>
+      <ElmInlineText color="oklch(from gray l c h / 0.5)">
+        {duration.toFixed(1)}s
+      </ElmInlineText>
     </div>
   );
 
   const argsContent = (
-    <div className={styles["args-content"]}>
-      <ElmCodeBlock
-        caption={`Arguments in ${prepareDuration.toFixed(1)}s`}
-        code={safeStringifyArgs(args)}
-        language="json"
-      />
-    </div>
+    <>
+      <div className={styles["status-message"]}>
+        <ElmMdiIcon d={mdiProgressWrench} size="1.25rem" />
+        <ElmInlineText code>Preparing arguments...</ElmInlineText>
+        <ElmInlineText color="oklch(from gray l c h / 0.5)">
+          {prepareDuration.toFixed(1)}s
+        </ElmInlineText>
+      </div>
+      <div className={styles["args-content"]}>
+        <ElmCodeBlock
+          caption="Arguments"
+          code={safeStringifyArgs(args)}
+          language="json"
+        />
+      </div>
+    </>
   );
 
   const resultContent = (
-    <div className={styles["result-content"]}>
-      {status === ToolCallStatus.Complete && (
-        <ElmCodeBlock
-          caption={`Result in ${executionDuration.toFixed(1)}s`}
-          code={safeStringifyResult(result)}
-          language="json"
-          style={MARGIN_STYLE}
-        />
-      )}
-      <ElmInlineText>Total {duration.toFixed(1)}s</ElmInlineText>
-    </div>
+    <>
+      <div className={styles["status-message"]}>
+        <ElmMdiIcon d={mdiWrenchClock} size="1.25rem" />
+        <ElmInlineText code>Executing...</ElmInlineText>
+        <ElmInlineText color="oklch(from gray l c h / 0.5)">
+          {executionDuration.toFixed(1)}s
+        </ElmInlineText>
+      </div>
+
+      <div className={styles["result-content"]}>
+        {status === ToolCallStatus.Complete && (
+          <ElmCodeBlock
+            caption="Result"
+            code={safeStringifyResult(result)}
+            language="json"
+          />
+        )}
+      </div>
+
+      <div className={styles["status-message"]}>
+        <ElmMdiIcon d={mdiTimelineClock} size="1.25rem" />
+        <ElmInlineText>Total time spent</ElmInlineText>
+        <ElmInlineText color="oklch(from gray l c h / 0.5)">
+          {duration.toFixed(1)}s
+        </ElmInlineText>
+      </div>
+    </>
   );
 
   return (

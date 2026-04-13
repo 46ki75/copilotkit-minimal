@@ -51,21 +51,28 @@
   margin-left: 0.75rem;
   border-left: solid 1px oklch(from gray l c h / 0.25);
 
+  .status-message {
+    box-sizing: border-box;
+    padding-left: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    user-select: none;
+  }
+
   .args-content {
     box-sizing: border-box;
     padding: 0.125rem;
-    width: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
     padding-left: 1rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .result-content {
     box-sizing: border-box;
     padding: 0.125rem;
-    width: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
     padding-left: 1rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
