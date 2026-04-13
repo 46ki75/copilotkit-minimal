@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 
 import "@elmethis/react/style.css";
-import "@copilotkit/react-core/v2/styles.css";
 
 import App from "./App.tsx";
 import { CopilotKit } from "@copilotkit/react-core";
