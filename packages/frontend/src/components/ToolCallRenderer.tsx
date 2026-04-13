@@ -113,7 +113,7 @@ export const ToolCallRenderer = ({
     if (status === ToolCallStatus.InProgress) {
       const argumentsCloseTimeout = setTimeout(
         () => setIsArgumentsOpen(false),
-        0,
+        500,
       );
 
       return () => {
