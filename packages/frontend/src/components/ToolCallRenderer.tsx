@@ -56,6 +56,7 @@ export const ToolCallRenderer = ({
   result,
   args,
 }: ToolCallRendererProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [startTime] = useState(() => performance.now());
   const [currentTime, setCurrentTime] = useState(() => performance.now());
   const [executingAt, setExecutingAt] = useState(0);
@@ -90,7 +91,10 @@ export const ToolCallRenderer = ({
   const config = TOOL_STATUS_CONFIG[status];
 
   const summaryContent = (
-    <div className={styles["summary-content"]}>
+    <div
+      className={styles["summary-content"]}
+      onClick={() => setIsOpen((v) => !v)}
+    >
       <ElmMdiIcon d={config.icon} size="1.25rem" color={config.color} />
       <ElmInlineText code color={config.color}>
         {name}
@@ -131,11 +135,15 @@ export const ToolCallRenderer = ({
         [styles["in-progress"]]: status === ToolCallStatus.InProgress,
         [styles["executing"]]: status === ToolCallStatus.Executing,
         [styles["complete"]]: status === ToolCallStatus.Complete,
+        [styles["open"]]: isOpen,
       })}
     >
       {summaryContent}
-      {argsContent}
-      {resultContent}
+
+      <div className={styles["detail-content"]}>
+        {argsContent}
+        {resultContent}
+      </div>
     </div>
   );
 };
