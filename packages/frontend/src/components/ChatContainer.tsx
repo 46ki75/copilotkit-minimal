@@ -17,7 +17,6 @@ import styles from "./ChatContainer.module.css";
 import { useGenerateUuidFrontendTool } from "../frontend-tool/generate-uuid";
 import { useGetDateFrontendTool } from "../frontend-tool/get-date";
 import { UserMessage } from "./UserMessage";
-import clsx from "clsx";
 
 export interface ChatContainerProps {
   style?: React.CSSProperties;
@@ -64,18 +63,14 @@ export const ChatContainer = (props: ChatContainerProps) => {
 
   return (
     <div style={props.style}>
-      <main data-copilotkit className={styles["transparent-background"]}>
+      <main data-copilotkit>
         <CopilotChat
-          className={clsx([
-            styles["chat-container"],
-            styles["transparent-background"],
-          ])}
+          className={styles["chat-container"]}
           messageView={{
             /*
              * @see {@link https://docs.copilotkit.ai/built-in-agent/custom-look-and-feel/slots#nested-slots-drill-down}
              */
             assistantMessage: {
-              className: styles["transparent-background"],
               markdownRenderer: ({ content }) => (
                 <ElmMarkdown markdown={content} />
               ),
@@ -100,7 +95,6 @@ export const ChatContainer = (props: ChatContainerProps) => {
               // },
             },
             userMessage: {
-              className: styles["transparent-background"],
               messageRenderer: (args) => {
                 return <UserMessage content={args.content} />;
               },
@@ -117,15 +111,9 @@ export const ChatContainer = (props: ChatContainerProps) => {
               );
             },
           }}
-          input={{
-            className: styles["transparent-background"],
-          }}
-          suggestionView={{
-            className: styles["transparent-background"],
-          }}
-          scrollView={{
-            className: styles["transparent-background"],
-          }}
+          input={{}}
+          suggestionView={{}}
+          scrollView={{}}
         />
       </main>
     </div>

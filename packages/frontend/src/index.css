@@ -19,6 +19,10 @@ html {
   font-family: sans-serif;
 }
 
+html [data-copilotkit] {
+  --background: transparent;
+}
+
 body {
   margin: 0;
   padding: 0;
