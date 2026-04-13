@@ -5,13 +5,19 @@ import {
 } from "@copilotkit/react-core/v2";
 
 // Components
-import { ElmDivider, ElmMarkdown } from "@elmethis/react";
+import {
+  ElmDivider,
+  ElmHeading,
+  ElmInlineText,
+  ElmMarkdown,
+} from "@elmethis/react";
 
 // Styles
 import styles from "./ChatContainer.module.css";
 import { useGenerateUuidFrontendTool } from "../frontend-tool/generate-uuid";
 import { useGetDateFrontendTool } from "../frontend-tool/get-date";
 import { UserMessage } from "./UserMessage";
+import clsx from "clsx";
 
 export interface ChatContainerProps {
   style?: React.CSSProperties;
@@ -60,7 +66,10 @@ export const ChatContainer = (props: ChatContainerProps) => {
     <div style={props.style}>
       <main data-copilotkit>
         <CopilotChat
-          className={styles["chat-container"]}
+          className={clsx([
+            styles["chat-container"],
+            styles["transparent-background"],
+          ])}
           messageView={{
             /*
              * @see {@link https://docs.copilotkit.ai/built-in-agent/custom-look-and-feel/slots#nested-slots-drill-down}
@@ -73,7 +82,6 @@ export const ChatContainer = (props: ChatContainerProps) => {
               toolbar: (args) => (
                 <div
                   {...args}
-                  className={styles["transparent-background"]}
                   style={{
                     display: "flex",
                     gap: 32,
@@ -94,6 +102,17 @@ export const ChatContainer = (props: ChatContainerProps) => {
               messageRenderer: (args) => {
                 return <UserMessage content={args.content} />;
               },
+            },
+          }}
+          welcomeScreen={{
+            welcomeMessage: () => {
+              return (
+                <div>
+                  <ElmHeading level={1}>
+                    <ElmInlineText>Welcome to Copilot Chat!</ElmInlineText>
+                  </ElmHeading>
+                </div>
+              );
             },
           }}
         />
