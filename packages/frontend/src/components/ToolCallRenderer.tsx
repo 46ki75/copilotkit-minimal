@@ -12,12 +12,13 @@ import {
   mdiAccountClock,
   mdiAccountRemove,
   mdiChevronRight,
+  mdiCircleSmall,
   mdiProgressWrench,
   mdiTimelineClock,
   mdiTools,
   mdiWrenchClock,
 } from "@mdi/js";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { clsx } from "clsx";
 
@@ -259,6 +260,7 @@ export const ToolCallRenderer = ({
           {/* Spent time */}
           {duration !== null && (
             <div className={styles["status-message"]}>
+              <ElmMdiIcon d={mdiCircleSmall} size="1.25rem" />
               <ElmMdiIcon d={mdiTimelineClock} size="1.25rem" />
               <ElmInlineText>Total time spent</ElmInlineText>
               <ElmInlineText color="oklch(from gray l c h / 0.5)">
