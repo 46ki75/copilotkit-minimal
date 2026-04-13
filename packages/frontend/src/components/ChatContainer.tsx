@@ -113,7 +113,10 @@ export const ChatContainer = (props: ChatContainerProps) => {
           }}
           input={{}}
           suggestionView={{}}
-          scrollView={{}}
+          scrollView={{
+            // The gradient overlay at the bottom of the scroll area.
+            feather: () => null,
+          }}
         />
       </main>
     </div>
