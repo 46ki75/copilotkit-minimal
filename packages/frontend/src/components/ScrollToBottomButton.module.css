@@ -1,7 +1,7 @@
 .scroll-to-bottom-button {
   box-sizing: border-box;
   padding: 0.25rem;
-  width: 100%;
+  width: clamp(12rem, 100%, 48rem);
   border-radius: 0.25rem;
   display: flex;
   justify-content: center;
@@ -9,9 +9,10 @@
   cursor: pointer;
   pointer-events: all;
   backdrop-filter: blur(4px);
-  background-color: oklch(from gray l c h / 0.125);
+  background-color: oklch(from gray l c h / 0.25);
+  transition: opacity 200ms;
 
-  &:active {
-    background-color: oklch(from gray l c h / 0.25);
+  &:hover {
+    opacity: 0.5;
   }
 }
