@@ -210,21 +210,8 @@ export const ToolCallRenderer = ({
             >
               <ElmMdiIcon d={mdiChevronRight} size="1.25rem" />
             </span>
-            <ElmMdiIcon
-              d={mdiProgressWrench}
-              size="1.25rem"
-              color={
-                status === ToolCallStatus.InProgress ? COLOR.blue : undefined
-              }
-            />
-            <ElmInlineText
-              code
-              color={
-                status === ToolCallStatus.InProgress ? COLOR.blue : undefined
-              }
-            >
-              Preparing arguments...
-            </ElmInlineText>
+            <ElmMdiIcon d={mdiProgressWrench} size="1.25rem" />
+            <ElmInlineText code>Preparing arguments...</ElmInlineText>
           </div>
 
           <div
