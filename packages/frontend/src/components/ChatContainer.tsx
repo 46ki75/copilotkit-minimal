@@ -5,12 +5,13 @@ import {
 } from "@copilotkit/react-core/v2";
 
 // Components
-import { ElmMarkdown } from "@elmethis/react";
+import { ElmDivider, ElmMarkdown } from "@elmethis/react";
 
 // Styles
 import styles from "./ChatContainer.module.css";
 import { useGenerateUuidFrontendTool } from "../frontend-tool/generate-uuid";
 import { useGetDateFrontendTool } from "../frontend-tool/get-date";
+import { UserMessage } from "./UserMessage";
 
 export interface ChatContainerProps {
   style?: React.CSSProperties;
@@ -61,10 +62,38 @@ export const ChatContainer = (props: ChatContainerProps) => {
         <CopilotChat
           className={styles["chat-container"]}
           messageView={{
+            /*
+             * @see {@link https://docs.copilotkit.ai/built-in-agent/custom-look-and-feel/slots#nested-slots-drill-down}
+             */
             assistantMessage: {
               markdownRenderer: ({ content }) => (
                 <ElmMarkdown markdown={content} />
               ),
+
+              toolbar: (args) => (
+                <div
+                  {...args}
+                  className={styles["transparent-background"]}
+                  style={{
+                    display: "flex",
+                    gap: 32,
+                    flexDirection: "column",
+                    marginBlockStart: 32,
+                  }}
+                >
+                  <ElmDivider />
+
+                  {args.children}
+                </div>
+              ),
+              // copyButton: (args) => {
+              //   return <button onClick={args.onClick}>A</button>;
+              // },
+            },
+            userMessage: {
+              messageRenderer: (args) => {
+                return <UserMessage content={args.content} />;
+              },
             },
           }}
         />

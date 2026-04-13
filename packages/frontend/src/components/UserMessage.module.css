@@ -1,0 +1,18 @@
+.user-message {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-start;
+
+  .inner-container {
+    max-width: 75%;
+
+    .content {
+      box-sizing: border-box;
+      padding: 1rem;
+      margin: 0.5rem;
+      border-radius: 0.25rem;
+      background-color: oklch(from #59a7b5 l c h / 0.05);
+    }
+  }
+}
