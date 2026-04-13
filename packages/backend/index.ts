@@ -46,17 +46,17 @@ const runtime = new CopilotRuntime({
   },
 });
 
+const copilotHandler = copilotRuntimeNodeHttpEndpoint({
+  endpoint: "/copilotkit",
+  runtime,
+});
+
 fastify.all("/copilotkit", async (request, reply) => {
   try {
-    const handler = copilotRuntimeNodeHttpEndpoint({
-      endpoint: "/copilotkit",
-      runtime,
-    });
-
     Object.assign(request.raw, { body: request.body });
 
     reply.hijack(); // Hand over to raw node HTTP handler
-    return handler(request.raw, reply.raw);
+    return copilotHandler(request.raw, reply.raw);
   } catch (error) {
     request.log.error(error, "Error running CopilotKit endpoint");
     reply.status(500).send("Endpoint error");
