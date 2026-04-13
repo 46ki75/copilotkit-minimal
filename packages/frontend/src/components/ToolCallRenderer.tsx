@@ -347,6 +347,7 @@ export const ToolCallRenderer = ({
               onClick={() => {
                 approvalEndTimeRef.current = performance.now();
                 setApprovalState("rejected");
+                setIsOpen(true);
                 onReject?.();
               }}
             >
@@ -357,6 +358,7 @@ export const ToolCallRenderer = ({
               onClick={() => {
                 approvalEndTimeRef.current = performance.now();
                 setApprovalState("approved");
+                setIsOpen(true);
                 onApprove?.();
               }}
             >
