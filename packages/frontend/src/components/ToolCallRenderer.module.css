@@ -1,6 +1,40 @@
-.inline-summary {
-  display: inline-flex;
+.tool-call-renderer {
+  overflow: hidden;
+  display: grid;
+  gap: 0.5rem;
+  transition: grid 200ms;
+
+  /* &.in-progress {
+    grid-template-rows: 1.5rem 1fr 0fr;
+  }
+
+  &.executing {
+    grid-template-rows: 1.5rem 1fr 1fr;
+  }
+
+  &.complete {
+    grid-template-rows: 1.5rem 0fr 0fr;
+  } */
+}
+
+.summary-content {
+  overflow: hidden;
+  display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 0.5rem;
+}
+
+.args-content {
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-left: 1rem;
+  border-left: solid 1px oklch(from gray l c h / 0.25);
+}
+
+.result-content {
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-left: 1rem;
+  border-left: solid 1px oklch(from gray l c h / 0.25);
 }

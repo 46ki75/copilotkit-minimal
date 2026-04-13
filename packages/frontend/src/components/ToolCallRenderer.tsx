@@ -1,13 +1,9 @@
 import { ToolCallStatus } from "@copilotkit/react-core/v2";
-import {
-  ElmCodeBlock,
-  ElmInlineText,
-  ElmMdiIcon,
-  ElmToggle,
-} from "@elmethis/react";
+import { ElmCodeBlock, ElmInlineText, ElmMdiIcon } from "@elmethis/react";
 import styles from "./ToolCallRenderer.module.css";
 import { mdiTools } from "@mdi/js";
 import { useEffect, useRef, useState } from "react";
+import { clsx } from "clsx";
 
 const TOOL_STATUS_CONFIG = {
   [ToolCallStatus.InProgress]: {
@@ -94,7 +90,7 @@ export const ToolCallRenderer = ({
   const config = TOOL_STATUS_CONFIG[status];
 
   const summaryContent = (
-    <>
+    <div className={styles["summary-content"]}>
       <ElmMdiIcon d={config.icon} size="1.25rem" color={config.color} />
       <ElmInlineText code color={config.color}>
         {name}
@@ -102,17 +98,21 @@ export const ToolCallRenderer = ({
       <ElmInlineText>{config.message}</ElmInlineText>
 
       <ElmInlineText>{duration.toFixed(1)}s</ElmInlineText>
-    </>
+    </div>
   );
 
-  const detailContent = (
-    <div>
+  const argsContent = (
+    <div className={styles["args-content"]}>
       <ElmCodeBlock
         caption={`Arguments in ${prepareDuration.toFixed(1)}s`}
         code={safeStringifyArgs(args)}
         language="json"
       />
+    </div>
+  );
 
+  const resultContent = (
+    <div className={styles["result-content"]}>
       {status === ToolCallStatus.Complete && (
         <ElmCodeBlock
           caption={`Result in ${executionDuration.toFixed(1)}s`}
@@ -126,13 +126,16 @@ export const ToolCallRenderer = ({
   );
 
   return (
-    <ElmToggle
-      style={MARGIN_STYLE}
-      summaryContent={
-        <span className={styles["inline-summary"]}>{summaryContent}</span>
-      }
+    <div
+      className={clsx(styles["tool-call-renderer"], {
+        [styles["in-progress"]]: status === ToolCallStatus.InProgress,
+        [styles["executing"]]: status === ToolCallStatus.Executing,
+        [styles["complete"]]: status === ToolCallStatus.Complete,
+      })}
     >
-      {detailContent}
-    </ElmToggle>
+      {summaryContent}
+      {argsContent}
+      {resultContent}
+    </div>
   );
 };
