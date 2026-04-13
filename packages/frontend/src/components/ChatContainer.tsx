@@ -75,6 +75,7 @@ export const ChatContainer = (props: ChatContainerProps) => {
              * @see {@link https://docs.copilotkit.ai/built-in-agent/custom-look-and-feel/slots#nested-slots-drill-down}
              */
             assistantMessage: {
+              className: styles["transparent-background"],
               markdownRenderer: ({ content }) => (
                 <ElmMarkdown markdown={content} />
               ),
@@ -99,6 +100,7 @@ export const ChatContainer = (props: ChatContainerProps) => {
               // },
             },
             userMessage: {
+              className: styles["transparent-background"],
               messageRenderer: (args) => {
                 return <UserMessage content={args.content} />;
               },
@@ -119,6 +121,9 @@ export const ChatContainer = (props: ChatContainerProps) => {
             className: styles["transparent-background"],
           }}
           suggestionView={{
+            className: styles["transparent-background"],
+          }}
+          scrollView={{
             className: styles["transparent-background"],
           }}
         />
