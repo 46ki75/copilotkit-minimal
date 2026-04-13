@@ -97,7 +97,7 @@ export const ToolCallRenderer = ({
         approvalStartTime > 0
           ? (approvalEndTimeRef.current || completeAt) - approvalStartTime
           : 0;
-      const computed = (completeAt - startTime - approvalWait) / 1000;
+      const computed = completeAt - startTime - approvalWait;
 
       const durationTimeout = setTimeout(() => setDuration(computed), 0);
       const closeTimeout = setTimeout(() => setIsOpen(false), 1000);
@@ -108,6 +108,12 @@ export const ToolCallRenderer = ({
       };
     }
   }, [status, startTime, approvalStartTime]);
+  const durationLabel =
+    duration === null
+      ? null
+      : duration < 10000
+        ? `${duration.toFixed(0)}ms`
+        : `${(duration / 1000).toFixed(1)}s`;
   const config = TOOL_STATUS_CONFIG[status];
 
   const parsedIsError = JSON.parse(result ?? "null")?.isError;
@@ -144,9 +150,9 @@ export const ToolCallRenderer = ({
             </span>
           </ElmInlineText>
 
-          {duration !== null && (
-            <ElmInlineText color="oklch(from gray l c h / 0.5)">
-              {duration.toFixed(1)}s
+          {durationLabel !== null && (
+            <ElmInlineText code color="oklch(from gray l c h / 0.5)">
+              {durationLabel}
             </ElmInlineText>
           )}
         </div>
@@ -221,7 +227,7 @@ export const ToolCallRenderer = ({
               <ElmMdiIcon d={mdiTimelineClock} size="1.25rem" />
               <ElmInlineText>Total time spent</ElmInlineText>
               <ElmInlineText color="oklch(from gray l c h / 0.5)">
-                {duration.toFixed(1)}s
+                {duration.toFixed(0)}ms
               </ElmInlineText>
             </div>
           )}
