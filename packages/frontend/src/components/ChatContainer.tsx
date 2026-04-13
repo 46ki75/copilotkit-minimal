@@ -115,6 +115,12 @@ export const ChatContainer = (props: ChatContainerProps) => {
               );
             },
           }}
+          input={{
+            className: styles["transparent-background"],
+          }}
+          suggestionView={{
+            className: styles["transparent-background"],
+          }}
         />
       </main>
     </div>
