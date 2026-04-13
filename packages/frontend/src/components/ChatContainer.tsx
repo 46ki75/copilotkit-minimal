@@ -56,9 +56,10 @@ export const ChatContainer = (props: ChatContainerProps) => {
   });
 
   return (
-    <div className={styles["chat-container"]} style={props.style}>
+    <div style={props.style}>
       <main data-copilotkit>
         <CopilotChat
+          className={styles["chat-container"]}
           messageView={{
             assistantMessage: {
               markdownRenderer: ({ content }) => (

@@ -14,13 +14,14 @@
 }
 
 html {
+  margin: 0;
+  padding: 0;
   font-family: sans-serif;
 }
 
-body,
-.docs-story {
+body {
   margin: 0;
-  transition: background-color 200ms;
+  padding: 0;
 
   background-color: #eff0f2;
 
