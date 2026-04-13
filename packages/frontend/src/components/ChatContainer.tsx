@@ -38,13 +38,8 @@ export const ChatContainer = (props: ChatContainerProps) => {
         message: " What is a new service called Amazon S3 Files?",
       },
       {
-        title: "Ask about AWS Lambda Function URLs",
-        message:
-          "How do I restrict requests to AWS Lambda Function URLs except Amazon CloudFront origins?",
-      },
-      {
-        title: "Ask for current date",
-        message: " What is the current date and time?",
+        title: "Ask about how to use axum web framework",
+        message: " How to use axum web framework in Rust?",
       },
       {
         title: "Ask for UUID v4",
@@ -53,11 +48,6 @@ export const ChatContainer = (props: ChatContainerProps) => {
       {
         title: "Ask for UUID v7",
         message: " Generate a new UUID of version 7.",
-      },
-      {
-        title: "Ask for AWS Lambda Durable Functions example code",
-        message:
-          "Show me an example code of AWS Lambda Durable Functions in Python Durable SDK.",
       },
     ],
   });

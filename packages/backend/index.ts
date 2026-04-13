@@ -26,11 +26,11 @@ const agent = new BuiltInAgent({
   model: openrouter(process.env.MODEL_ID || "openai/gpt-5.4-nano"),
   maxSteps: 20, // Important: Allows the AI to read the tool output and write a final response
   mcpServers: [
-    // {
-    //   url: "https://knowledge-mcp.global.api.aws",
-    //   type: "http",
-    //   options: {},
-    // },
+    {
+      url: "https://mcp.context7.com/mcp",
+      type: "http",
+      options: {},
+    },
   ],
   providerOptions: {
     openrouter: {
