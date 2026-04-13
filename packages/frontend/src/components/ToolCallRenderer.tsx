@@ -236,8 +236,17 @@ export const ToolCallRenderer = ({
           {onApprove && onReject && (
             <div className={styles["status-message"]}>
               <ElmMdiIcon d={mdiCircleSmall} size="1.25rem" />
-              <ElmMdiIcon d={mdiAccountClock} size="1.25rem" />
-              <ElmInlineText code>Waiting for approval...</ElmInlineText>
+              <ElmMdiIcon
+                d={mdiAccountClock}
+                size="1.25rem"
+                color={approvalState === "pending" ? COLOR.blue : undefined}
+              />
+              <ElmInlineText
+                code
+                color={approvalState === "pending" ? COLOR.blue : undefined}
+              >
+                Waiting for approval...
+              </ElmInlineText>
             </div>
           )}
 
