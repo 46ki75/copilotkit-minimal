@@ -81,7 +81,7 @@ export const ToolCallRenderer = ({
 }: ToolCallRendererProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isArgumentsOpen, setIsArgumentsOpen] = useState(true);
-  const [isResultOpen, setIsResultOpen] = useState(true);
+  const [isResultOpen, setIsResultOpen] = useState(false);
   const [duration, setDuration] = useState<number | null>(null);
 
   const requiresApproval = !!(onApprove && onReject);
@@ -96,7 +96,22 @@ export const ToolCallRenderer = ({
   const approvalEndTimeRef = useRef(0);
 
   useEffect(() => {
-    if (status === ToolCallStatus.Complete) {
+    if (
+      status === ToolCallStatus.InProgress ||
+      status === ToolCallStatus.Executing
+    ) {
+      const argumentsCloseTimeout = setTimeout(
+        () => setIsArgumentsOpen(false),
+        0,
+      );
+
+      const resultOpenTimeout = setTimeout(() => setIsResultOpen(true), 0);
+
+      return () => {
+        clearTimeout(argumentsCloseTimeout);
+        clearTimeout(resultOpenTimeout);
+      };
+    } else if (status === ToolCallStatus.Complete) {
       const completeAt = performance.now();
       const approvalWait =
         approvalStartTime > 0
@@ -106,10 +121,12 @@ export const ToolCallRenderer = ({
 
       const durationTimeout = setTimeout(() => setDuration(computed), 0);
       const closeTimeout = setTimeout(() => setIsOpen(false), 1000);
+      const resultCloseTimeout = setTimeout(() => setIsResultOpen(false), 500);
 
       return () => {
         clearTimeout(durationTimeout);
         clearTimeout(closeTimeout);
+        clearTimeout(resultCloseTimeout);
       };
     }
   }, [status, startTime, approvalStartTime]);
