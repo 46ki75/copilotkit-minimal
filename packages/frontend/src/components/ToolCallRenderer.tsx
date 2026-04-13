@@ -148,7 +148,11 @@ export const ToolCallRenderer = ({
           />
         )}
       </div>
+    </>
+  );
 
+  const totalSpentTimeContent = (
+    <>
       <div className={styles["status-message"]}>
         <ElmMdiIcon d={mdiTimelineClock} size="1.25rem" />
         <ElmInlineText>Total time spent</ElmInlineText>
@@ -173,6 +177,7 @@ export const ToolCallRenderer = ({
       <div className={styles["detail-content"]}>
         {argsContent}
         {resultContent}
+        {status === ToolCallStatus.Complete && totalSpentTimeContent}
       </div>
     </div>
   );

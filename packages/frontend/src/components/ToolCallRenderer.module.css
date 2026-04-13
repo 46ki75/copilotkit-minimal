@@ -1,11 +1,12 @@
 .tool-call-renderer {
   overflow: hidden;
   display: grid;
+  grid-template-rows: 2rem 0fr;
   gap: 0.5rem;
-  transition: grid 200ms;
+  transition: grid 500ms;
 
   &.in-progress {
-    grid-template-rows: 2rem 1fr;
+    grid-template-rows: 2rem 0fr;
   }
 
   &.executing {
@@ -47,7 +48,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 0.5rem;
+  gap: 1rem;
   margin-left: 0.75rem;
   border-left: solid 1px oklch(from gray l c h / 0.25);
 
