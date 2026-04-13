@@ -10,7 +10,11 @@
   }
 
   &.requires-approval {
-    grid-template-rows: 2rem 1fr 4rem;
+    grid-template-rows: 2rem 0fr 4rem;
+
+    &.open {
+      grid-template-rows: 2rem 1fr 4rem;
+    }
   }
 }
 
