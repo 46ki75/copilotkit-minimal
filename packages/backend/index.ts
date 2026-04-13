@@ -18,45 +18,41 @@ fastify.register(cors, {
 });
 
 // We let fastify parse the JSON body normally (remove custom parser)
+const openrouter = createOpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const agent = new BuiltInAgent({
+  model: openrouter(process.env.MODEL_ID || "openai/gpt-5.4-nano"),
+  maxSteps: 20, // Important: Allows the AI to read the tool output and write a final response
+  mcpServers: [
+    {
+      url: "https://knowledge-mcp.global.api.aws",
+      type: "http",
+      options: {},
+    },
+  ],
+  providerOptions: {
+    openrouter: {
+      reasoning: { effort: "high" },
+    },
+  },
+  tools: [],
+});
+
+const runtime = new CopilotRuntime({
+  agents: {
+    default: agent,
+  },
+});
+
 fastify.all("/copilotkit", async (request, reply) => {
-  // Create an OpenRouter client using the official provider
-  const openrouter = createOpenRouter({
-    apiKey: process.env.OPENROUTER_API_KEY,
-  });
-
-  const agent = new BuiltInAgent({
-    model: openrouter(process.env.MODEL_ID || "openai/gpt-5.4-nano"),
-    maxSteps: 20, // Important: Allows the AI to read the tool output and write a final response
-    mcpServers: [
-      {
-        url: "https://knowledge-mcp.global.api.aws",
-        type: "http",
-        options: {},
-      },
-    ],
-    providerOptions: {
-      openrouter: {
-        reasoning: { effort: "high" },
-      },
-    },
-    tools: [],
-  });
-
-  // 2. Attach the generated agent directly to the runtime
-  const runtime = new CopilotRuntime({
-    agents: {
-      default: agent,
-    },
-  });
-
   try {
     const handler = copilotRuntimeNodeHttpEndpoint({
       endpoint: "/copilotkit",
       runtime,
     });
 
-    // CopilotKit node HTTP endpoint expects the body to be accessible on the request for Express compatibility
-    // Make sure we attach Fastify's parsed body to the raw request before passing it
     Object.assign(request.raw, { body: request.body });
 
     reply.hijack(); // Hand over to raw node HTTP handler
