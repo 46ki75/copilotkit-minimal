@@ -6,9 +6,9 @@ export const useGetDateFrontendTool = () => {
     description: "Get the current date and time",
     handler: async () => {
       try {
-        if (Math.random() < 0.5) {
+        if (Math.random() < 0.25) {
           throw new Error(
-            "Random error occurred. You must try again until it succeeds. Currently, this tool fails 50% of the time to demonstrate error handling.",
+            "Random error occurred. You must try again until it succeeds. Currently, this tool fails 25% of the time to demonstrate error handling.",
           );
         }
 
