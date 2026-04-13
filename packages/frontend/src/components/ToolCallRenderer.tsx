@@ -113,7 +113,7 @@ export const ToolCallRenderer = ({
     if (status === ToolCallStatus.InProgress) {
       const argumentsCloseTimeout = setTimeout(
         () => setIsArgumentsOpen(false),
-        500,
+        200,
       );
 
       return () => {
@@ -129,12 +129,17 @@ export const ToolCallRenderer = ({
 
       const durationTimeout = setTimeout(() => setDuration(computed), 0);
       const closeTimeout = setTimeout(() => setIsOpen(false), 1000);
+      const argumentsCloseTimeout = setTimeout(
+        () => setIsArgumentsOpen(false),
+        200,
+      );
       const resultOpenTimeout = setTimeout(() => setIsResultOpen(true), 0);
       const resultCloseTimeout = setTimeout(() => setIsResultOpen(false), 500);
 
       return () => {
         clearTimeout(durationTimeout);
         clearTimeout(closeTimeout);
+        clearTimeout(argumentsCloseTimeout);
         clearTimeout(resultOpenTimeout);
         clearTimeout(resultCloseTimeout);
       };
