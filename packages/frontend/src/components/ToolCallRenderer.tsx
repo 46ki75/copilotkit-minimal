@@ -28,19 +28,20 @@ import { clsx } from "clsx";
 const COLOR = {
   crimson: "#c56565",
   emerald: "#59b57c",
+  blue: "#6987b8",
 } as const;
 
 const TOOL_STATUS_CONFIG = {
   [ToolCallStatus.InProgress]: {
-    color: "#6987b8",
+    color: COLOR.blue,
     message: "Preparing",
   },
   [ToolCallStatus.Executing]: {
-    color: "#6987b8",
+    color: COLOR.blue,
     message: "Executing",
   },
   [ToolCallStatus.Complete]: {
-    color: "#4ba96f",
+    color: COLOR.emerald,
     message: "Success",
   },
 } as const;
@@ -209,8 +210,21 @@ export const ToolCallRenderer = ({
             >
               <ElmMdiIcon d={mdiChevronRight} size="1.25rem" />
             </span>
-            <ElmMdiIcon d={mdiProgressWrench} size="1.25rem" />
-            <ElmInlineText code>Preparing arguments...</ElmInlineText>
+            <ElmMdiIcon
+              d={mdiProgressWrench}
+              size="1.25rem"
+              color={
+                status === ToolCallStatus.InProgress ? COLOR.blue : undefined
+              }
+            />
+            <ElmInlineText
+              code
+              color={
+                status === ToolCallStatus.InProgress ? COLOR.blue : undefined
+              }
+            >
+              Preparing arguments...
+            </ElmInlineText>
           </div>
 
           <div
@@ -274,8 +288,21 @@ export const ToolCallRenderer = ({
               >
                 <ElmMdiIcon d={mdiChevronRight} size="1.25rem" />
               </span>
-              <ElmMdiIcon d={mdiWrenchClock} size="1.25rem" />
-              <ElmInlineText code>Executing...</ElmInlineText>
+              <ElmMdiIcon
+                d={mdiWrenchClock}
+                size="1.25rem"
+                color={
+                  status === ToolCallStatus.InProgress ? COLOR.blue : undefined
+                }
+              />
+              <ElmInlineText
+                code
+                color={
+                  status === ToolCallStatus.InProgress ? COLOR.blue : undefined
+                }
+              >
+                Executing...
+              </ElmInlineText>
             </div>
           )}
 
