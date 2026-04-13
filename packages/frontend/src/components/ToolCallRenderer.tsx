@@ -211,6 +211,7 @@ export const ToolCallRenderer = ({
 
           {onApprove && onReject && (
             <div className={styles["status-message"]}>
+              <ElmMdiIcon d={mdiCircleSmall} size="1.25rem" />
               <ElmMdiIcon d={mdiAccountClock} size="1.25rem" />
               <ElmInlineText code>Waiting for approval...</ElmInlineText>
             </div>
@@ -218,6 +219,7 @@ export const ToolCallRenderer = ({
 
           {approvalState === "approved" && (
             <div className={styles["status-message"]}>
+              <ElmMdiIcon d={mdiCircleSmall} size="1.25rem" />
               <ElmMdiIcon
                 d={mdiAccountCheck}
                 size="1.25rem"
@@ -231,6 +233,7 @@ export const ToolCallRenderer = ({
 
           {approvalState === "rejected" && (
             <div className={styles["status-message"]}>
+              <ElmMdiIcon d={mdiCircleSmall} size="1.25rem" />
               <ElmMdiIcon
                 d={mdiAccountRemove}
                 size="1.25rem"
