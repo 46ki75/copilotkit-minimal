@@ -1,7 +1,7 @@
 import { ElmToggleTheme } from "@elmethis/react";
-import { ChatContainer } from "./components/ChatContainer";
+import { ChatContainer } from "./containers/ChatContainer";
 import { ChatHistory } from "./components/ChatHistory";
-import { useChatHistory } from "./composables/chat-history";
+import { useChatHistory } from "./hooks/use-chat-history";
 
 import styles from "./App.module.css";
 import { useAgent } from "@copilotkit/react-core/v2";

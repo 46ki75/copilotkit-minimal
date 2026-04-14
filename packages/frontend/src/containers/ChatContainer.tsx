@@ -17,10 +17,10 @@ import {
 import styles from "./ChatContainer.module.css";
 import { useGenerateUuidFrontendTool } from "../frontend-tool/generate-uuid";
 import { useGetDateFrontendTool } from "../frontend-tool/get-date";
-import { UserMessage } from "./UserMessage";
-import { ScrollToBottomButton } from "./ScrollToBottomButton";
-import { SuggestionPill } from "./SuggestionPill";
-import { type useChatHistory } from "../composables/chat-history";
+import { UserMessage } from "../components/UserMessage";
+import { ScrollToBottomButton } from "../components/ScrollToBottomButton";
+import { SuggestionPill } from "../components/SuggestionPill";
+import { type useChatHistory } from "../hooks/use-chat-history";
 
 export interface ChatContainerProps {
   style?: React.CSSProperties;
@@ -125,9 +125,6 @@ export const ChatContainer = (props: ChatContainerProps) => {
                   {args.children}
                 </div>
               ),
-              // copyButton: (args) => {
-              //   return <button onClick={args.onClick}>A</button>;
-              // },
             },
             userMessage: {
               messageRenderer: (args) => {
@@ -151,7 +148,6 @@ export const ChatContainer = (props: ChatContainerProps) => {
             suggestion: SuggestionPill,
           }}
           scrollView={{
-            // The gradient overlay at the bottom of the scroll area.
             feather: () => null,
             scrollToBottomButton: ({ onClick }) => {
               return <ScrollToBottomButton onClick={onClick} />;

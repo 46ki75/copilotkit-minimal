@@ -4,7 +4,7 @@ import styles from "./ChatHistory.module.css";
 import { ElmInlineText, ElmMdiIcon } from "@elmethis/react";
 import { mdiChat, mdiChatPlus } from "@mdi/js";
 
-import { type useChatHistory } from "../composables/chat-history";
+import { type useChatHistory } from "../hooks/use-chat-history";
 
 export interface ChatHistoryProps {
   style?: React.CSSProperties;
