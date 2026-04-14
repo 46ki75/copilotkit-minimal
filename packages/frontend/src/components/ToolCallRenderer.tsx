@@ -102,13 +102,18 @@ export const ToolCallRenderer = ({
     return "pending";
   });
 
-  const [startTime] = useState(() => performance.now());
+  const startTimeRef = useRef<number | null>(null);
+
   const [approvalStartTime] = useState(() =>
     requiresApproval && approvalState === "pending" ? performance.now() : 0,
   );
   const approvalEndTimeRef = useRef(0);
 
   useEffect(() => {
+    if (startTimeRef.current === null) {
+      startTimeRef.current = performance.now();
+    }
+
     const timeouts: ReturnType<typeof setTimeout>[] = [];
     const add = (fn: () => void, delay: number) => {
       timeouts.push(setTimeout(fn, delay));
@@ -125,7 +130,7 @@ export const ToolCallRenderer = ({
         approvalStartTime > 0
           ? (approvalEndTimeRef.current || completeAt) - approvalStartTime
           : 0;
-      const computed = completeAt - startTime - approvalWait;
+      const computed = completeAt - (startTimeRef.current || 0) - approvalWait;
 
       add(() => setDuration(computed), 0);
       add(() => setIsOpen(false), 600);
@@ -135,7 +140,8 @@ export const ToolCallRenderer = ({
     }
 
     return () => timeouts.forEach(clearTimeout);
-  }, [status, startTime, approvalStartTime]);
+  }, [status, approvalStartTime]);
+
   const durationLabel =
     duration === null
       ? null
