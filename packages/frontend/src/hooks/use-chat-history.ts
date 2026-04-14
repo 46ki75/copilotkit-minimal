@@ -94,6 +94,23 @@ export const useChatHistory = () => {
     return selected;
   };
 
+  const deleteHistory = async (historyId: number) => {
+    await ChatHistoryDB.transaction(
+      "rw",
+      ChatHistoryDB.chatHistories,
+      ChatHistoryDB.chatMessages,
+      async () => {
+        await ChatHistoryDB.chatHistories.delete(historyId);
+        await ChatHistoryDB.chatMessages.delete(historyId);
+      },
+    );
+
+    // If the deleted history is currently selected, clear it
+    setCurrentHistoryWithMessages((prev) =>
+      prev?.id === historyId ? null : prev,
+    );
+  };
+
   useEffect(() => {
     (async () => {
       await refreshHistories();
@@ -107,5 +124,6 @@ export const useChatHistory = () => {
     selectHistory,
     createNewChat,
     saveMessagesToHistory,
+    deleteHistory,
   };
 };
