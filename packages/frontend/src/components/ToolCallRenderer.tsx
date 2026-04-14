@@ -100,23 +100,26 @@ export const ToolCallRenderer = ({
   const approvalEndTimeRef = useRef(0);
 
   useEffect(() => {
-    const openTimeout = setTimeout(() => {
-      setIsOpen(true);
-    }, 0);
-
-    return () => {
-      clearTimeout(openTimeout);
-    };
-  }, []);
-
-  useEffect(() => {
     if (status === ToolCallStatus.InProgress) {
+      const openTimeout = setTimeout(() => {
+        setIsOpen(true);
+      }, 0);
+
+      return () => {
+        clearTimeout(openTimeout);
+      };
+    } else if (status === ToolCallStatus.Executing) {
+      const openTimeout = setTimeout(() => {
+        setIsOpen(true);
+      }, 0);
+
       const argumentsCloseTimeout = setTimeout(
         () => setIsArgumentsOpen(false),
         200,
       );
 
       return () => {
+        clearTimeout(openTimeout);
         clearTimeout(argumentsCloseTimeout);
       };
     } else if (status === ToolCallStatus.Complete) {
