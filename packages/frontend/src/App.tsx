@@ -4,10 +4,12 @@ import { ChatHistory } from "./components/ChatHistory";
 import { useChatHistory } from "./hooks/use-chat-history";
 
 import styles from "./App.module.css";
+import "@copilotkit/react-core/v2/styles.css";
 import {
-  CopilotKit,
+  CopilotKitProvider,
   useAgent,
   defineToolCallRenderer,
+  createA2UIMessageRenderer,
 } from "@copilotkit/react-core/v2";
 import { useRef } from "react";
 
@@ -63,7 +65,7 @@ function AppContent() {
 
 function App() {
   return (
-    <CopilotKit
+    <CopilotKitProvider
       runtimeUrl="http://localhost:3000/copilotkit"
       renderToolCalls={[
         defineToolCallRenderer({
@@ -80,9 +82,14 @@ function App() {
           },
         }),
       ]}
+      renderActivityMessages={[
+        createA2UIMessageRenderer({
+          theme: {},
+        }),
+      ]}
     >
       <AppContent />
-    </CopilotKit>
+    </CopilotKitProvider>
   );
 }
 

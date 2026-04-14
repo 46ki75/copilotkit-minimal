@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@copilotkit/a2ui-renderer": "^1.55.3",
     "@copilotkit/react-core": "^1.55.3",
     "@elmethis/react": "^0.3.8",
     "@mdi/js": "^7.4.47",

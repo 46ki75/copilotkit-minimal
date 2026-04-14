@@ -85,8 +85,8 @@ export const ChatContainer = (props: ChatContainerProps) => {
         message: " What is a new service called Amazon S3 Files?",
       },
       {
-        title: "Ask about how to use axum web framework",
-        message: " How to use axum web framework in Rust?",
+        title: "Ask about Toasty in Rust",
+        message: " How to use the ORM called Toasty in Rust?",
       },
       {
         title: "Ask for UUID v4",
