@@ -79,7 +79,12 @@ export const ChatContainer = (props: ChatContainerProps) => {
 
   return (
     <div style={props.style}>
-      <main data-copilotkit>
+      <main data-copilotkit className={styles["wrapper"]}>
+        <div className={styles.title}>
+          <ElmInlineText>
+            {currentHistory?.title}:{currentHistory?.id}
+          </ElmInlineText>
+        </div>
         <CopilotChat
           className={styles["chat-container"]}
           messageView={{
