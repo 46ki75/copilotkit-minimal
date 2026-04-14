@@ -21,14 +21,16 @@ export const useChatHistory = () => {
   const [currentHistory, setCurrentHistory] = useState<ChatHistoryRecord>();
 
   const createNewChat = async () => {
-    await ChatHistoryDB.chatHistories.add({
+    const id = await ChatHistoryDB.chatHistories.add({
       title: "New Chat",
       messages: [],
     });
 
     const allHistories = await ChatHistoryDB.chatHistories.reverse().toArray();
     setHistories(allHistories);
-    setCurrentHistory(allHistories[0]);
+    const created = allHistories.find((h) => h.id === id);
+    setCurrentHistory(created);
+    return created;
   };
 
   const saveMessagesToHistory = async (

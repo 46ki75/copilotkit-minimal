@@ -29,7 +29,7 @@ export interface ChatContainerProps {
 
 export const ChatContainer = (props: ChatContainerProps) => {
   const { agent } = useAgent();
-  const { currentHistory, saveMessagesToHistory } = props.chatHistory;
+  const { currentHistory, saveMessagesToHistory, createNewChat } = props.chatHistory;
 
   const currentHistoryRef = useRef(currentHistory);
 
@@ -41,13 +41,19 @@ export const ChatContainer = (props: ChatContainerProps) => {
     const { unsubscribe } = agent.subscribe({
       onRunFinalized: async () => {
         const history = currentHistoryRef.current;
-        if (!history?.id) return;
-        await saveMessagesToHistory(history.id, agent.messages);
+        if (history?.id) {
+          await saveMessagesToHistory(history.id, agent.messages);
+        } else {
+          const created = await createNewChat();
+          if (created?.id) {
+            await saveMessagesToHistory(created.id, agent.messages);
+          }
+        }
       },
     });
 
     return unsubscribe;
-  }, [agent, saveMessagesToHistory]);
+  }, [agent, saveMessagesToHistory, createNewChat]);
 
   useGetDateFrontendTool();
   useGenerateUuidFrontendTool();
