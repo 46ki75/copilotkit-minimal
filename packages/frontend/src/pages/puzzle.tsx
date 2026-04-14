@@ -207,8 +207,20 @@ export const Puzzle = (props: PuzzleProps) => {
     suggestions: [
       {
         title: "Solve the puzzle",
-        message:
-          "Can you solve the puzzle? You can move pieces using tools interactively.",
+        message: `Solve the 4x4 slide puzzle step by step using the slide_tile tool.
+
+Rules:
+- Call slide_tile repeatedly. Each call returns the updated board and slidable_tiles.
+- Keep going until the tool response contains "solved": true.
+- Never stop early — the puzzle may take 50 or more moves.
+- Only tiles listed in slidable_tiles can be moved on each turn.
+
+Strategy (row-by-row):
+1. Place tiles 1, 2, 3, 4 in the top row.
+2. Place tiles 5, 6, 7, 8 in the second row.
+3. Solve the remaining 2×4 bottom section column by column (left to right).
+
+Before each move, read the current board from the tool result and choose the tile from slidable_tiles that makes progress toward the goal. Start now.`,
       },
     ],
   });
