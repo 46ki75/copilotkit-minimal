@@ -14,7 +14,8 @@ export interface ChatHistoryProps {
 export const ChatHistory = (props: ChatHistoryProps) => {
   const { agent } = useAgent();
 
-  const { histories, createNewChat } = useChatHistory();
+  const { histories, currentHistory, selectHistory, createNewChat } =
+    useChatHistory();
 
   const handleNewChat = async () => {
     agent.setMessages([]);
@@ -22,10 +23,8 @@ export const ChatHistory = (props: ChatHistoryProps) => {
   };
 
   const handleSelectChat = (historyId: number) => {
-    const selectedHistory = histories?.find((h) => h.id === historyId);
-    if (selectedHistory) {
-      agent.setMessages(selectedHistory.messages);
-    }
+    selectHistory(historyId);
+    agent.setMessages(currentHistory?.messages || []);
   };
 
   return (
