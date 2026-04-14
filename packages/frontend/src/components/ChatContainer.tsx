@@ -29,7 +29,8 @@ export interface ChatContainerProps {
 
 export const ChatContainer = (props: ChatContainerProps) => {
   const { agent } = useAgent();
-  const { currentHistory, saveMessagesToHistory, createNewChat } = props.chatHistory;
+  const { currentHistory, saveMessagesToHistory, createNewChat } =
+    props.chatHistory;
 
   const currentHistoryRef = useRef(currentHistory);
 
@@ -89,7 +90,13 @@ export const ChatContainer = (props: ChatContainerProps) => {
       <main data-copilotkit className={styles["wrapper"]}>
         <div className={styles.title}>
           <ElmInlineText>
-            {currentHistory?.title}:{currentHistory?.id}
+            {currentHistory ? (
+              <>
+                {currentHistory?.title}:{currentHistory?.id}
+              </>
+            ) : (
+              <>Hello</>
+            )}
           </ElmInlineText>
         </div>
         <CopilotChat

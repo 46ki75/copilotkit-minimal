@@ -18,7 +18,7 @@ ChatHistoryDB.version(1).stores({
 
 export const useChatHistory = () => {
   const [histories, setHistories] = useState<ChatHistoryRecord[]>();
-  const [currentHistory, setCurrentHistory] = useState<ChatHistoryRecord>();
+  const [currentHistory, setCurrentHistory] = useState<ChatHistoryRecord | null | undefined>();
 
   const createNewChat = async () => {
     const id = await ChatHistoryDB.chatHistories.add({
@@ -43,7 +43,11 @@ export const useChatHistory = () => {
     setHistories(allHistories);
   };
 
-  const selectHistory = async (historyId: number) => {
+  const selectHistory = async (historyId: number | null) => {
+    if (historyId === null) {
+      setCurrentHistory(null);
+      return null;
+    }
     const selectedHistory = await ChatHistoryDB.chatHistories.get(historyId);
     if (selectedHistory) {
       setCurrentHistory(selectedHistory);

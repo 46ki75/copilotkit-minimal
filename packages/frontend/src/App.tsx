@@ -10,12 +10,12 @@ import { useRef } from "react";
 function App() {
   const { agent } = useAgent();
   const chatHistory = useChatHistory();
-  const { createNewChat, selectHistory } = chatHistory;
+  const { selectHistory } = chatHistory;
   const latestSelectIdRef = useRef<number | null>(null);
 
   const handleNewChat = async () => {
     agent.setMessages([]);
-    await createNewChat();
+    selectHistory(null);
   };
 
   const handleSelectChat = async (historyId: number) => {
