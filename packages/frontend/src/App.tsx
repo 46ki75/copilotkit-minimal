@@ -12,14 +12,7 @@ function App() {
       </div>
 
       <div className={styles["app-container"]}>
-        <ChatHistory
-          histories={[
-            {
-              id: "05385def-6c6d-4c4a-ba8d-6684f734fe05",
-              title: "test",
-            },
-          ]}
-        />
+        <ChatHistory />
 
         <div style={{ flex: 1 }}>
           <ChatContainer />
