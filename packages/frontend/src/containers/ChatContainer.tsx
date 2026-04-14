@@ -32,7 +32,7 @@ export const ChatContainer = (props: ChatContainerProps) => {
   const {
     currentHistoryWithMessages,
     saveMessagesToHistory,
-    createNewHistory: createNewChat,
+    createHistory: createNewChat,
     selectHistory,
   } = props.chatHistory;
 

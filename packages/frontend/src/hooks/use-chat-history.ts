@@ -37,7 +37,7 @@ export const useChatHistory = () => {
     return allHistories;
   };
 
-  const createNewHistory = async () => {
+  const createHistory = async () => {
     const id = await ChatHistoryDB.transaction(
       "rw",
       ChatHistoryDB.chatHistories,
@@ -122,7 +122,7 @@ export const useChatHistory = () => {
     histories,
     currentHistoryWithMessages,
     selectHistory,
-    createNewHistory,
+    createHistory,
     saveMessagesToHistory,
     deleteHistory,
   };
