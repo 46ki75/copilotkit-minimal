@@ -110,6 +110,9 @@ export const ChatContainer = (props: ChatContainerProps) => {
         </div>
         <CopilotChat
           className={styles["chat-container"]}
+          attachments={{
+            enabled: true,
+          }}
           messageView={{
             /*
              * @see {@link https://docs.copilotkit.ai/built-in-agent/custom-look-and-feel/slots#nested-slots-drill-down}
