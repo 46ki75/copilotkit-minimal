@@ -109,28 +109,16 @@ export const ToolCallRenderer = ({
   const approvalEndTimeRef = useRef(0);
 
   useEffect(() => {
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
+    const add = (fn: () => void, delay: number) => {
+      timeouts.push(setTimeout(fn, delay));
+    };
+
     if (status === ToolCallStatus.InProgress) {
-      const openTimeout = setTimeout(() => {
-        setIsOpen(true);
-      }, 0);
-
-      return () => {
-        clearTimeout(openTimeout);
-      };
+      add(() => setIsOpen(true), 0);
     } else if (status === ToolCallStatus.Executing) {
-      const openTimeout = setTimeout(() => {
-        setIsOpen(true);
-      }, 0);
-
-      const argumentsCloseTimeout = setTimeout(
-        () => setIsArgumentsOpen(false),
-        200,
-      );
-
-      return () => {
-        clearTimeout(openTimeout);
-        clearTimeout(argumentsCloseTimeout);
-      };
+      add(() => setIsOpen(true), 0);
+      add(() => setIsArgumentsOpen(false), 200);
     } else if (status === ToolCallStatus.Complete) {
       const completeAt = performance.now();
       const approvalWait =
@@ -139,23 +127,14 @@ export const ToolCallRenderer = ({
           : 0;
       const computed = completeAt - startTime - approvalWait;
 
-      const durationTimeout = setTimeout(() => setDuration(computed), 0);
-      const closeTimeout = setTimeout(() => setIsOpen(false), 600);
-      const argumentsCloseTimeout = setTimeout(
-        () => setIsArgumentsOpen(false),
-        200,
-      );
-      const resultOpenTimeout = setTimeout(() => setIsResultOpen(true), 0);
-      const resultCloseTimeout = setTimeout(() => setIsResultOpen(false), 400);
-
-      return () => {
-        clearTimeout(durationTimeout);
-        clearTimeout(closeTimeout);
-        clearTimeout(argumentsCloseTimeout);
-        clearTimeout(resultOpenTimeout);
-        clearTimeout(resultCloseTimeout);
-      };
+      add(() => setDuration(computed), 0);
+      add(() => setIsOpen(false), 600);
+      add(() => setIsArgumentsOpen(false), 200);
+      add(() => setIsResultOpen(true), 0);
+      add(() => setIsResultOpen(false), 400);
     }
+
+    return () => timeouts.forEach(clearTimeout);
   }, [status, startTime, approvalStartTime]);
   const durationLabel =
     duration === null
