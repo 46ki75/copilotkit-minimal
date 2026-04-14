@@ -88,14 +88,23 @@ export const ToolCallRenderer = ({
   const [isResultOpen, setIsResultOpen] = useState(false);
   const [duration, setDuration] = useState<number | null>(null);
 
+  const parsedIsErrorInit = JSON.parse(result ?? "null")?.isError;
+  const isErrorInit =
+    typeof parsedIsErrorInit === "boolean" ? parsedIsErrorInit : false;
+
   const requiresApproval = !!(onApprove && onReject);
   const [approvalState, setApprovalState] = useState<
     "pending" | "approved" | "rejected" | "not-required"
-  >(requiresApproval ? "pending" : "not-required");
+  >(() => {
+    if (!requiresApproval) return "not-required";
+    if (status === ToolCallStatus.Complete)
+      return isErrorInit ? "rejected" : "approved";
+    return "pending";
+  });
 
   const [startTime] = useState(() => performance.now());
   const [approvalStartTime] = useState(() =>
-    requiresApproval ? performance.now() : 0,
+    requiresApproval && approvalState === "pending" ? performance.now() : 0,
   );
   const approvalEndTimeRef = useRef(0);
 

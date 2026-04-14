@@ -5,7 +5,7 @@ import { ToolCallRenderer } from "../components/ToolCallRenderer";
 import { useConfirm } from "../hooks/use-confirm";
 
 export const useGenerateUuidFrontendTool = () => {
-  const { showConfirm, handleResponse, confirmState } = useConfirm();
+  const { showConfirm, handleResponse } = useConfirm();
 
   useFrontendTool({
     name: "generate_uuid",
@@ -52,8 +52,8 @@ export const useGenerateUuidFrontendTool = () => {
           status={status}
           result={result}
           args={args}
-          onApprove={confirmState ? () => handleResponse(true) : undefined}
-          onReject={confirmState ? () => handleResponse(false) : undefined}
+          onApprove={() => handleResponse(true)}
+          onReject={() => handleResponse(false)}
         ></ToolCallRenderer>
       );
     },
