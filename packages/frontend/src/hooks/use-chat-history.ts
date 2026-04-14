@@ -61,7 +61,7 @@ export const useChatHistory = () => {
         .reverse()
         .toArray();
       setHistories(allHistories);
-      setCurrentHistory(allHistories[0]);
+      setCurrentHistory(null);
     })();
   }, []);
 
