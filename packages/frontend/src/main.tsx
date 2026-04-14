@@ -6,16 +6,11 @@ import "@elmethis/react/style.css";
 
 import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router";
-import { PuzzleApp } from "./pages/puzzle-app.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-  },
-  {
-    path: "/puzzle",
-    element: <PuzzleApp />,
   },
 ]);
 
