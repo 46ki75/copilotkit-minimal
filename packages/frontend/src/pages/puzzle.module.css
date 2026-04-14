@@ -1,0 +1,74 @@
+.puzzle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  font-family: sans-serif;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 1.5rem;
+}
+
+.moves {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  color: #555;
+}
+
+.solved {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2a9d2a;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 80px);
+  grid-template-rows: repeat(4, 80px);
+  gap: 4px;
+  margin: 12px 0 16px;
+  background: #ccc;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.tile {
+  width: 80px;
+  height: 80px;
+  background: #4a90d9;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.1s, transform 0.1s;
+}
+
+.tile:hover:not(:disabled) {
+  background: #357abf;
+  transform: scale(0.96);
+}
+
+.empty {
+  background: transparent;
+  cursor: default;
+}
+
+.reset {
+  padding: 8px 24px;
+  font-size: 1rem;
+  background: #555;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.reset:hover {
+  background: #333;
+}
