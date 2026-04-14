@@ -7,6 +7,8 @@ import { mdiChat } from "@mdi/js";
 export interface ChatHistoryProps {
   style?: React.CSSProperties;
 
+  handleNewChat?: () => void;
+
   histories: Array<{
     id: string;
     title: string;
@@ -15,13 +17,13 @@ export interface ChatHistoryProps {
 }
 
 export const ChatHistory = (props: ChatHistoryProps) => {
-  const handleNewChat = () => {
-    console.log("New chat clicked");
-  };
-
   return (
     <div className={styles["chat-history"]} style={props.style}>
-      <div key={"new"} className={styles["chat-item"]} onClick={handleNewChat}>
+      <div
+        key={"new"}
+        className={styles["chat-item"]}
+        onClick={props.handleNewChat}
+      >
         <ElmMdiIcon d={mdiChat} />
         <ElmInlineText>New Chat</ElmInlineText>
       </div>
