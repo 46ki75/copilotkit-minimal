@@ -4,10 +4,16 @@ import { ChatHistory } from "./components/ChatHistory";
 import { useChatHistory } from "./hooks/use-chat-history";
 
 import styles from "./App.module.css";
-import { useAgent } from "@copilotkit/react-core/v2";
+import {
+  CopilotKit,
+  useAgent,
+  defineToolCallRenderer,
+} from "@copilotkit/react-core/v2";
 import { useRef } from "react";
 
-function App() {
+import { ToolCallRenderer } from "./components/ToolCallRenderer.tsx";
+
+function AppContent() {
   const { agent } = useAgent();
   const chatHistory = useChatHistory();
   const { selectHistory } = chatHistory;
@@ -52,6 +58,31 @@ function App() {
         </div>
       </div>
     </>
+  );
+}
+
+function App() {
+  return (
+    <CopilotKit
+      runtimeUrl="http://localhost:3000/copilotkit"
+      renderToolCalls={[
+        defineToolCallRenderer({
+          name: "*",
+          render: ({ name, status, result, args }) => {
+            return (
+              <ToolCallRenderer
+                name={name}
+                status={status}
+                result={result}
+                args={args}
+              />
+            );
+          },
+        }),
+      ]}
+    >
+      <AppContent />
+    </CopilotKit>
   );
 }
 
