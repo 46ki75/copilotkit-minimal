@@ -9,6 +9,14 @@ import { CopilotKit } from "@copilotkit/react-core";
 
 import { ToolCallRenderer } from "./components/ToolCallRenderer.tsx";
 import { defineToolCallRenderer } from "@copilotkit/react-core/v2";
+import { createBrowserRouter, RouterProvider } from "react-router";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+  },
+]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -30,7 +38,7 @@ createRoot(document.getElementById("root")!).render(
         }),
       ]}
     >
-      <App />
+      <RouterProvider router={router} />
     </CopilotKit>
   </StrictMode>,
 );
