@@ -12,7 +12,7 @@ export const SuggestionPill = React.forwardRef<
   return (
     <div className={styles["suggestion-pill"]}>
       <div>{icon}</div>
-      <ElmMdiIcon d={mdiMessageReplyTextOutline} size="1rem" />
+      <ElmMdiIcon d={mdiMessageReplyTextOutline} size="1rem" color="#c6ab69" />
       <div
         ref={ref as React.Ref<HTMLDivElement>}
         onClick={onClick as React.MouseEventHandler}
