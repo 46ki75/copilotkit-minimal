@@ -2,7 +2,7 @@ import React from "react";
 
 import styles from "./ChatHistory.module.css";
 import { ElmInlineText, ElmMdiIcon } from "@elmethis/react";
-import { mdiChat } from "@mdi/js";
+import { mdiChat, mdiChatPlus } from "@mdi/js";
 import { useAgent } from "@copilotkit/react-core/v2";
 
 export interface ChatHistoryProps {
@@ -25,7 +25,7 @@ export const ChatHistory = (props: ChatHistoryProps) => {
   return (
     <div className={styles["chat-history"]} style={props.style}>
       <div key={"new"} className={styles["chat-item"]} onClick={handleNewChat}>
-        <ElmMdiIcon d={mdiChat} />
+        <ElmMdiIcon d={mdiChatPlus} />
         <ElmInlineText>New Chat</ElmInlineText>
       </div>
 
