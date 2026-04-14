@@ -2,7 +2,7 @@ import React from "react";
 
 import styles from "./ChatHistory.module.css";
 import { ElmInlineText, ElmMdiIcon } from "@elmethis/react";
-import { mdiChat, mdiChatPlus } from "@mdi/js";
+import { mdiChat, mdiChatPlus, mdiDelete } from "@mdi/js";
 
 import { type useChatHistory } from "../hooks/use-chat-history";
 
@@ -12,6 +12,7 @@ export interface ChatHistoryProps {
 
   handleNewChat: () => void;
   handleSelectChat: (historyId: number) => void;
+  handleDeleteChat: (historyId: number) => void;
 }
 
 export const ChatHistory = (props: ChatHistoryProps) => {
@@ -38,6 +39,16 @@ export const ChatHistory = (props: ChatHistoryProps) => {
           <ElmInlineText>
             {history.title}:{history.id}
           </ElmInlineText>
+
+          <span
+            className={styles["delete-icon"]}
+            onClick={(e) => {
+              e.stopPropagation();
+              props.handleDeleteChat(history.id);
+            }}
+          >
+            <ElmMdiIcon d={mdiDelete} color="#c56565" />
+          </span>
         </div>
       ))}
     </div>

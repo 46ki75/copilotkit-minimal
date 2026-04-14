@@ -105,6 +105,8 @@ export const useChatHistory = () => {
       },
     );
 
+    await refreshHistories();
+
     // If the deleted history is currently selected, clear it
     setCurrentHistoryWithMessages((prev) =>
       prev?.id === historyId ? null : prev,

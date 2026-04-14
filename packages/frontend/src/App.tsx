@@ -25,6 +25,14 @@ function App() {
     agent.setMessages(selected?.messages || []);
   };
 
+  const handleDeleteChat = async (historyId: number) => {
+    await chatHistory.deleteHistory(historyId);
+    if (latestSelectIdRef.current === historyId) {
+      agent.setMessages([]);
+      selectHistory(null);
+    }
+  };
+
   return (
     <>
       <div className={styles["toggle-theme"]}>
@@ -36,6 +44,7 @@ function App() {
           chatHistory={chatHistory}
           handleNewChat={handleNewChat}
           handleSelectChat={handleSelectChat}
+          handleDeleteChat={handleDeleteChat}
         />
 
         <div style={{ flex: 1 }}>
