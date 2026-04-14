@@ -28,6 +28,7 @@ export const useChatHistory = () => {
 
     const allHistories = await ChatHistoryDB.chatHistories.reverse().toArray();
     setHistories(allHistories);
+    setCurrentHistory(allHistories[0]);
   };
 
   const saveMessagesToHistory = async (
@@ -53,6 +54,7 @@ export const useChatHistory = () => {
         .reverse()
         .toArray();
       setHistories(allHistories);
+      setCurrentHistory(allHistories[0]);
     })();
   }, []);
 

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   CopilotChat,
+  useAgent,
   useConfigureSuggestions,
 } from "@copilotkit/react-core/v2";
 
@@ -19,12 +20,34 @@ import { useGetDateFrontendTool } from "../frontend-tool/get-date";
 import { UserMessage } from "./UserMessage";
 import { ScrollToBottomButton } from "./ScrollToBottomButton";
 import { SuggestionPill } from "./SuggestionPill";
+import { useChatHistory } from "../composables/chat-history";
 
 export interface ChatContainerProps {
   style?: React.CSSProperties;
 }
 
 export const ChatContainer = (props: ChatContainerProps) => {
+  const { agent } = useAgent();
+  const { currentHistory, saveMessagesToHistory } = useChatHistory();
+
+  const currentHistoryRef = useRef(currentHistory);
+
+  useEffect(() => {
+    currentHistoryRef.current = currentHistory;
+  }, [currentHistory]);
+
+  useEffect(() => {
+    const { unsubscribe } = agent.subscribe({
+      onRunFinalized: async () => {
+        const history = currentHistoryRef.current;
+        if (!history?.id) return;
+        await saveMessagesToHistory(history.id, agent.messages);
+      },
+    });
+
+    return unsubscribe;
+  }, [agent, saveMessagesToHistory]);
+
   useGetDateFrontendTool();
   useGenerateUuidFrontendTool();
 
