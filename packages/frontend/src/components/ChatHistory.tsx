@@ -15,8 +15,17 @@ export interface ChatHistoryProps {
 }
 
 export const ChatHistory = (props: ChatHistoryProps) => {
+  const handleNewChat = () => {
+    console.log("New chat clicked");
+  };
+
   return (
     <div className={styles["chat-history"]} style={props.style}>
+      <div key={"new"} className={styles["chat-item"]} onClick={handleNewChat}>
+        <ElmMdiIcon d={mdiChat} />
+        <ElmInlineText>New Chat</ElmInlineText>
+      </div>
+
       {props.histories.map((history) => (
         <div
           key={history.id}
