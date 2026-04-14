@@ -140,13 +140,13 @@ export const ToolCallRenderer = ({
       const computed = completeAt - startTime - approvalWait;
 
       const durationTimeout = setTimeout(() => setDuration(computed), 0);
-      const closeTimeout = setTimeout(() => setIsOpen(false), 1000);
+      const closeTimeout = setTimeout(() => setIsOpen(false), 600);
       const argumentsCloseTimeout = setTimeout(
         () => setIsArgumentsOpen(false),
         200,
       );
       const resultOpenTimeout = setTimeout(() => setIsResultOpen(true), 0);
-      const resultCloseTimeout = setTimeout(() => setIsResultOpen(false), 500);
+      const resultCloseTimeout = setTimeout(() => setIsResultOpen(false), 400);
 
       return () => {
         clearTimeout(durationTimeout);
