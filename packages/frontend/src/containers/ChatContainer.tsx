@@ -21,6 +21,7 @@ import { UserMessage } from "../components/UserMessage";
 import { ScrollToBottomButton } from "../components/ScrollToBottomButton";
 import { SuggestionPill } from "../components/SuggestionPill";
 import { type useChatHistory } from "../hooks/use-chat-history";
+import { useUuidCrd } from "../gen-ui/uuid-card";
 
 export interface ChatContainerProps {
   style?: React.CSSProperties;
@@ -64,8 +65,13 @@ export const ChatContainer = (props: ChatContainerProps) => {
     return unsubscribe;
   }, [agent, saveMessagesToHistory, createNewChat, selectHistory]);
 
+  // Register frontend tools
   useGetDateFrontendTool();
   useGenerateUuidFrontendTool();
+
+  // Display-only component
+  // <https://docs.copilotkit.ai/integrations/built-in-agent/generative-ui/your-components/display-only>
+  useUuidCrd();
 
   useConfigureSuggestions({
     available: "always",
