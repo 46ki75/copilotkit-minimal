@@ -10,7 +10,7 @@ import { CopilotKit } from "@copilotkit/react-core";
 import { ToolCallRenderer } from "./components/ToolCallRenderer.tsx";
 import { defineToolCallRenderer } from "@copilotkit/react-core/v2";
 import { createBrowserRouter, RouterProvider } from "react-router";
-import { Puzzle } from "./pages/puzzle.tsx";
+import { PuzzleApp } from "./pages/puzzle-app.tsx";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/puzzle",
-    element: <Puzzle />,
+    element: <PuzzleApp />,
   },
 ]);
 
