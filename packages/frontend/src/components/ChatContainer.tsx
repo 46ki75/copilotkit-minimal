@@ -20,15 +20,16 @@ import { useGetDateFrontendTool } from "../frontend-tool/get-date";
 import { UserMessage } from "./UserMessage";
 import { ScrollToBottomButton } from "./ScrollToBottomButton";
 import { SuggestionPill } from "./SuggestionPill";
-import { useChatHistory } from "../composables/chat-history";
+import { type useChatHistory } from "../composables/chat-history";
 
 export interface ChatContainerProps {
   style?: React.CSSProperties;
+  chatHistory: ReturnType<typeof useChatHistory>;
 }
 
 export const ChatContainer = (props: ChatContainerProps) => {
   const { agent } = useAgent();
-  const { currentHistory, saveMessagesToHistory } = useChatHistory();
+  const { currentHistory, saveMessagesToHistory } = props.chatHistory;
 
   const currentHistoryRef = useRef(currentHistory);
 

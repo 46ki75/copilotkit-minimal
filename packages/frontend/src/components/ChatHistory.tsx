@@ -5,17 +5,18 @@ import { ElmInlineText, ElmMdiIcon } from "@elmethis/react";
 import { mdiChat, mdiChatPlus } from "@mdi/js";
 import { useAgent } from "@copilotkit/react-core/v2";
 
-import { useChatHistory } from "../composables/chat-history";
+import { type useChatHistory } from "../composables/chat-history";
 
 export interface ChatHistoryProps {
   style?: React.CSSProperties;
+  chatHistory: ReturnType<typeof useChatHistory>;
 }
 
 export const ChatHistory = (props: ChatHistoryProps) => {
   const { agent } = useAgent();
 
   const { histories, currentHistory, selectHistory, createNewChat } =
-    useChatHistory();
+    props.chatHistory;
 
   const handleNewChat = async () => {
     agent.setMessages([]);
