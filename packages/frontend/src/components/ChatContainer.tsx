@@ -29,6 +29,7 @@ export const ChatContainer = (props: ChatContainerProps) => {
   useGenerateUuidFrontendTool();
 
   useConfigureSuggestions({
+    available: "always",
     suggestions: [
       {
         title: "What time is it in Tokyo?",
