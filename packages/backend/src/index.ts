@@ -34,7 +34,7 @@ const agent = new BuiltInAgent({
   ],
   providerOptions: {
     openrouter: {
-      reasoning: { effort: "high" },
+      reasoning: { effort: "medium" },
     },
   },
   tools: [],

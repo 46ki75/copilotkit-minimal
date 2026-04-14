@@ -8,6 +8,8 @@ import {
 
 import styles from "./puzzle.module.css";
 
+import strats from "./llm-slide-puzzle-guide.md?raw";
+
 export interface PuzzleProps {
   style?: React.CSSProperties;
 }
@@ -208,6 +210,8 @@ export const Puzzle = (props: PuzzleProps) => {
       {
         title: "Solve the puzzle",
         message: `Solve the 4x4 slide puzzle step by step using the slide_tile tool.
+
+${strats}
 
 Rules:
 - Call slide_tile repeatedly. Each call returns the updated board and slidable_tiles.
