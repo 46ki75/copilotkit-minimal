@@ -21,6 +21,13 @@ export const ChatHistory = (props: ChatHistoryProps) => {
     await createNewChat();
   };
 
+  const handleSelectChat = (historyId: number) => {
+    const selectedHistory = histories?.find((h) => h.id === historyId);
+    if (selectedHistory) {
+      agent.setMessages(selectedHistory.messages);
+    }
+  };
+
   return (
     <div className={styles["chat-history"]} style={props.style}>
       <div key={"new"} className={styles["chat-item"]} onClick={handleNewChat}>
@@ -29,7 +36,11 @@ export const ChatHistory = (props: ChatHistoryProps) => {
       </div>
 
       {histories?.map((history) => (
-        <div key={history.id} className={styles["chat-item"]}>
+        <div
+          key={history.id}
+          className={styles["chat-item"]}
+          onClick={() => handleSelectChat(history.id)}
+        >
           <ElmMdiIcon d={mdiChat} />
           <ElmInlineText>
             {history.title}:{history.id}
