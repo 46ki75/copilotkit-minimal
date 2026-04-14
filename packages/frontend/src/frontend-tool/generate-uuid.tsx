@@ -1,6 +1,6 @@
 import { v4, v7 } from "uuid";
 import z from "zod";
-import { useFrontendToolWithApproval } from "./use-frontend-tool-with-approval";
+import { useFrontendToolWithApproval } from "../hooks/use-frontend-tool-with-approval";
 
 export const useGenerateUuidFrontendTool = () => {
   useFrontendToolWithApproval({

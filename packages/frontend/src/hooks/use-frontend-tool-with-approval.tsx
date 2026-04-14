@@ -1,7 +1,7 @@
 import { useFrontendTool } from "@copilotkit/react-core/v2";
 import type { ReactFrontendTool } from "@copilotkit/react-core/v2";
 import { ToolCallRenderer } from "../components/ToolCallRenderer";
-import { useConfirm } from "../hooks/use-confirm";
+import { useConfirm } from "./use-confirm";
 
 export type ExtendedToolOptions<
   T extends Record<string, unknown> = Record<string, unknown>,
