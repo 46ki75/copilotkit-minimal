@@ -30,17 +30,17 @@ export interface ChatContainerProps {
 export const ChatContainer = (props: ChatContainerProps) => {
   const { agent } = useAgent();
   const {
-    currentHistory,
+    currentHistoryWithMessages,
     saveMessagesToHistory,
     createNewChat,
     selectHistory,
   } = props.chatHistory;
 
-  const currentHistoryRef = useRef(currentHistory);
+  const currentHistoryRef = useRef(currentHistoryWithMessages);
 
   useEffect(() => {
-    currentHistoryRef.current = currentHistory;
-  }, [currentHistory]);
+    currentHistoryRef.current = currentHistoryWithMessages;
+  }, [currentHistoryWithMessages]);
 
   useEffect(() => {
     const { unsubscribe } = agent.subscribe({
@@ -98,9 +98,10 @@ export const ChatContainer = (props: ChatContainerProps) => {
       <main data-copilotkit className={styles["wrapper"]}>
         <div className={styles.title}>
           <ElmInlineText>
-            {currentHistory ? (
+            {currentHistoryWithMessages ? (
               <>
-                {currentHistory?.title}:{currentHistory?.id}
+                {currentHistoryWithMessages?.title}:
+                {currentHistoryWithMessages?.id}
               </>
             ) : (
               <>Hello</>
