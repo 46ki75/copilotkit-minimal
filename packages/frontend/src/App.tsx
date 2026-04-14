@@ -6,16 +6,9 @@ import styles from "./App.module.css";
 
 function App() {
   return (
-    <div>
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          padding: ".5rem",
-        }}
-      >
-        <ElmToggleTheme />
+    <>
+      <div className={styles["toggle-theme"]}>
+        <ElmToggleTheme size={64} />
       </div>
 
       <div className={styles["app-container"]}>
@@ -27,9 +20,12 @@ function App() {
             },
           ]}
         />
-        <ChatContainer />
+
+        <div style={{ flex: 1 }}>
+          <ChatContainer />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

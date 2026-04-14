@@ -1,6 +1,17 @@
 .app-container {
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  flex-direction: row;
+  justify-content: space-between;
   gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.toggle-theme {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 0.5rem;
+  z-index: 100;
 }
