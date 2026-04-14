@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import styles from "./ChatHistory.module.css";
 import { ElmInlineText, ElmMdiIcon } from "@elmethis/react";
 import { mdiChat, mdiChatPlus } from "@mdi/js";
 import { useAgent } from "@copilotkit/react-core/v2";
 
-import {
-  ChatHistoryDB,
-  type ChatHistoryRecord,
-} from "../composables/chat-history";
+import { useChatHistory } from "../composables/chat-history";
 
 export interface ChatHistoryProps {
   style?: React.CSSProperties;
@@ -17,27 +14,11 @@ export interface ChatHistoryProps {
 export const ChatHistory = (props: ChatHistoryProps) => {
   const { agent } = useAgent();
 
-  const [histories, setHistories] = useState<ChatHistoryRecord[]>();
-
-  useEffect(() => {
-    (async () => {
-      const allHistories = await ChatHistoryDB.chatHistories
-        .reverse()
-        .toArray();
-      setHistories(allHistories);
-    })();
-  }, []);
+  const { histories, createNewChat } = useChatHistory();
 
   const handleNewChat = async () => {
     agent.setMessages([]);
-
-    await ChatHistoryDB.chatHistories.add({
-      title: "New Chat",
-      messages: [],
-    });
-
-    const allHistories = await ChatHistoryDB.chatHistories.reverse().toArray();
-    setHistories(allHistories);
+    await createNewChat();
   };
 
   return (
