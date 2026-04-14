@@ -46,6 +46,7 @@ export const useChatHistory = () => {
     if (selectedHistory) {
       setCurrentHistory(selectedHistory);
     }
+    return selectedHistory;
   };
 
   useEffect(() => {

@@ -5,11 +5,13 @@ import { useChatHistory } from "./composables/chat-history";
 
 import styles from "./App.module.css";
 import { useAgent } from "@copilotkit/react-core/v2";
+import { useRef } from "react";
 
 function App() {
   const { agent } = useAgent();
   const chatHistory = useChatHistory();
-  const { createNewChat, selectHistory, currentHistory } = chatHistory;
+  const { createNewChat, selectHistory } = chatHistory;
+  const latestSelectIdRef = useRef<number | null>(null);
 
   const handleNewChat = async () => {
     agent.setMessages([]);
@@ -17,8 +19,10 @@ function App() {
   };
 
   const handleSelectChat = async (historyId: number) => {
-    await selectHistory(historyId);
-    agent.setMessages(currentHistory?.messages || []);
+    latestSelectIdRef.current = historyId;
+    const selected = await selectHistory(historyId);
+    if (latestSelectIdRef.current !== historyId) return;
+    agent.setMessages(selected?.messages || []);
   };
 
   return (
