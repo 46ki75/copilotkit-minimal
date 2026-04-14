@@ -1,6 +1,10 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import z from "zod";
-import { useAgentContext, useFrontendTool } from "@copilotkit/react-core/v2";
+import {
+  useAgentContext,
+  useConfigureSuggestions,
+  useFrontendTool,
+} from "@copilotkit/react-core/v2";
 
 import styles from "./puzzle.module.css";
 
@@ -9,7 +13,9 @@ export interface PuzzleProps {
 }
 
 const SIZE = 4;
-const SOLVED = Array.from({ length: SIZE * SIZE - 1 }, (_, i) => i + 1).concat(0);
+const SOLVED = Array.from({ length: SIZE * SIZE - 1 }, (_, i) => i + 1).concat(
+  0,
+);
 
 function countInversions(tiles: number[]): number {
   const arr = tiles.filter((n) => n !== 0);
@@ -61,7 +67,7 @@ function getAdjacentTiles(tiles: number[]): number[] {
 
 function boardToGrid(tiles: number[]): number[][] {
   return Array.from({ length: SIZE }, (_, row) =>
-    tiles.slice(row * SIZE, row * SIZE + SIZE)
+    tiles.slice(row * SIZE, row * SIZE + SIZE),
   );
 }
 
@@ -76,8 +82,12 @@ export const Puzzle = (props: PuzzleProps) => {
   const movesRef = useRef(moves);
   const setTilesRef = useRef(setTiles);
   const setMovesRef = useRef(setMoves);
-  useEffect(() => { tilesRef.current = tiles; }, [tiles]);
-  useEffect(() => { movesRef.current = moves; }, [moves]);
+  useEffect(() => {
+    tilesRef.current = tiles;
+  }, [tiles]);
+  useEffect(() => {
+    movesRef.current = moves;
+  }, [moves]);
 
   // --- Machine-readable state ---
   const emptyIndex = tiles.indexOf(0);
@@ -112,7 +122,10 @@ export const Puzzle = (props: PuzzleProps) => {
       const currentTiles = tilesRef.current;
       const tileIndex = currentTiles.indexOf(tile_number);
       if (tileIndex === -1) {
-        return { success: false, error: `Tile ${tile_number} not found on board` };
+        return {
+          success: false,
+          error: `Tile ${tile_number} not found on board`,
+        };
       }
       const emptyIdx = currentTiles.indexOf(0);
       const row = Math.floor(tileIndex / SIZE);
@@ -148,7 +161,8 @@ export const Puzzle = (props: PuzzleProps) => {
   // --- Machine-callable tool: reset puzzle ---
   useFrontendTool({
     name: "reset_puzzle",
-    description: "Shuffle the board and start a new game, resetting the move counter to zero.",
+    description:
+      "Shuffle the board and start a new game, resetting the move counter to zero.",
     parameters: z.object({}),
     handler: async () => {
       const newTiles = shuffle(SOLVED);
@@ -180,13 +194,24 @@ export const Puzzle = (props: PuzzleProps) => {
       setTiles(next);
       setMoves((m) => m + 1);
     },
-    [tiles, isSolved]
+    [tiles, isSolved],
   );
 
   const handleReset = () => {
     setTiles(shuffle(SOLVED));
     setMoves(0);
   };
+
+  useConfigureSuggestions({
+    available: "always",
+    suggestions: [
+      {
+        title: "Solve the puzzle",
+        message:
+          "Can you solve the puzzle? You can move pieces using tools interactively.",
+      },
+    ],
+  });
 
   return (
     <div className={styles.puzzle} style={props.style}>
