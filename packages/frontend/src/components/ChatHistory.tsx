@@ -22,8 +22,8 @@ export const ChatHistory = (props: ChatHistoryProps) => {
     await createNewChat();
   };
 
-  const handleSelectChat = (historyId: number) => {
-    selectHistory(historyId);
+  const handleSelectChat = async (historyId: number) => {
+    await selectHistory(historyId);
     agent.setMessages(currentHistory?.messages || []);
   };
 
