@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   CopilotChat,
   // useAgent,
@@ -18,15 +18,19 @@ export interface ChatContainerProps {
 export const ChatContainer = (props: ChatContainerProps) => {
   useGetDateFrontendTool();
 
-  useConfigureSuggestions({
-    available: "always",
-    suggestions: [
-      {
-        title: "What time is it in Tokyo?",
-        message: "What time is it in Tokyo right now?",
-      },
-    ],
-  });
+  const suggestionsConfig = useMemo(
+    () => ({
+      available: "always" as const,
+      suggestions: [
+        {
+          title: "What time is it in Tokyo?",
+          message: "What time is it in Tokyo right now?",
+        },
+      ],
+    }),
+    [],
+  );
+  useConfigureSuggestions(suggestionsConfig);
 
   return (
     <div style={props.style}>
