@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import {
   CopilotChat,
+  CopilotChatToolCallsView,
   useAgent,
   useConfigureSuggestions,
   useDefaultRenderTool,
@@ -28,6 +29,22 @@ import { ToolCallRenderer } from "../components/ToolCallRenderer";
 export interface ChatContainerProps {
   style?: React.CSSProperties;
   chatHistory: ReturnType<typeof useChatHistory>;
+}
+
+// Workaround: TOOL_CALL_START can fire for an already-present tool call when a
+// MESSAGES_SNAPSHOT is processed before the event, producing duplicate IDs in
+// message.toolCalls. Deduplicate by ID before handing off to the default view.
+type ToolCallsViewProps = React.ComponentProps<typeof CopilotChatToolCallsView>;
+function DeduplicatedToolCallsView({ message, messages }: ToolCallsViewProps) {
+  const deduped = message.toolCalls
+    ? {
+        ...message,
+        toolCalls: [
+          ...new Map(message.toolCalls.map((tc) => [tc.id, tc])).values(),
+        ],
+      }
+    : message;
+  return <CopilotChatToolCallsView message={deduped} messages={messages} />;
 }
 
 export const ChatContainer = (props: ChatContainerProps) => {
@@ -139,6 +156,10 @@ export const ChatContainer = (props: ChatContainerProps) => {
              * @see {@link https://docs.copilotkit.ai/built-in-agent/custom-look-and-feel/slots#nested-slots-drill-down}
              */
             assistantMessage: {
+              // Temporary workaround for duplicate tool calls due to TOOL_CALL_START firing on already-present
+              // tool calls when processing MESSAGES_SNAPSHOT. See comment on DeduplicatedToolCallsView.
+              toolCallsView: DeduplicatedToolCallsView,
+
               markdownRenderer: ({ content }) => (
                 <ElmMarkdown markdown={content} />
               ),
