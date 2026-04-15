@@ -4,10 +4,15 @@ import { ChatHistory } from "./components/ChatHistory";
 import { useChatHistory } from "./hooks/use-chat-history";
 
 import styles from "./App.module.css";
-import { useAgent } from "@copilotkit/react-core/v2";
+import "@copilotkit/react-core/v2/styles.css";
+import {
+  CopilotKitProvider,
+  useAgent,
+  createA2UIMessageRenderer,
+} from "@copilotkit/react-core/v2";
 import { useRef } from "react";
 
-function App() {
+function AppContent() {
   const { agent } = useAgent();
   const chatHistory = useChatHistory();
   const { selectHistory } = chatHistory;
@@ -52,6 +57,21 @@ function App() {
         </div>
       </div>
     </>
+  );
+}
+
+function App() {
+  return (
+    <CopilotKitProvider
+      runtimeUrl="http://localhost:3000/copilotkit"
+      renderActivityMessages={[
+        createA2UIMessageRenderer({
+          theme: {},
+        }),
+      ]}
+    >
+      <AppContent />
+    </CopilotKitProvider>
   );
 }
 

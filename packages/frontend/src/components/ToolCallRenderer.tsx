@@ -1,4 +1,7 @@
-import { ToolCallStatus } from "@copilotkit/react-core/v2";
+import {
+  ToolCallStatus,
+  useDefaultRenderTool,
+} from "@copilotkit/react-core/v2";
 import {
   ElmButton,
   ElmCodeBlock,
@@ -46,15 +49,14 @@ const TOOL_STATUS_CONFIG = {
   },
 } as const;
 
-interface ToolCallRendererProps {
-  name: string;
-  status: ToolCallStatus;
-  result?: string;
-  args: unknown;
+type DefaultRenderProps = Parameters<
+  NonNullable<NonNullable<Parameters<typeof useDefaultRenderTool>[0]>["render"]>
+>[0];
 
+type ToolCallRendererProps = DefaultRenderProps & {
   onApprove?: () => void;
   onReject?: () => void;
-}
+};
 
 const safeStringifyArgs = (value: unknown, fallback = ""): string => {
   try {
@@ -79,7 +81,7 @@ export const ToolCallRenderer = ({
   name,
   status,
   result,
-  args,
+  parameters,
   onApprove,
   onReject,
 }: ToolCallRendererProps) => {
@@ -225,7 +227,7 @@ export const ToolCallRenderer = ({
             <ElmCodeBlock
               style={{ overflow: "hidden" } as ElmCodeBlockProps["style"]}
               caption="Arguments"
-              code={safeStringifyArgs(args)}
+              code={safeStringifyArgs(parameters)}
               language="json"
             />
           </div>

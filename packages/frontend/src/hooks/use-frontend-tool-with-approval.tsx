@@ -37,7 +37,7 @@ export const useFrontendToolWithApproval = <
             name={name}
             status={status}
             result={result}
-            args={args}
+            parameters={args}
             onApprove={() => handleResponse(true)}
             onReject={() => handleResponse(false)}
           ></ToolCallRenderer>

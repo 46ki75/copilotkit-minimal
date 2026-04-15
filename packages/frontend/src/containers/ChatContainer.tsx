@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import {
   CopilotChat,
+  CopilotChatToolCallsView,
   useAgent,
   useConfigureSuggestions,
+  useDefaultRenderTool,
 } from "@copilotkit/react-core/v2";
 
 // Components
@@ -21,10 +23,28 @@ import { UserMessage } from "../components/UserMessage";
 import { ScrollToBottomButton } from "../components/ScrollToBottomButton";
 import { SuggestionPill } from "../components/SuggestionPill";
 import { type useChatHistory } from "../hooks/use-chat-history";
+import { useUuidCrd } from "../gen-ui/uuid-card";
+import { ToolCallRenderer } from "../components/ToolCallRenderer";
 
 export interface ChatContainerProps {
   style?: React.CSSProperties;
   chatHistory: ReturnType<typeof useChatHistory>;
+}
+
+// Workaround: TOOL_CALL_START can fire for an already-present tool call when a
+// MESSAGES_SNAPSHOT is processed before the event, producing duplicate IDs in
+// message.toolCalls. Deduplicate by ID before handing off to the default view.
+type ToolCallsViewProps = React.ComponentProps<typeof CopilotChatToolCallsView>;
+function DeduplicatedToolCallsView({ message, messages }: ToolCallsViewProps) {
+  const deduped = message.toolCalls
+    ? {
+        ...message,
+        toolCalls: [
+          ...new Map(message.toolCalls.map((tc) => [tc.id, tc])).values(),
+        ],
+      }
+    : message;
+  return <CopilotChatToolCallsView message={deduped} messages={messages} />;
 }
 
 export const ChatContainer = (props: ChatContainerProps) => {
@@ -64,8 +84,26 @@ export const ChatContainer = (props: ChatContainerProps) => {
     return unsubscribe;
   }, [agent, saveMessagesToHistory, createNewChat, selectHistory]);
 
+  useDefaultRenderTool({
+    render: ({ name, status, result, parameters }) => {
+      return (
+        <ToolCallRenderer
+          name={name}
+          status={status}
+          result={result}
+          parameters={parameters}
+        />
+      );
+    },
+  });
+
+  // Register frontend tools
   useGetDateFrontendTool();
   useGenerateUuidFrontendTool();
+
+  // Display-only component
+  // <https://docs.copilotkit.ai/integrations/built-in-agent/generative-ui/your-components/display-only>
+  useUuidCrd();
 
   useConfigureSuggestions({
     available: "always",
@@ -79,8 +117,8 @@ export const ChatContainer = (props: ChatContainerProps) => {
         message: " What is a new service called Amazon S3 Files?",
       },
       {
-        title: "Ask about how to use axum web framework",
-        message: " How to use axum web framework in Rust?",
+        title: "Ask about Toasty in Rust",
+        message: " How to use the ORM called Toasty in Rust?",
       },
       {
         title: "Ask for UUID v4",
@@ -110,11 +148,18 @@ export const ChatContainer = (props: ChatContainerProps) => {
         </div>
         <CopilotChat
           className={styles["chat-container"]}
+          attachments={{
+            enabled: true,
+          }}
           messageView={{
             /*
              * @see {@link https://docs.copilotkit.ai/built-in-agent/custom-look-and-feel/slots#nested-slots-drill-down}
              */
             assistantMessage: {
+              // Temporary workaround for duplicate tool calls due to TOOL_CALL_START firing on already-present
+              // tool calls when processing MESSAGES_SNAPSHOT. See comment on DeduplicatedToolCallsView.
+              toolCallsView: DeduplicatedToolCallsView,
+
               markdownRenderer: ({ content }) => (
                 <ElmMarkdown markdown={content} />
               ),
