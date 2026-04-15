@@ -44,7 +44,7 @@ const app = new Hono();
 app.use("*", cors());
 app.route("/", createCopilotHonoHandler({ runtime, basePath: "/copilotkit" }));
 
-const port = parseInt(process.env.PORT || "3000", 10);
+const port = parseInt(process.env.PORT || "8080", 10);
 
 serve({ fetch: app.fetch, port }, (info) => {
   console.log(`CopilotKit backend running on http://localhost:${info.port}`);

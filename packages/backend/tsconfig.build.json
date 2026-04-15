@@ -4,5 +4,6 @@
         "rewriteRelativeImportExtensions": true,
         "allowImportingTsExtensions": false,
         "noEmit": false,
+        "rootDir": "src",
     }
 }

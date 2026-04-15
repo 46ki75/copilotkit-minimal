@@ -8,13 +8,13 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "outDir": "dist",
-        "rootDir": "src",
         "allowImportingTsExtensions": true,
         "noEmit": true
     },
     "include": [
         "src/**/*",
-        "src/index.ts"
+        "src/index.ts",
+        "build.ts"
     ],
     "exclude": [
         "node_modules"

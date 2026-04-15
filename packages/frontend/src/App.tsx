@@ -63,7 +63,7 @@ function AppContent() {
 function App() {
   return (
     <CopilotKitProvider
-      runtimeUrl="http://localhost:3000/copilotkit"
+      runtimeUrl="http://localhost:8080/copilotkit"
       renderActivityMessages={[
         createA2UIMessageRenderer({
           theme: {},
