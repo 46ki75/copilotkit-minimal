@@ -3,10 +3,7 @@ import { ChatContainer } from "./containers/ChatContainer";
 
 import styles from "./App.module.css";
 import "@copilotkit/react-core/v2/styles.css";
-import {
-  CopilotKitProvider,
-  createA2UIMessageRenderer,
-} from "@copilotkit/react-core/v2";
+import { CopilotKitProvider } from "@copilotkit/react-core/v2";
 
 function AppContent() {
   return (
@@ -25,18 +22,9 @@ function AppContent() {
   );
 }
 
-const renderActivityMessages = [
-  createA2UIMessageRenderer({
-    theme: {},
-  }),
-];
-
 function App() {
   return (
-    <CopilotKitProvider
-      runtimeUrl="http://localhost:3000/copilotkit"
-      renderActivityMessages={renderActivityMessages}
-    >
+    <CopilotKitProvider runtimeUrl="http://localhost:3000/copilotkit">
       <AppContent />
     </CopilotKitProvider>
   );
