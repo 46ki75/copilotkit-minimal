@@ -3,6 +3,7 @@ import {
   CopilotChat,
   useAgent,
   useConfigureSuggestions,
+  useDefaultRenderTool,
 } from "@copilotkit/react-core/v2";
 
 // Components
@@ -22,6 +23,7 @@ import { ScrollToBottomButton } from "../components/ScrollToBottomButton";
 import { SuggestionPill } from "../components/SuggestionPill";
 import { type useChatHistory } from "../hooks/use-chat-history";
 import { useUuidCrd } from "../gen-ui/uuid-card";
+import { ToolCallRenderer } from "../components/ToolCallRenderer";
 
 export interface ChatContainerProps {
   style?: React.CSSProperties;
@@ -64,6 +66,19 @@ export const ChatContainer = (props: ChatContainerProps) => {
 
     return unsubscribe;
   }, [agent, saveMessagesToHistory, createNewChat, selectHistory]);
+
+  useDefaultRenderTool({
+    render: ({ name, status, result, parameters }) => {
+      return (
+        <ToolCallRenderer
+          name={name}
+          status={status}
+          result={result}
+          parameters={parameters}
+        />
+      );
+    },
+  });
 
   // Register frontend tools
   useGetDateFrontendTool();

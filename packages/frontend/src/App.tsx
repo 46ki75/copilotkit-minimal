@@ -8,12 +8,9 @@ import "@copilotkit/react-core/v2/styles.css";
 import {
   CopilotKitProvider,
   useAgent,
-  defineToolCallRenderer,
   createA2UIMessageRenderer,
 } from "@copilotkit/react-core/v2";
 import { useRef } from "react";
-
-import { ToolCallRenderer } from "./components/ToolCallRenderer.tsx";
 
 function AppContent() {
   const { agent } = useAgent();
@@ -67,21 +64,6 @@ function App() {
   return (
     <CopilotKitProvider
       runtimeUrl="http://localhost:3000/copilotkit"
-      renderToolCalls={[
-        defineToolCallRenderer({
-          name: "*",
-          render: ({ name, status, result, args }) => {
-            return (
-              <ToolCallRenderer
-                name={name}
-                status={status}
-                result={result}
-                args={args}
-              />
-            );
-          },
-        }),
-      ]}
       renderActivityMessages={[
         createA2UIMessageRenderer({
           theme: {},
