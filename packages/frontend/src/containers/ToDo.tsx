@@ -62,6 +62,42 @@ export const useToDo = () => {
     },
   });
 
+  useFrontendTool({
+    name: "list_todos",
+    description: "List to-do items",
+    parameters: z.object({
+      isDone: z
+        .boolean()
+        .optional()
+        .describe("Whether to list only done or not done items"),
+    }),
+    handler: async ({ isDone }) => {
+      return listTodos(isDone);
+    },
+  });
+
+  useFrontendTool({
+    name: "done_todo",
+    description: "Mark a to-do item as done",
+    parameters: z.object({
+      id: z.string().describe("The ID of the to-do item"),
+    }),
+    handler: async ({ id }) => {
+      doneTodo(id);
+    },
+  });
+
+  useFrontendTool({
+    name: "delete_todo",
+    description: "Delete a to-do item",
+    parameters: z.object({
+      id: z.string().describe("The ID of the to-do item"),
+    }),
+    handler: async ({ id }) => {
+      deleteTodo(id);
+    },
+  });
+
   const render = () => {
     return (
       <div className={styles["to-do"]}>
