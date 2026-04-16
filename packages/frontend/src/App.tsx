@@ -11,7 +11,7 @@ import {
   createA2UIMessageRenderer,
 } from "@copilotkit/react-core/v2";
 import { useRef } from "react";
-import { useToDo } from "./containers/ToDo";
+import { useTask } from "./containers/Task";
 
 function AppContent() {
   const { agent } = useAgent();
@@ -39,7 +39,7 @@ function AppContent() {
     }
   };
 
-  const { render } = useToDo();
+  const { render } = useTask();
 
   return (
     <>
