@@ -13,6 +13,7 @@ import {
   ElmHeading,
   ElmInlineText,
   ElmMarkdown,
+  ElmModelSelect,
 } from "@elmethis/react";
 
 // Styles
@@ -25,6 +26,9 @@ import { SuggestionPill } from "../components/SuggestionPill";
 import { type useChatHistory } from "../hooks/use-chat-history";
 import { useUuidCrd } from "../gen-ui/uuid-card";
 import { ToolCallRenderer } from "../components/ToolCallRenderer";
+
+import OpenaiIcon from "../assets/openai.svg?url";
+import GoogleGeminiIcon from "../assets/google-gemini.svg?url";
 
 export interface ChatContainerProps {
   style?: React.CSSProperties;
@@ -131,9 +135,33 @@ export const ChatContainer = (props: ChatContainerProps) => {
     ],
   });
 
+  const models = [
+    {
+      modelId: "openai/gpt-5.4-nano" as const,
+      label: "OpenAI: GPT-5.4 Nano",
+      icon: OpenaiIcon,
+    },
+    {
+      modelId: "google/gemini-3.1-flash-lite-preview" as const,
+      label: "Google: Gemini 3.1 Flash Lite Preview",
+      icon: GoogleGeminiIcon,
+    },
+  ];
+
+  const [selectedModelId, setSelectedModelId] = React.useState<
+    (typeof models)[number]["modelId"] | null
+  >("openai/gpt-5.4-nano");
+
   return (
     <div style={props.style}>
       <main data-copilotkit className={styles["wrapper"]}>
+        <div className={styles["model-select-container"]}>
+          <ElmModelSelect
+            models={models}
+            selectedModelId={selectedModelId}
+            setSelectedModelId={setSelectedModelId}
+          />
+        </div>
         <div className={styles.title}>
           <ElmInlineText>
             {currentHistoryWithMessages ? (

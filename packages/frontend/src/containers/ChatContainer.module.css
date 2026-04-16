@@ -14,3 +14,12 @@
   padding: 0;
   height: 100vh;
 }
+
+.model-select-container {
+  width: 48rem;
+  position: absolute;
+  top: 1rem;
+  left: calc(50% - 24rem);
+  pointer-events: all;
+  z-index: 1000;
+}
