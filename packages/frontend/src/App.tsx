@@ -11,6 +11,7 @@ import {
   createA2UIMessageRenderer,
 } from "@copilotkit/react-core/v2";
 import { useRef } from "react";
+import { useToDo } from "./containers/ToDo";
 
 function AppContent() {
   const { agent } = useAgent();
@@ -38,12 +39,15 @@ function AppContent() {
     }
   };
 
+  const { render } = useToDo();
+
   return (
     <>
+      {render()}
+
       <div className={styles["toggle-theme"]}>
         <ElmToggleTheme size={64} />
       </div>
-
       <div className={styles["app-container"]}>
         <ChatHistory
           chatHistory={chatHistory}

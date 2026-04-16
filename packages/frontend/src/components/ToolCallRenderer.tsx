@@ -90,7 +90,7 @@ export const ToolCallRenderer = ({
   const [isResultOpen, setIsResultOpen] = useState(false);
   const [duration, setDuration] = useState<number | null>(null);
 
-  const parsedIsErrorInit = JSON.parse(result ?? "null")?.isError;
+  const parsedIsErrorInit = JSON.parse(result || "null")?.isError;
   const isErrorInit =
     typeof parsedIsErrorInit === "boolean" ? parsedIsErrorInit : false;
 
@@ -152,7 +152,7 @@ export const ToolCallRenderer = ({
         : `${(duration / 1000).toFixed(1)}s`;
   const config = TOOL_STATUS_CONFIG[status];
 
-  const parsedIsError = JSON.parse(result ?? "null")?.isError;
+  const parsedIsError = JSON.parse(result || "null")?.isError;
   const isError = typeof parsedIsError === "boolean" ? parsedIsError : false;
 
   return (
