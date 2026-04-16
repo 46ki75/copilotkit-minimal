@@ -4,7 +4,6 @@ RUN apk add --no-cache tini
 ENTRYPOINT ["/sbin/tini", "--"]
 
 WORKDIR /app
-COPY .env /app
 COPY ./dist/index.mjs /app
 EXPOSE 8080
 
