@@ -2,7 +2,7 @@ import { useReducer } from "react";
 
 import styles from "./Task.module.css";
 import { v7 } from "uuid";
-import { ElmCheckbox } from "@elmethis/react";
+import { ElmCheckbox, ElmInlineText } from "@elmethis/react";
 import { useAgentContext, useFrontendTool } from "@copilotkit/react-core/v2";
 import z from "zod";
 
@@ -86,6 +86,9 @@ export const useTask = () => {
   const render = () => {
     return (
       <div className={styles["task"]}>
+        <div>
+          <ElmInlineText>Task</ElmInlineText>
+        </div>
         {tasks.map((task) => (
           <ElmCheckbox
             key={task.id}

@@ -43,18 +43,20 @@ function AppContent() {
 
   return (
     <>
-      {render()}
-
       <div className={styles["toggle-theme"]}>
         <ElmToggleTheme size={64} />
       </div>
+
       <div className={styles["app-container"]}>
-        <ChatHistory
-          chatHistory={chatHistory}
-          handleNewChat={handleNewChat}
-          handleSelectChat={handleSelectChat}
-          handleDeleteChat={handleDeleteChat}
-        />
+        <div className={styles["side"]}>
+          <ChatHistory
+            chatHistory={chatHistory}
+            handleNewChat={handleNewChat}
+            handleSelectChat={handleSelectChat}
+            handleDeleteChat={handleDeleteChat}
+          />
+          {render()}
+        </div>
 
         <div style={{ flex: 1 }}>
           <ChatContainer chatHistory={chatHistory} />
