@@ -117,8 +117,9 @@ export const ChatContainer = (props: ChatContainerProps) => {
         message: "What time is it in Tokyo right now?",
       },
       {
-        title: "Ask about Amazon S3 Files",
-        message: " What is a new service called Amazon S3 Files?",
+        title: "Add tasks",
+        message:
+          "Add a new task to your task list. 1. Buy groceries 2. Walk the dog 3. Read a book",
       },
       {
         title: "Ask about Toasty in Rust",

@@ -1,9 +1,9 @@
-import React, { useReducer } from "react";
+import { useReducer } from "react";
 
 import styles from "./Task.module.css";
 import { v7 } from "uuid";
 import { ElmCheckbox } from "@elmethis/react";
-import { useFrontendTool } from "@copilotkit/react-core/v2";
+import { useAgentContext, useFrontendTool } from "@copilotkit/react-core/v2";
 import z from "zod";
 
 type Action =
@@ -33,6 +33,11 @@ export const useTask = () => {
     }
   }, []);
 
+  useAgentContext({
+    description: "A task manager to manage your tasks",
+    value: tasks,
+  });
+
   const addTask = (text: string) => {
     ditpatch({ type: "ADD_TASK", id: v7(), text });
   };
@@ -45,12 +50,6 @@ export const useTask = () => {
     ditpatch({ type: "DELETE_TASK", id });
   };
 
-  const listTasks = (isDone?: boolean) => {
-    return tasks.filter((task) =>
-      isDone !== undefined ? task.isDone === isDone : true,
-    );
-  };
-
   useFrontendTool({
     name: "add_task",
     description: "Add a task",
@@ -59,20 +58,6 @@ export const useTask = () => {
     }),
     handler: async ({ text }) => {
       addTask(text);
-    },
-  });
-
-  useFrontendTool({
-    name: "list_tasks",
-    description: "List tasks",
-    parameters: z.object({
-      isDone: z
-        .boolean()
-        .optional()
-        .describe("Whether to list only done or not done tasks"),
-    }),
-    handler: async ({ isDone }) => {
-      return listTasks(isDone);
     },
   });
 
@@ -113,5 +98,5 @@ export const useTask = () => {
     );
   };
 
-  return { addTask, doneTask, deleteTask, listTasks, render };
+  return { addTask, doneTask, deleteTask, render };
 };
