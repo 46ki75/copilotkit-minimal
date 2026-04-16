@@ -45,7 +45,8 @@ app.use("*", cors());
 app.route("/", createCopilotHonoHandler({ runtime, basePath: "/copilotkit" }));
 
 const port = parseInt(process.env.PORT || "8080", 10);
+const hostname = process.env.ADDRESS || "0.0.0.0";
 
-serve({ fetch: app.fetch, port }, (info) => {
-  console.log(`CopilotKit backend running on http://localhost:${info.port}`);
+serve({ fetch: app.fetch, port, hostname }, (info) => {
+  console.log(`CopilotKit backend running on http://${info.address}:${info.port}`);
 });

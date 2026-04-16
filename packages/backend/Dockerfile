@@ -1,11 +1,10 @@
-FROM docker.io/library/node:24-alpine 
+FROM docker.io/library/node:24-alpine
 
-ENV TINI_VERSION=v0.19.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
-ENTRYPOINT ["/tini", "--"]
+RUN apk add --no-cache tini
+ENTRYPOINT ["/sbin/tini", "--"]
 
 WORKDIR /app
+COPY .env /app
 COPY ./dist/index.mjs /app
 EXPOSE 8080
 

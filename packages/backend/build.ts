@@ -20,6 +20,9 @@ const result = await build({
   platform: "node",
   target: "es2024",
   format: "esm",
+  banner: {
+    js: `import { createRequire as __cjsRequire } from "module"; const require = __cjsRequire(import.meta.url);`,
+  },
 });
 
 console.log(result);
