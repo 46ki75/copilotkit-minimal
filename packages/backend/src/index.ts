@@ -48,5 +48,7 @@ const port = parseInt(process.env.PORT || "8080", 10);
 const hostname = process.env.ADDRESS || "0.0.0.0";
 
 serve({ fetch: app.fetch, port, hostname }, (info) => {
-  console.log(`CopilotKit backend running on http://${info.address}:${info.port}`);
+  console.log(
+    `CopilotKit backend running on http://${info.address}:${info.port}`,
+  );
 });
