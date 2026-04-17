@@ -1,8 +1,10 @@
-import { useReducer } from "react";
-
 import styles from "./Task.module.css";
 import { v7 } from "uuid";
-import { ElmCheckbox, ElmInlineText } from "@elmethis/react";
+import {
+  ElmCheckbox,
+  ElmInlineText,
+  useLocalStorageDispatch,
+} from "@elmethis/react";
 import { useAgentContext, useFrontendTool } from "@copilotkit/react-core/v2";
 import z from "zod";
 
@@ -18,20 +20,24 @@ type TaskItem = {
 };
 
 export const useTask = () => {
-  const [tasks, ditpatch] = useReducer((state: TaskItem[], action: Action) => {
-    switch (action.type) {
-      case "ADD_TASK":
-        return [...state, { id: action.id, text: action.text }];
-      case "DONE_TASK":
-        return state.map((task) =>
-          task.id === action.id ? { ...task, isDone: true } : task,
-        );
-      case "DELETE_TASK":
-        return state.filter((task) => task.id !== action.id);
-      default:
-        return state;
-    }
-  }, []);
+  const [tasks, ditpatch] = useLocalStorageDispatch(
+    "tasks",
+    (state: TaskItem[], action: Action) => {
+      switch (action.type) {
+        case "ADD_TASK":
+          return [...state, { id: action.id, text: action.text }];
+        case "DONE_TASK":
+          return state.map((task) =>
+            task.id === action.id ? { ...task, isDone: true } : task,
+          );
+        case "DELETE_TASK":
+          return state.filter((task) => task.id !== action.id);
+        default:
+          return state;
+      }
+    },
+    [],
+  );
 
   useAgentContext({
     description: "A task manager to manage your tasks",

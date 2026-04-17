@@ -60,8 +60,8 @@ importers:
         specifier: ^1.56.0
         version: 1.56.0(@types/mdast@4.0.4)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(graphql@16.13.2)(micromark-util-types@2.0.2)(micromark@4.0.2)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(zod@4.3.6)
       '@elmethis/react':
-        specifier: ^0.3.12
-        version: 0.3.12(@types/react@19.2.14)
+        specifier: ^0.3.20
+        version: 0.3.20(@types/react@19.2.14)
       '@mdi/js':
         specifier: ^7.4.47
         version: 7.4.47
@@ -422,8 +422,8 @@ packages:
     resolution: {integrity: sha512-jZVRO2v+CsaZ1XTqQITMchM+lv0fjuPGVt6aT0vVnUv9RhY1yE1B69MbAt5Ms2vF6mdqyWFhXbpbFxKHEMc1Vw==}
     engines: {node: '>=18'}
 
-  '@elmethis/react@0.3.12':
-    resolution: {integrity: sha512-RSowXPW4IR2aLlVJTYUl90MFrD66Iva0NI3ePCDaKLgeqE+YJd4RcNV2sa549pJ9ZcnaG+D6F7Tmzf+alZsnTQ==}
+  '@elmethis/react@0.3.20':
+    resolution: {integrity: sha512-2ELnualxu5/n/mng4EJP1kg9PfLXTy7btdPH4py0NVbY+AID04+jO75aQzmcdSVOz6GBrmeF6uZ1jQPyc0UTJg==}
 
   '@emnapi/core@1.9.2':
     resolution: {integrity: sha512-UC+ZhH3XtczQYfOlu3lNEkdW/p4dsJ1r/bP7H8+rhao3TTTMO1ATq/4DdIi23XuGoFY+Cz0JmCbdVl0hz9jZcA==}
@@ -4999,7 +4999,7 @@ snapshots:
       - encoding
       - zod
 
-  '@elmethis/react@0.3.12(@types/react@19.2.14)':
+  '@elmethis/react@0.3.20(@types/react@19.2.14)':
     dependencies:
       '@iconify-json/devicon': 1.2.62
       '@iconify-json/mdi': 1.2.3
