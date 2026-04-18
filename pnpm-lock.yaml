@@ -144,6 +144,9 @@ importers:
       '@builder.io/qwik':
         specifier: ^1.19.2
         version: 1.19.2(vite@8.0.8(@types/node@24.12.2)(esbuild@0.28.0)(tsx@4.21.0))
+      '@cloud.ikuma/copilotkit-qwik':
+        specifier: ^0.1.0
+        version: 0.1.0(@ag-ui/core@0.0.52)(@builder.io/qwik@1.19.2(vite@8.0.8(@types/node@24.12.2)(esbuild@0.28.0)(tsx@4.21.0)))(zod@4.3.6)
     devDependencies:
       '@types/node':
         specifier: ^24.12.2
@@ -379,6 +382,12 @@ packages:
   '@chevrotain/utils@12.0.0':
     resolution: {integrity: sha512-lB59uJoaGIfOOL9knQqQRfhl9g7x8/wqFkp13zTdkRu1huG9kg6IJs1O8hqj9rs6h7orGxHJUKb+mX3rPbWGhA==}
 
+  '@cloud.ikuma/copilotkit-qwik@0.1.0':
+    resolution: {integrity: sha512-BndCfwWDc4NWsx4WQ9nwQyOkyAVWBg61AsUTnfQ6oN5jrw+OvMYdry0iIbunyrzY95a8VqclIhp9501on7fmkA==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@builder.io/qwik': ^1.0.0
+
   '@copilotkit/a2ui-renderer@1.56.0':
     resolution: {integrity: sha512-Eo/F6WeVTLo65okoxWj1vFl7IcTrPe4Cop9CiQ/YPGRJWv8CU+zpiD7mI9Rped4ougrM+fU9YJYDFr7R0soilQ==}
     peerDependencies:
@@ -387,6 +396,10 @@ packages:
 
   '@copilotkit/core@1.56.0':
     resolution: {integrity: sha512-Zi+n/wHIWww26ya1JQ5LRWiifUprz7UB6k6Di3lzbdD3Qxhm4V99cqOwuls8KRjq4ELOHS4bYuwJLHdHQbP/FQ==}
+    engines: {node: '>=18'}
+
+  '@copilotkit/core@1.56.2':
+    resolution: {integrity: sha512-cwjhUDz+C7kgMzgQfGnlMUO1wbVFJmZ+H2doqedbaLxeq9ge9ko8iS1FtFcM2sC9xudT27uXjUneCxODvgLLDQ==}
     engines: {node: '>=18'}
 
   '@copilotkit/license-verifier@0.0.1-a1':
@@ -441,6 +454,11 @@ packages:
 
   '@copilotkit/shared@1.56.0':
     resolution: {integrity: sha512-tCJPnJa1weUx02ykEED/cGJAkSBDPptOaP/hr/Vi27yG6gL0FVJ1SDtUi4X0E6zlfDNh67k6l/n1XtVVxsvWlw==}
+    peerDependencies:
+      '@ag-ui/core': '>=0.0.48'
+
+  '@copilotkit/shared@1.56.2':
+    resolution: {integrity: sha512-AptyJYP2kUDjyo81h0yzObhfe3uWgOEd0fUM7dbLLY6re8R0dwhOhsS2Q22Qo62DFaGB1KCAvtVgIntHs+sTfw==}
     peerDependencies:
       '@ag-ui/core': '>=0.0.48'
 
@@ -5216,6 +5234,16 @@ snapshots:
 
   '@chevrotain/utils@12.0.0': {}
 
+  '@cloud.ikuma/copilotkit-qwik@0.1.0(@ag-ui/core@0.0.52)(@builder.io/qwik@1.19.2(vite@8.0.8(@types/node@24.12.2)(esbuild@0.28.0)(tsx@4.21.0)))(zod@4.3.6)':
+    dependencies:
+      '@builder.io/qwik': 1.19.2(vite@8.0.8(@types/node@24.12.2)(esbuild@0.28.0)(tsx@4.21.0))
+      '@copilotkit/core': 1.56.2(@ag-ui/core@0.0.52)(zod@4.3.6)
+      '@copilotkit/shared': 1.56.2(@ag-ui/core@0.0.52)
+    transitivePeerDependencies:
+      - '@ag-ui/core'
+      - encoding
+      - zod
+
   '@copilotkit/a2ui-renderer@1.56.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
       '@a2ui/web_core': 0.9.0
@@ -5229,6 +5257,18 @@ snapshots:
     dependencies:
       '@ag-ui/client': 0.0.52
       '@copilotkit/shared': 1.56.0(@ag-ui/core@0.0.52)
+      phoenix: 1.8.5
+      rxjs: 7.8.1
+      zod-to-json-schema: 3.25.2(zod@4.3.6)
+    transitivePeerDependencies:
+      - '@ag-ui/core'
+      - encoding
+      - zod
+
+  '@copilotkit/core@1.56.2(@ag-ui/core@0.0.52)(zod@4.3.6)':
+    dependencies:
+      '@ag-ui/client': 0.0.52
+      '@copilotkit/shared': 1.56.2(@ag-ui/core@0.0.52)
       phoenix: 1.8.5
       rxjs: 7.8.1
       zod-to-json-schema: 3.25.2(zod@4.3.6)
@@ -5370,6 +5410,22 @@ snapshots:
       - encoding
 
   '@copilotkit/shared@1.56.0(@ag-ui/core@0.0.52)':
+    dependencies:
+      '@ag-ui/client': 0.0.52
+      '@ag-ui/core': 0.0.52
+      '@copilotkit/license-verifier': 0.0.1-a1
+      '@segment/analytics-node': 2.3.0
+      '@standard-schema/spec': 1.1.0
+      chalk: 4.1.2
+      graphql: 16.13.2
+      partial-json: 0.1.7
+      uuid: 11.1.0
+      zod: 3.25.76
+      zod-to-json-schema: 3.25.2(zod@3.25.76)
+    transitivePeerDependencies:
+      - encoding
+
+  '@copilotkit/shared@1.56.2(@ag-ui/core@0.0.52)':
     dependencies:
       '@ag-ui/client': 0.0.52
       '@ag-ui/core': 0.0.52
