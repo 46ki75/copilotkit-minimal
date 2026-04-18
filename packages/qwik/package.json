@@ -16,6 +16,6 @@
   },
   "dependencies": {
     "@builder.io/qwik": "^1.19.2",
-    "@cloud.ikuma/copilotkit-qwik": "^0.1.0"
+    "@cloud.ikuma/copilotkit-qwik": "^0.2.0"
   }
 }
